@@ -96,7 +96,7 @@
                                 <div class="row justify-content-end">
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-md">Simpan</button>
-                                        <a href="/sia" class="btn btn-light w-md">Kembali</a>
+                                        <a href="/visitor/person/{{ (@$data->id) ? @$data->visitor_id : @$id }}" class="btn btn-light w-md">Kembali</a>
                                     </div>
                                 </div>
                             </form>

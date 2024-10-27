@@ -75,6 +75,7 @@ Route::group([
         $router->get('/data/{id}', [VisitorPpeController::class, 'getData'])->name('visitor-ppe.data');
         $router->get('new/{id}', [VisitorPpeController::class, 'create'])->name('visitor-ppe.create');
         $router->post('store', [VisitorPpeController::class, 'store'])->name('visitor-ppe.store');
+        $router->get('return/{id}', [VisitorPpeController::class, 'goods_return'])->name('visitor-ppe.return');
         $router->post('upload', [VisitorPpeController::class, 'upload'])->name('visitor-ppe.upload');
         $router->get('edit/{id}', [VisitorPpeController::class, 'edit'])->name('visitor-ppe.edit');
         $router->get('delete/{id}', [VisitorPpeController::class, 'destroy'])->name('visitor-ppe.delete');

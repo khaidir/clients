@@ -25,59 +25,89 @@
                         <div class="col-xl-8 col-sm-12">
                             <h4 class="card-title">{{ @$data->id ? 'Edit' : 'Create' }}</h4>
                             <p class="card-title-desc">Please fill out the form below completely.</p>
-                            <form action="/visitor/store" method="post" class="needs-validation">
+                            <form action="/visitor/ppe/store" method="post" class="needs-validation">
                                 @csrf
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
+                                <input type="hidden" name="visitor_id" class="form-control" value="{{ (@$data->id) ? @$data->visitor_id : @$id }}">
+
+                                {{-- <div class="row">
+                                    <label for="code" class="col-sm-3 col-form-label">Code</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code', @$data->code) }}" placeholder="Code">
+                                            <button class="btn btn-primary" type="button" id="inputGroupFileAddon03"><i class='bx bx-search-alt' ></i></button>
+                                        </div>
+                                        <span class="text-success">Suggestion</span>
+                                    </div>
+                                </div>
+                                <hr class="mb-4"> --}}
 
                                 <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Description</label>
-                                    <div class="col-sm-8">
-                                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Description">{{ old('description', @$data->description) }}</textarea>
-                                        @if ($errors->has('description'))
-                                            <span class="text-danger">{{ $errors->first('description') }}</span>
+                                    <label for="badge" class="col-sm-3 col-form-label">Goods/PPE</label>
+                                    <div class="col-sm-4">
+                                        <select name="ppe_id" id="ppe_id" style="width:100%">
+                                            <option value="">Pilih</option>
+                                            @foreach ($ppes as $ppe)
+                                            <option value="{{ @$ppe->id }}">{{ @$ppe->code .' - '. @$ppe->goods }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('citizenship'))
+                                            <span class="text-danger">{{ $errors->first('citizenship') }}</span>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Destination</label>
-                                    <div class="col-sm-8">
-                                        <textarea name="destination" class="form-control @error('destination') is-invalid @enderror" placeholder="Destination">{{ old('destination', @$data->destination) }}</textarea>
-                                        @if ($errors->has('destination'))
-                                            <span class="text-danger">{{ $errors->first('destination') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Duration</label>
-                                    <div class="col-sm-2">
-                                        <input name="duration" class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration', @$data->duration) }}" placeholder="Duration">
-                                        <span class="text-success">Default with days</span>
-                                        @if ($errors->has('duration'))
-                                            <span class="text-danger">{{ $errors->first('duration') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <label for="date_request" class="col-sm-3 col-form-label">Date Request</label>
+                                    <label for="date_pickup" class="col-sm-3 col-form-label">Date Pick Up</label>
                                     <div class="col-sm-3">
                                         <div class="input-group" id="datepicker1">
-                                            <input type="text" name="date_request"
+                                            <input type="text" name="date_pickup"
                                                 data-date-format="dd M, yyyy"
                                                 data-date-container='#datepicker1'
                                                 data-provide="datepicker"
                                                 data-date-autoclose="true"
-                                                class="form-control @error('date_request') is-invalid @enderror"
-                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_request)) : date('d M, Y')) }}"
-                                                id="date_request"
-                                                placeholder="Date Request">
+                                                class="form-control @error('date_pickup') is-invalid @enderror"
+                                                value="{{ old('date_pickup', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_pickup)) : date('d M, Y')) }}"
+                                                id="date_pickup"
+                                                placeholder="Date Pickup">
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-                                            @if ($errors->has('date_request'))
-                                                <span class="text-danger">{{ $errors->first('date_request') }}</span>
+                                            @if ($errors->has('date_pickup'))
+                                                <span class="text-danger">{{ $errors->first('date_pickup') }}</span>
                                             @endif
                                         </div>
+                                    </div>
+                                </div>
+
+                                @if (@$data->id)
+                                <div class="row mb-4">
+                                    <label for="date_return" class="col-sm-3 col-form-label">Date Return</label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group" id="datepicker1">
+                                            <input type="text" name="date_return"
+                                                data-date-format="dd M, yyyy"
+                                                data-date-container='#datepicker1'
+                                                data-provide="datepicker"
+                                                data-date-autoclose="true"
+                                                class="form-control @error('date_return') is-invalid @enderror"
+                                                value="{{ old('date_return', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_return)) : date('d M, Y')) }}"
+                                                id="date_return"
+                                                placeholder="Date Return">
+                                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                            @if ($errors->has('date_return'))
+                                                <span class="text-danger">{{ $errors->first('date_return') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                <div class="row mb-4">
+                                    <label for="notes" class="col-sm-3 col-form-label">Notes</label>
+                                    <div class="col-sm-6">
+                                        <textarea name="notes" class="form-control @error('notes') is-invalid @enderror" rows="3">{{ old('notes', @$data->notes) }}</textarea>
+                                        @if ($errors->has('notes'))
+                                            <span class="text-danger">{{ $errors->first('notes') }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -98,7 +128,7 @@
                                 <div class="row justify-content-end">
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-md">Simpan</button>
-                                        <a href="/sia" class="btn btn-light w-md">Kembali</a>
+                                        <a href="/visitor/ppe/{{ (@$data->id) ? @$data->visitor_id : @$id }}" class="btn btn-light w-md">Kembali</a>
                                     </div>
                                 </div>
                             </form>

@@ -122,15 +122,21 @@ $(document).ready(function() {
         serverSide: true,
         ajax: "{{ route('visitor-ppe.data', $data->id) }}",
         columns: [
-            { data: 'id' },
+            {
+                data: null,
+                name: 'number',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
             { data: 'code' },
             { data: 'goods' },
             { data: 'date_pickup' },
             { data: 'date_return' },
             { data: 'notes' },
-            { data: 'status', render: function(data) {
-                return data ? 'Visited' : 'Visiting';
-            }},
+            { data: 'status' },
             { data: 'action', orderable: false, searchable: false }
         ]
     });
@@ -174,7 +180,7 @@ $(document).ready(function() {
         }).then(function(result) {
             if (result?.value && (result?.value[0] != "")) {
                 $.ajax({
-                    url : '/sia/delete/' + id,
+                    url : '/visitor/ppe/delete/' + id,
                     type : "get",
                     success: function(response){
                         Swal.fire(
@@ -182,7 +188,7 @@ $(document).ready(function() {
                             'Data deleted',
                             'success'
                         )
-                        $('.data-table').dataTable().api().ajax.reload();
+                        $('#table').dataTable().api().ajax.reload();
                     },
                     error: function (data) {
                         Swal.fire(
