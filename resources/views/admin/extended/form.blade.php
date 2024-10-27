@@ -125,7 +125,7 @@
                                 <div class="row justify-content-end">
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-md">Save</button>
-                                        <a href="/visitor" class="btn btn-light w-md">Back</a>
+                                        <a href="/extend" class="btn btn-light w-md">Back</a>
                                     </div>
                                 </div>
                             </form>

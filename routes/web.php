@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\SiaExtendedController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\VisitorPersonController;
 use App\Http\Controllers\admin\VisitorPpeController;
+use App\Http\Controllers\admin\CompanyController;
 
 
 Route::view('/', 'welcome');
@@ -109,3 +110,14 @@ Route::group([
 
 });
 
+Route::group([
+    'prefix' => 'company',
+    'middleware' => 'auth'
+], function ($router) {
+    $router->get('/', [CompanyController::class, 'index'])->name('company.index');
+    $router->get('data', [CompanyController::class, 'getData'])->name('company.data');
+    $router->get('new', [CompanyController::class, 'create'])->name('company.create');
+    $router->post('store', [CompanyController::class, 'store'])->name('company.store');
+    $router->get('edit/{id}', [CompanyController::class, 'edit'])->name('company.edit');
+    $router->get('delete/{id}', [CompanyController::class, 'destroy'])->name('company.delete');
+});
