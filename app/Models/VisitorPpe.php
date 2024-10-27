@@ -23,7 +23,5 @@ class VisitorPpe extends Model
 
     protected $casts = [
         'status' => 'boolean',
-        'date_pickup' => 'datetime',
-        'date_return' => 'datetime',
     ];
 }

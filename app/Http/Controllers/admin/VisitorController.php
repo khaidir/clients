@@ -34,7 +34,7 @@ class VisitorController extends Controller
             ->addColumn('action', function ($row) {
                 return '
                     <a class="btn btn-sm btn-primary edit" href="/visitor/edit/' . $row->id . '">Edit</a>
-                    <a class="btn btn-sm btn-success edit" href="/visitor/detail/' . $row->id . '">Detail</a>
+                    <a class="btn btn-sm btn-success edit" href="/visitor/person/' . $row->id . '">Person</a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
@@ -42,12 +42,20 @@ class VisitorController extends Controller
             ->make(true);
     }
 
-    public function detail($id = null)
+    public function person($id = null)
     {
         $data = Visitor::select('*')
             ->find($id);
 
-        return view('admin.visitor.detail', compact('data', 'id'));
+        return view('admin.visitor.person', compact('data', 'id'));
+    }
+
+    public function ppe($id = null)
+    {
+        $data = Visitor::select('*')
+            ->find($id);
+
+        return view('admin.visitor.ppe', compact('data', 'id'));
     }
 
     public function create()

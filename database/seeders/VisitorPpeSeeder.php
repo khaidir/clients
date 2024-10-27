@@ -16,7 +16,7 @@ class VisitorPpeSeeder extends Seeder
     {
         VisitorPpe::create([
             'visitor_id' => 1, // Ganti sesuai ID visitor yang ada
-            'ppe_id' => 'PPE-001',
+            'ppe_id' => 1,
             'date_pickup' => now(),
             'date_return' => now()->addDays(3), // Contoh pengembalian 3 hari kemudian
             'notes' => 'Picked up PPE for site visit.',
@@ -25,7 +25,7 @@ class VisitorPpeSeeder extends Seeder
 
         VisitorPpe::create([
             'visitor_id' => 2, // Ganti sesuai ID visitor yang ada
-            'ppe_id' => 'PPE-002',
+            'ppe_id' => 2,
             'date_pickup' => now()->subDays(1), // Contoh pengambilan satu hari yang lalu
             'date_return' => now()->addDays(2), // Contoh pengembalian 2 hari kemudian
             'notes' => 'Picked up gloves for safety.',

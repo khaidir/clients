@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\SiaPersonController;
 
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\VisitorPersonController;
+use App\Http\Controllers\admin\VisitorPpeController;
 
 
 Route::view('/', 'welcome');
@@ -52,7 +53,8 @@ Route::group([
     $router->get('new', [VisitorController::class, 'create'])->name('visitor.create');
     $router->post('store', [VisitorController::class, 'store'])->name('visitor.store');
     $router->get('edit/{id}', [VisitorController::class, 'edit'])->name('visitor.edit');
-    $router->get('detail/{id}', [VisitorController::class, 'detail'])->name('visitor.detail');
+    $router->get('person/{id}', [VisitorController::class, 'person'])->name('visitor-person.index');
+    $router->get('ppe/{id}', [VisitorController::class, 'ppe'])->name('visitor-ppe.index');
     $router->get('delete/{id}', [VisitorController::class, 'destroy'])->name('visitor.delete');
 
     Route::group([
@@ -61,9 +63,19 @@ Route::group([
         $router->get('/data/{id}', [VisitorPersonController::class, 'getData'])->name('visitor-person.data');
         $router->get('new/{id}', [VisitorPersonController::class, 'create'])->name('visitor-person.create');
         $router->post('store', [VisitorPersonController::class, 'store'])->name('visitor-person.store');
-        $router->post('upload', [VisitorPersonController::class, 'upload'])->name('visitor-person.upload');
         $router->get('edit/{id}', [VisitorPersonController::class, 'edit'])->name('visitor-person.edit');
         $router->get('delete/{id}', [VisitorPersonController::class, 'destroy'])->name('visitor-person.delete');
+    });
+
+    Route::group([
+        'prefix' => 'ppe',
+    ], function ($router) {
+        $router->get('/data/{id}', [VisitorPpeController::class, 'getData'])->name('visitor-ppe.data');
+        $router->get('new/{id}', [VisitorPpeController::class, 'create'])->name('visitor-ppe.create');
+        $router->post('store', [VisitorPpeController::class, 'store'])->name('visitor-ppe.store');
+        $router->post('upload', [VisitorPpeController::class, 'upload'])->name('visitor-ppe.upload');
+        $router->get('edit/{id}', [VisitorPpeController::class, 'edit'])->name('visitor-ppe.edit');
+        $router->get('delete/{id}', [VisitorPpeController::class, 'destroy'])->name('visitor-ppe.delete');
     });
 
 });

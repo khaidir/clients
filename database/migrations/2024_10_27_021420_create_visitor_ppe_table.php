@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('visitor_ppe', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('visitor_id')->nullable();
-            $table->string('ppe_id', 160)->nullable();
+            $table->integer('ppe_id')->nullable();
             $table->dateTime('date_pickup', precision: 0);
             $table->dateTime('date_return', precision: 0)->nullable();
             $table->string('notes', 255)->nullable();
