@@ -6,12 +6,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box mb-0 d-sm-flex align-items-center justify-content-between">
-                    <h2 class="mb-sm-0 m-0 font-size-18 page-title">New Worker Access</h2>
+                    <h2 class="mb-sm-0 m-0 font-size-18 page-title">Worker Extended</h2>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item">New Worker Access</li>
-                            <li class="breadcrumb-item active">Form</li>
+                            <li class="breadcrumb-item">Worker Extended</li>
+                            <li class="breadcrumb-item active">Lists</li>
                         </ol>
                     </div>
                 </div>
@@ -22,24 +22,6 @@
             <div class="col-xl-12 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-
-                        <div class="col-xl-12 col-sm-12">
-                            <h4 class="card-title">Worker Access</h4>
-                            <p class="card-title-desc">Please fill out the form below completely.</p>
-                            <table class="table table-nowrap">
-                                <tbody>
-                                    <tr>
-                                        <td style="width: 100px;">Company</td>
-                                        <td style="width: 800px;">{{ @$data->company}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Description</td>
-                                        <td>{{ @$data->description}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
                         <div class="row">
                             <div class="col-md-9 mt--2">
                                 <div class="col-9">
@@ -48,7 +30,7 @@
                                             <span id="dlength"></span>
                                         </div>
                                         <div class="col-12 col-sm-12">
-                                            <a href="/worker/person/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
+                                            <a href="/extend/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New</a>
                                         </div>
                                         <div class="col-12 col-sm-12 mt-4">
                                             <span id="dfilter"></span>
@@ -68,22 +50,23 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40">ID</th>
-                                            <th width="150">Fullname/Email</th>
-                                            <th width="200">Card ID</th>
-                                            <th width="350">Position</th>
+                                            <th width="200">Company</th>
+                                            <th width="200">Type Contract</th>
+                                            <th width="220">Periode</th>
+                                            <th width="120">Requested At</th>
+                                            <th width="150">Request By</th>
+                                            <th width="150">Approved By</th>
+                                            <th width="150">Verified By</th>
                                             <th width="90">Status</th>
-                                            <th width="140">Action</th>
+                                            <th width="100">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -95,14 +78,26 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('sia-person.data', $data->id) }}",
+        ajax: "{{ route('extended.data') }}",
         columns: [
-            { data: 'id' },
-            { data: 'fullname' },
-            { data: 'id_card' },
-            { data: 'position' },
+            {
+                data: null,
+                name: 'number',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: 'company' },
+            { data: 'type_contract' },
+            { data: 'periode_start' },
+            { data: 'requested_at' },
+            { data: 'request_by_name' },
+            { data: 'approved_by_name' },
+            { data: 'verified_by_name' },
             { data: 'status', render: function(data) {
-                return data ? 'Uploaded' : 'Not uploaded yet';
+                return data ? 'Active' : 'Inactive';
             }},
             { data: 'action', orderable: false, searchable: false }
         ]
@@ -147,7 +142,7 @@ $(document).ready(function() {
         }).then(function(result) {
             if (result?.value && (result?.value[0] != "")) {
                 $.ajax({
-                    url : '/worker/delete/' + id,
+                    url : '/extend/delete/' + id,
                     type : "get",
                     success: function(response){
                         Swal.fire(
@@ -179,3 +174,4 @@ $(document).ready(function() {
 });
 </script>
 @endsection
+

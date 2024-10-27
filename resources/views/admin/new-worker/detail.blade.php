@@ -48,7 +48,7 @@
                                             <span id="dlength"></span>
                                         </div>
                                         <div class="col-12 col-sm-12">
-                                            <a href="/sia/person/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
+                                            <a href="/worker/person/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
                                         </div>
                                         <div class="col-12 col-sm-12 mt-4">
                                             <span id="dfilter"></span>
@@ -159,7 +159,7 @@ $(document).ready(function() {
         }).then(function(result) {
             if (result?.value && (result?.value[0] != "")) {
                 $.ajax({
-                    url : '/sia/person/delete/' + id,
+                    url : '/worker/person/delete/' + id,
                     type : "get",
                     success: function(response){
                         Swal.fire(

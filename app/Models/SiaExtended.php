@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SiaExtended extends Model
 {
@@ -12,9 +14,14 @@ class SiaExtended extends Model
     protected $table = 'sia_extended';
 
     protected $fillable = [
-        'requested_by',
-        'approved_by',
-        'verified_by',
+        'company_id',
+        'type_contract', // lump sum/volume base
+        'periode_start',
+        'periode_end',
+        'requested_at',
+        'request_by', //end user
+        'approved_by', //hod
+        'verified_by', //h&s
     ];
 
     protected $dates = ['created_at', 'updated_at'];

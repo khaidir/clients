@@ -4,7 +4,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">Summary</li>
                 <li>
-                    <a href="/dashboard" class="waves-effect">
+                    <a href="/" class="waves-effect">
                         <i class='bx bx-home-alt'></i>
                         <span key="t-dashboards">Dashboard</span>
                     </a>
@@ -16,8 +16,8 @@
                         <span key="t-access">Visitor</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('sia/*') == 1 ? 'mm-active' : ''}}">
-                    <a href="/sia" class="waves-effect {{ request()->is('sia/*') == 1 ? 'active' : ''}}">
+                <li class="{{ request()->is('worker/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/worker" class="waves-effect {{ request()->is('worker/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-file'></i>
                         <span key="t-lokasi">New Worker</span>
                     </a>
@@ -50,18 +50,18 @@
                 </li> --}}
 
                 <li class="menu-title" key="t-apps">Master Data</li>
-                <li class="{{ request()->is('vendor/*') == 1 ? 'mm-active' : ''}}">
-                    <a href="/vendor" class="waves-effect {{ request()->is('vendor/*') == 1 ? 'active' : ''}}">
+                <li class="{{ request()->is('company/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/company" class="waves-effect {{ request()->is('company/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-building' ></i>
-                        <span key="t-lokasi">Vendor</span>
+                        <span key="t-lokasi">Companies</span>
                     </a>
                 </li>
-                {{-- <li class="{{ request()->is('ppe/*') == 1 ? 'mm-active' : ''}}">
-                    <a href="/ppe" class="waves-effect {{ request()->is('ppe/*') == 1 ? 'active' : ''}}">
+                <li class="{{ request()->is('goods/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/goods" class="waves-effect {{ request()->is('goods/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-user'></i>
-                        <span key="t-provider">PPE</span>
+                        <span key="t-provider">Goods/PPE</span>
                     </a>
-                </li> --}}
+                </li>
 
                 <li class="menu-title" key="t-apps">Settings</li>
                 <li class="{{ request()->is('users/*') == 1 ? 'mm-active' : ''}}">
@@ -70,7 +70,7 @@
                         <span key="t-provider">Users</span>
                     </a>
                 </li>
-                {{-- <li class="{{ request()->is('roles/*') == 1 ? 'mm-active' : ''}}">
+                <li class="{{ request()->is('roles/*') == 1 ? 'mm-active' : ''}}">
                     <a href="/roles" class="waves-effect {{ request()->is('roles/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-target-lock'></i>
                         <span key="t-provider">Rules</span>
@@ -81,7 +81,7 @@
                         <i class='bx bx-user-circle'></i>
                         <span key="t-provider">Permission</span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </div>
     </div>

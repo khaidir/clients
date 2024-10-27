@@ -32,7 +32,7 @@ class VisitorPersonController extends Controller
         return DataTables::of($visitor)
             ->addColumn('action', function ($row) {
                 return '
-                    <a class="btn btn-sm btn-primary edit" href="/visitor/person/edit/' . $row->id . '">Edit</a>
+                    <a class="btn btn-sm btn-primary edit" href="/visitor/person/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })

@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\SiaController;
 use App\Http\Controllers\admin\SiaPersonController;
+use App\Http\Controllers\admin\SiaExtendedController;
 
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\VisitorPersonController;
@@ -12,7 +15,9 @@ use App\Http\Controllers\admin\VisitorPpeController;
 
 Route::view('/', 'welcome');
 
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('login', [AuthController::class, 'showLoginForm'])
+    ->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class)
+    ->name('login');
 Route::post('login', [AuthController::class, 'login']);
 // Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
@@ -21,7 +26,15 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('public/dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
 
 Route::group([
-    'prefix' => 'sia',
+    'middleware' => 'auth'
+], function ($router) {
+    $router->get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    $router->get('profile', [ProfileController::class, 'index'])->name('profile');
+    $router->post('store', [ProfileController::class, 'store'])->name('profile.store');
+});
+
+Route::group([
+    'prefix' => 'worker',
     'middleware' => 'auth'
 ], function ($router) {
     $router->get('/', [SiaController::class, 'index'])->name('sia.index');
@@ -42,6 +55,19 @@ Route::group([
         $router->get('edit/{id}', [SiaPersonController::class, 'edit'])->name('sia-person.edit');
         $router->get('delete/{id}', [SiaPersonController::class, 'destroy'])->name('sia-person.delete');
     });
+
+});
+
+Route::group([
+    'prefix' => 'extend',
+    'middleware' => 'auth'
+], function ($router) {
+    $router->get('/', [SiaExtendedController::class, 'index'])->name('extended.index');
+    $router->get('/data', [SiaExtendedController::class, 'getData'])->name('extended.data');
+    $router->get('new', [SiaExtendedController::class, 'create'])->name('extended.create');
+    $router->post('store', [SiaExtendedController::class, 'store'])->name('extended.store');
+    $router->get('edit/{id}', [SiaExtendedController::class, 'edit'])->name('extended.edit');
+    $router->get('delete/{id}', [SiaExtendedController::class, 'destroy'])->name('extended.delete');
 
 });
 
