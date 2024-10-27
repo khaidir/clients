@@ -64,6 +64,7 @@ Route::group([
         $router->get('/data/{id}', [VisitorPersonController::class, 'getData'])->name('visitor-person.data');
         $router->get('new/{id}', [VisitorPersonController::class, 'create'])->name('visitor-person.create');
         $router->post('store', [VisitorPersonController::class, 'store'])->name('visitor-person.store');
+        $router->post('upload', [VisitorPersonController::class, 'upload'])->name('visitor-person.upload');
         $router->get('edit/{id}', [VisitorPersonController::class, 'edit'])->name('visitor-person.edit');
         $router->get('delete/{id}', [VisitorPersonController::class, 'destroy'])->name('visitor-person.delete');
     });

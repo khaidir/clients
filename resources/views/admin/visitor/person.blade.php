@@ -71,7 +71,7 @@
                                                         <span id="dlength"></span>
                                                     </div>
                                                     <div class="col-12 col-sm-12">
-                                                        <a href="/visitor/person/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
+                                                        <a href="/visitor/person/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
                                                     </div>
                                                     <div class="col-12 col-sm-12 mt-4">
                                                         <span id="dfilter"></span>
@@ -162,7 +162,15 @@ $(document).ready(function() {
         serverSide: true,
         ajax: "{{ route('visitor-person.data', $data->id) }}",
         columns: [
-            { data: 'id' },
+            {
+                data: null,
+                name: 'number',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
             { data: 'name' },
             { data: 'citizenship' },
             { data: 'docs_citizenship' },
@@ -213,7 +221,7 @@ $(document).ready(function() {
         }).then(function(result) {
             if (result?.value && (result?.value[0] != "")) {
                 $.ajax({
-                    url : '/sia/delete/' + id,
+                    url : '/visitor/person/delete/' + id,
                     type : "get",
                     success: function(response){
                         Swal.fire(
@@ -221,7 +229,7 @@ $(document).ready(function() {
                             'Data deleted',
                             'success'
                         )
-                        $('.data-table').dataTable().api().ajax.reload();
+                        $('#table').dataTable().api().ajax.reload();
                     },
                     error: function (data) {
                         Swal.fire(
@@ -241,7 +249,7 @@ $(document).ready(function() {
                 )
             }
         })
-        });
+    });
 });
 </script>
 @endsection

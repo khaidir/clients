@@ -38,7 +38,7 @@ class VisitorPpeController extends Controller
 
     public function create($id = null)
     {
-        return view('admin.visitor-ppe.form', compact('id'));
+        return view('admin.visitor.form-ppe', compact('id'));
     }
 
     public function store(Request $request)
@@ -85,7 +85,7 @@ class VisitorPpeController extends Controller
     public function edit($id = null)
     {
         $data = VisitorPerson::find($id);
-        return view('admin.visitor-ppe.form', compact('data'));
+        return view('admin.visitor.form-ppe', compact('data'));
     }
 
     public function destroy($id)

@@ -71,7 +71,7 @@
                                                         <span id="dlength"></span>
                                                     </div>
                                                     <div class="col-12 col-sm-12">
-                                                        <a href="/visitor/ppe/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
+                                                        <a href="/visitor/ppe/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add PPE</a>
                                                     </div>
                                                     <div class="col-12 col-sm-12 mt-4">
                                                         <span id="dfilter"></span>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\VisitorPerson;
 use App\Models\Companies;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use DB;
@@ -19,11 +20,16 @@ class VisitorPersonController extends Controller
 
     public function getData($id)
     {
-        $sia = VisitorPerson::select('visitor_person.*')
+        $visitor = VisitorPerson::select('visitor_person.*')
             ->where('visitor_id', $id)
             ->get();
 
-        return DataTables::of($sia)
+        $visitor->transform(function ($row) {
+            $row->docs_citizenship = ($row->citizenship == 'Indonesian') ? 'KTP':'Passport/Kitas';
+            return $row;
+        });
+
+        return DataTables::of($visitor)
             ->addColumn('action', function ($row) {
                 return '
                     <a class="btn btn-sm btn-primary edit" href="/visitor/person/edit/' . $row->id . '">Edit</a>
@@ -36,54 +42,69 @@ class VisitorPersonController extends Controller
 
     public function create($id = null)
     {
-        return view('admin.visitor-person.form', compact('id'));
+        $countries = Country::all();
+        return view('admin.visitor.form-person', compact('id', 'countries'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_card' => 'nullable|string',
-            'fullname' => 'required|string',
-            'email' => 'required|string',
+            'name' => 'required|string',
+            'citizenship' => 'required|string',
+            'notes' => 'nullable',
             'status' => 'boolean',
         ],[
-            'fullname.required' => 'Fullname is required',
-            'email.required' => 'Email is required',
+            'name.required' => 'Name is required',
+            'citizenship.required' => 'Citizenship is required',
+            'docs_citizenship.required' => 'Docs Citizenship is required',
         ]);
-
 
         DB::beginTransaction();
         try {
 
-            $request['cert_expire'] = $request->cert_expire ? date('Y-m-d H:i:s', strtotime($request->cert_expire)) : null;
-
             $person = VisitorPerson::updateOrCreate([
                 'id' => $request->id
             ], $request->only([
-                'sia_id', 'id_card', 'fullname', 'email', 'token', 'position', 'cert_expire',
-                'bpjs_number', 'score_induction', 'ktp', 'ktp_checked', 'card_id', 'card_checked',
-                'passport', 'pp_checked', 'bpjs', 'bpjs_checked', 'contract', 'ct_checked',
-                'cert_competence', 'cc_checked', 'medical_checkup', 'mc_checked', 'license_driver',
-                'ld_checked', 'license_vaccinated', 'lv_checked', 'user_id', 'status', 'post'
+                'visitor_id', 'name',
+                'citizenship', 'docs_citizenship',
+                'notes', 'status',
             ]));
 
             DB::commit();
-            return redirect()->route('visitor-person.detail', @$request->sia_id)->with(['success' => 'Data has been saved']);
+            return redirect()->route('visitor-person.index', @$request->visitor_id)->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-person.detail', @$request->sia_id)->with(['warning' => @$e->errors()]);
+            return redirect()->route('visitor-person.index', @$request->visitor_id)->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-person.detail', @$request->sia_id)->with(['error' => @$e->getMessage()]);
+            return redirect()->route('visitor-person.index', @$request->visitor_id)->with(['error' => @$e->getMessage()]);
         }
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->extension();
+            $file->storeAs('uploads', $filename, 'public');
+
+            return response()->json(['filename' => $filename, 'message' => 'File uploaded successfully'], 200);
+        }
+
+        return response()->json(['message' => 'File upload failed'], 400);
     }
 
     public function edit($id = null)
     {
+        $countries = Country::all();
         $data = VisitorPerson::find($id);
-        return view('admin.visitor-person.form', compact('data'));
+        return view('admin.visitor.form-person', compact('data', 'countries'));
     }
 
     public function destroy($id)
@@ -91,20 +112,20 @@ class VisitorPersonController extends Controller
 
         DB::beginTransaction();
         try {
-            $sia = VisitorPerson::find($id);
+            $visitor = VisitorPerson::find($id);
 
-            $sia->delete();
+            $visitor->delete();
 
             DB::commit();
-            return redirect()->route('visitor-person.detail', $sia->sia_id)->with(['success' => 'Data delete successfully']);
+            return redirect()->route('visitor-person.index', $visitor->visitor_id)->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-person.detail', $sia->sia_id)->with(['warning' => @$e->errors()]);
+            return redirect()->route('visitor-person.index', $visitor->visitor_id)->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-person.detail', $sia->sia_id)->with(['error' => @$e->getMessage()]);
+            return redirect()->route('visitor-person.index', $visitor->visitor_id)->with(['error' => @$e->getMessage()]);
         }
 
     }
