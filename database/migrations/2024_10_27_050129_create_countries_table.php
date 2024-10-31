@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('code', 3)->unique(); // ISO 3166-1 alpha-3 code
             $table->string('capital', 100)->nullable();
-            $table->boolean('status')->default(true); // To indicate if the country is active
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes(); // For soft deletion
         });

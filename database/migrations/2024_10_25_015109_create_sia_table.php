@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('evaluated_by')->nullable(); // health & safety
 
             $table->dateTimeTz('dete_request', precision: 0);
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

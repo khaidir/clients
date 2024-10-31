@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\VisitorPpe;
 use App\Models\Ppe;
+use App\Models\PpeType;
 use App\Models\Companies;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -53,6 +54,17 @@ class VisitorPpeController extends Controller
         return view('admin.visitor.form-ppe', compact('id', 'ppes'));
     }
 
+    public function create_bulk($id = null)
+    {
+        $types = PpeType::select('id', 'goods')->get();
+        $ppes = Ppe::select('ppe.id', 'ppe.code', 'ppe_type.goods')
+            ->leftJoin('ppe_type', 'ppe.type_id', '=', 'ppe_type.id')
+            ->where('ppe.status', true)
+            ->get();
+
+        return view('admin.visitor.form-ppe-bulk', compact('id', 'types', 'ppes'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -94,6 +106,46 @@ class VisitorPpeController extends Controller
         }
     }
 
+    public function store_bulk(Request $request)
+    {
+        $request->validate([
+            'ppe_id' => 'required|string',
+            'date_pickup' => 'required|string',
+            'status' => 'boolean',
+        ],[
+            'fullname.required' => 'Fullname is required',
+            'email.required' => 'Email is required',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $request['date_pickup'] = date('Y-m-d H:i:s', strtotime(@$request->date_pickup));
+            if( @$request->id ) {
+                $request['date_return'] = @$request->id ? date('Y-m-d H:i:s', strtotime(@$request->date_return)) : null;
+            }
+
+            $person = VisitorPpe::updateOrCreate([
+                'id' => $request->id
+            ], $request->only([
+                'ppe_id', 'visitor_id', 'date_pickup', 'notes', 'status'
+            ]));
+
+            Ppe::where('id', $request->ppe_id)->update(['status' => ($request->date_return) ? false : true]);
+
+            DB::commit();
+            return redirect()->route('visitor-ppe.index', @$request->visitor_id)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor-ppe.index', @$request->visitor_id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor-ppe.index', @$request->visitor_id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
     public function edit($id = null)
     {
         $ppes = Ppe::select('ppe.id', 'ppe.code', 'ppe_type.goods')
@@ -103,6 +155,21 @@ class VisitorPpeController extends Controller
 
         $data = VisitorPpe::find($id);
         return view('admin.visitor.form-ppe', compact('data', 'ppes'));
+    }
+
+    public function get_good_item($id = null)
+    {
+
+        if( (int) $id ) {
+            $ppes = Ppe::select('ppe.id', 'ppe.code', 'ppe.merk', 'ppe.colour', 'ppe_type.goods')
+                ->leftJoin('ppe_type', 'ppe.type_id', '=', 'ppe_type.id')
+                ->where('ppe.type_id', @$id)
+                ->get();
+        } else {
+            $ppes = [];
+        }
+
+        return response()->json($ppes);
     }
 
     public function destroy($id)

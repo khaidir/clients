@@ -22,7 +22,7 @@ class VisitorController extends Controller
     {
         $visitor = Visitor::select('visitor.*', 'users.name as fullname')
             ->leftJoin('users', 'visitor.user_id', '=', 'users.id')
-            ->orderby('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $visitor->transform(function ($row) {

@@ -22,10 +22,11 @@ class VisitorPersonController extends Controller
     {
         $visitor = VisitorPerson::select('visitor_person.*')
             ->where('visitor_id', $id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $visitor->transform(function ($row) {
-            $row->docs_citizenship = ($row->citizenship == 'Indonesian') ? 'KTP':'Passport/Kitas';
+            $row->docs_citizenship = ($row->citizenship == 'Indonesia') ? 'KTP':'Passport/Kitas';
             return $row;
         });
 

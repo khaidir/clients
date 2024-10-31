@@ -25,7 +25,7 @@
                         <div class="col-xl-8 col-sm-12">
                             <h4 class="card-title">{{ @$data->id ? 'Edit' : 'Create' }}</h4>
                             <p class="card-title-desc">Please fill out the form below completely.</p>
-                            <form action="/sia/store" method="post" class="needs-validation">
+                            <form action="/worker/store" method="post" class="needs-validation">
                                 @csrf
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
 
@@ -102,7 +102,7 @@
 <script>
 $(document).ready(function() {
     $('select').select2({
-        placeholder: 'Pilih'
+        placeholder: 'Choose'
     });
 
     $(document).on('click', '.delete', function () {

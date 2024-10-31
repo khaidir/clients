@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('goods', 60)->nullable();
             $table->string('description', 180)->nullable();
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,7 +18,7 @@ class VisitorPersonSeeder extends Seeder
         VisitorPerson::create([
             'visitor_id' => 1, // ID visitor yang sesuai
             'name' => 'John Doe',
-            'citizenship' => 'Indonesian',
+            'citizenship' => 'Indonesia',
             'docs_citizenship' => 'KTP',
             'notes' => 'First time visitor.',
             'status' => true,

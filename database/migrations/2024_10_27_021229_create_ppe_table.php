@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('colour', 40)->nullable();
             $table->string('condition', 40)->nullable();
             $table->string('notes', 40)->nullable();
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

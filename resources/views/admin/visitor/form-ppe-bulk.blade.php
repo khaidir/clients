@@ -30,31 +30,29 @@
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
                                 <input type="hidden" name="visitor_id" class="form-control" value="{{ (@$data->id) ? @$data->visitor_id : @$id }}">
 
-                                {{-- <div class="row">
-                                    <label for="code" class="col-sm-3 col-form-label">Code</label>
-                                    <div class="col-sm-3">
-                                        <div class="input-group">
-                                            <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code', @$data->code) }}" placeholder="Code">
-                                            <button class="btn btn-primary" type="button" id="inputGroupFileAddon03"><i class='bx bx-search-alt' ></i></button>
-                                        </div>
-                                        <span class="text-success">Suggestion</span>
-                                    </div>
-                                </div>
-                                <hr class="mb-4"> --}}
-
-
-
                                 <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Goods/PPE</label>
+                                    <label for="type_id" class="col-sm-3 col-form-label">Good/PPE</label>
                                     <div class="col-sm-4">
-                                        <select name="ppe_id" id="ppe_id" style="width:100%">
+                                        <select name="type_id" id="type" style="width:100%">
                                             <option value="">Pilih</option>
-                                            @foreach ($ppes as $ppe)
-                                            <option value="{{ @$ppe->id }}">{{ @$ppe->code .' - '. @$ppe->goods }}</option>
+                                            @foreach ($types as $ty)
+                                            <option value="{{ @$ty->id }}">{{ @$ty->goods }}</option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('citizenship'))
-                                            <span class="text-danger">{{ $errors->first('citizenship') }}</span>
+                                        @if ($errors->has('type_id'))
+                                            <span class="text-danger">{{ $errors->first('type_id') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <label for="ppe_id" class="col-sm-3 col-form-label">Select Goods Item</label>
+                                    <div class="col-sm-4">
+                                        <select name="ppe_id[]" id="ppe" multiple="multiple" style="width:100%">
+                                            <option value="">Pilih</option>
+                                        </select>
+                                        @if ($errors->has('ppe_id'))
+                                            <span class="text-danger">{{ $errors->first('ppe_id') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -149,6 +147,29 @@
 $(document).ready(function() {
     $('select').select2({
         placeholder: 'Choose'
+    });
+
+    $('#type').on('change', function() {
+        var id = $(this).val();
+        if (id) {
+            $.ajax({
+                url: "/get-goods/" + id,
+                type: "GET",
+                // data: { id: id },
+                dataType: "json",
+                success: function(data) {
+                    $('#ppe').empty();
+                    $('#ppe').append('<option value="">Select Goods Item</option>');
+                    $.each(data, function(index, item) {
+                        console.log(data)
+                        $('#ppe').append('<option value="' + item.id + '">' + item.code + ' - ' + item.goods + ", Colour: " + item.colour + '</option>');
+                    });
+                }
+            });
+        } else {
+            $('#ppe').empty();
+            $('#ppe').append('<option value="">Select Goods Item</option>');
+        }
     });
 });
 </script>

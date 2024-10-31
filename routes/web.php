@@ -24,7 +24,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::get('public/dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
+// Route::get('public/dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
 
 Route::group([
     'middleware' => 'auth'
@@ -99,9 +99,12 @@ Route::group([
     Route::group([
         'prefix' => 'ppe',
     ], function ($router) {
+        $router->get('/get-goods/{id}', [VisitorPpeController::class, 'get_good_item'])->name('visitor-ppe.get-goods');
         $router->get('/data/{id}', [VisitorPpeController::class, 'getData'])->name('visitor-ppe.data');
         $router->get('new/{id}', [VisitorPpeController::class, 'create'])->name('visitor-ppe.create');
+        $router->get('new-bulk/{id}', [VisitorPpeController::class, 'create_bulk'])->name('visitor-ppe.create-bulk');
         $router->post('store', [VisitorPpeController::class, 'store'])->name('visitor-ppe.store');
+        $router->post('store-bulk', [VisitorPpeController::class, 'store-bulk'])->name('visitor-ppe.store-bulk');
         $router->get('return/{id}', [VisitorPpeController::class, 'goods_return'])->name('visitor-ppe.return');
         $router->post('upload', [VisitorPpeController::class, 'upload'])->name('visitor-ppe.upload');
         $router->get('edit/{id}', [VisitorPpeController::class, 'edit'])->name('visitor-ppe.edit');
@@ -121,3 +124,5 @@ Route::group([
     $router->get('edit/{id}', [CompanyController::class, 'edit'])->name('company.edit');
     $router->get('delete/{id}', [CompanyController::class, 'destroy'])->name('company.delete');
 });
+
+$router->get('/get-goods/{id}', [VisitorPpeController::class, 'get_good_item'])->name('get-goods');

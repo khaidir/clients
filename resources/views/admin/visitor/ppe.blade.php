@@ -71,7 +71,8 @@
                                                         <span id="dlength"></span>
                                                     </div>
                                                     <div class="col-12 col-sm-12">
-                                                        <a href="/visitor/ppe/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add PPE</a>
+                                                        <a href="/visitor/ppe/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New PPE</a>
+                                                        <a href="/visitor/ppe/new-bulk/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New PPE Bulk</a>
                                                     </div>
                                                     <div class="col-12 col-sm-12 mt-4">
                                                         <span id="dfilter"></span>
@@ -153,7 +154,7 @@ $(document).ready(function() {
     $(".select2").select2({ width: 'resolve' });
 
     $('select').select2({
-        placeholder: 'Pilih'
+        placeholder: 'Choose'
     });
     $('#generate').addClass("mm-active");
 

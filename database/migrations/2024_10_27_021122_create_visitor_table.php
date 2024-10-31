@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('destination', 40)->nullable();
             $table->string('duration', 3)->nullable();
             $table->dateTime('date_request', precision: 0);
-            $table->boolean('status');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

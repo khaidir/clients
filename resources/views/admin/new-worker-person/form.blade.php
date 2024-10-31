@@ -25,7 +25,7 @@
                         <div class="col-xl-8 col-sm-12">
                             <h4 class="card-title">{{ @$data->id ? 'Edit' : 'Create' }}</h4>
                             <p class="card-title-desc">Please fill out the form below completely.</p>
-                            <form action="/sia/person/store" method="post" class="needs-validation" enctype="multipart/form-data">
+                            <form action="/worker/person/store" method="post" class="needs-validation" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
                                 <input type="hidden" name="sia_id" class="form-control" value="{{ (@$data->id) ? @$data->sia_id : @$id }}">
@@ -250,7 +250,7 @@
 <script>
 $(document).ready(function() {
     $('select').select2({
-        placeholder: 'Pilih'
+        placeholder: 'Choose'
     });
 });
 

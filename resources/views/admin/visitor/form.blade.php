@@ -116,7 +116,7 @@
 <script>
 $(document).ready(function() {
     $('select').select2({
-        placeholder: 'Pilih'
+        placeholder: 'Choose'
     });
 });
 </script>
