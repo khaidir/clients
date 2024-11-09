@@ -56,8 +56,8 @@
                         <span key="t-lokasi">Companies</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('goods/*') == 1 ? 'mm-active' : ''}}">
-                    <a href="/goods" class="waves-effect {{ request()->is('goods/*') == 1 ? 'active' : ''}}">
+                <li class="{{ request()->is('ppe/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/ppe" class="waves-effect {{ request()->is('ppe/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-user'></i>
                         <span key="t-provider">Goods/PPE</span>
                     </a>

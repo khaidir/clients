@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use DB;
 use Auth;
 
-class CompanyController extends Controller
+class RolesController extends Controller
 {
     public function index()
     {
@@ -62,7 +62,7 @@ class CompanyController extends Controller
             'address' => 'required|string',
             'phone' => 'nullable|string',
             'email' => 'required|string',
-            'status' => 'nullable|boolean',
+            'status' => 'boolean',
         ],[
             'name.required' => 'Company is required',
             'address.required' => 'Address is required',

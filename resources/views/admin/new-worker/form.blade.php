@@ -58,7 +58,15 @@
                                     <label for="dete_request" class="col-sm-3 col-form-label">Date Request</label>
                                     <div class="col-sm-2">
                                         <div class="input-group" id="datepicker1">
-                                            <input type="text" name="dete_request" data-date-format="dd M, yyyy" data-date-container='#datepicker1' data-provide="datepicker" data-date-autoclose="true" class="form-control @error('dete_request') is-invalid @enderror" value="{{ old('dete_request', date('d M, Y', strtotime(@$data->dete_request))) }}" id="dete_request" placeholder="Date Request">
+                                            <input type="text" name="dete_request"
+                                                data-date-format="dd M, yyyy"
+                                                data-date-container='#datepicker1'
+                                                data-provide="datepicker"
+                                                data-date-autoclose="true"
+                                                class="form-control @error('dete_request') is-invalid @enderror"
+                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_request)) : date('d M, Y')) }}"
+                                                id="dete_request"
+                                                placeholder="Date Request">
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                             @if ($errors->has('dete_request'))
                                                 <span class="text-danger">{{ $errors->first('dete_request') }}</span>

@@ -59,7 +59,7 @@ class SiaExtendedController extends Controller
             'user_id' => 'nullable|integer',
             'company_id' => 'required|integer',
             'type_contract' => 'required|string',
-            'status' => 'boolean',
+            'status' => 'nullable|boolean',
         ],[
             'company_id.required' => 'Company is required',
             'type_contract.required' => 'Contract is required',

@@ -13,6 +13,11 @@ use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\VisitorPersonController;
 use App\Http\Controllers\admin\VisitorPpeController;
 use App\Http\Controllers\admin\CompanyController;
+use App\Http\Controllers\admin\PpeController;
+use App\Http\Controllers\admin\PpeTypeController;
+// use App\Http\Controllers\admin\UsersController;
+// use App\Http\Controllers\admin\RolesController;
+// use App\Http\Controllers\admin\PermissionsController;
 
 // public
 use App\Http\Controllers\public\CompanyPublicController;
@@ -68,7 +73,6 @@ Route::group([
 
     Route::group([
         'prefix' => 'extend',
-        'middleware' => 'auth'
     ], function ($router) {
         $router->get('/', [SiaExtendedController::class, 'index'])->name('extended.index');
         $router->get('/data', [SiaExtendedController::class, 'getData'])->name('extended.data');
@@ -81,7 +85,6 @@ Route::group([
 
     Route::group([
         'prefix' => 'visitor',
-        'middleware' => 'auth'
     ], function ($router) {
         $router->get('/', [VisitorController::class, 'index'])->name('visitor.index');
         $router->get('/data', [VisitorController::class, 'getData'])->name('visitor.data');
@@ -122,7 +125,6 @@ Route::group([
 
     Route::group([
         'prefix' => 'company',
-        'middleware' => 'auth'
     ], function ($router) {
         $router->get('/', [CompanyController::class, 'index'])->name('company.index');
         $router->get('data', [CompanyController::class, 'getData'])->name('company.data');
@@ -132,6 +134,64 @@ Route::group([
         $router->get('delete/{id}', [CompanyController::class, 'destroy'])->name('company.delete');
     });
 
+
+
+    Route::group([
+        'prefix' => 'ppe',
+    ], function ($router) {
+        $router->get('/', [PpeTypeController::class, 'index'])->name('ppe.index');
+        $router->get('data', [PpeTypeController::class, 'getData'])->name('ppe.data');
+        $router->get('new', [PpeTypeController::class, 'create'])->name('ppe.create');
+        $router->post('store', [PpeTypeController::class, 'store'])->name('ppe.store');
+        $router->get('edit/{id}', [PpeTypeController::class, 'edit'])->name('ppe.edit');
+        $router->get('units/{id}', [PpeTypeController::class, 'units'])->name('unit.index');
+        $router->get('delete/{id}', [PpeTypeController::class, 'destroy'])->name('ppe.delete');
+
+        Route::group([
+            'prefix' => 'unit',
+        ], function ($router) {
+            $router->get('data/{id}', [PpeController::class, 'getData'])->name('unit.data');
+            $router->get('new/{id}', [PpeController::class, 'create'])->name('unit.create');
+            $router->post('store', [PpeController::class, 'store'])->name('unit.store');
+            $router->get('edit/{id}', [PpeController::class, 'edit'])->name('unit.edit');
+            $router->get('delete/{id}', [PpeController::class, 'destroy'])->name('unit.delete');
+        });
+
+    });
+
     $router->get('/get-goods/{id}', [VisitorPpeController::class, 'get_good_item'])->name('get-goods');
+
+    // user
+    Route::group([
+        'prefix' => 'users',
+    ], function ($router) {
+        $router->get('/', [UsersController::class, 'index'])->name('users.index');
+        $router->get('data', [UsersController::class, 'getData'])->name('users.data');
+        $router->get('new', [UsersController::class, 'create'])->name('users.create');
+        $router->post('store', [UsersController::class, 'store'])->name('pusers.store');
+        $router->get('edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
+        $router->get('delete/{id}', [UsersController::class, 'destroy'])->name('users.delete');
+    });
+    Route::group([
+        'prefix' => 'roles',
+    ], function ($router) {
+        $router->get('/', [RolesController::class, 'index'])->name('roles.index');
+        $router->get('data', [RolesController::class, 'getData'])->name('roles.data');
+        $router->get('new', [RolesController::class, 'create'])->name('roles.create');
+        $router->post('store', [RolesController::class, 'store'])->name('roles.store');
+        $router->get('edit/{id}', [RolesController::class, 'edit'])->name('roles.edit');
+        $router->get('delete/{id}', [RolesController::class, 'destroy'])->name('roles.delete');
+    });
+    Route::group([
+        'prefix' => 'permissions',
+    ], function ($router) {
+        $router->get('/', [PermissionsController::class, 'index'])->name('permissions.index');
+        $router->get('data', [PermissionsController::class, 'getData'])->name('permissions.data');
+        $router->get('new', [PermissionsController::class, 'create'])->name('permissions.create');
+        $router->post('store', [PermissionsController::class, 'store'])->name('permissions.store');
+        $router->get('edit/{id}', [PermissionsController::class, 'edit'])->name('permissions.edit');
+        $router->get('delete/{id}', [PermissionsController::class, 'destroy'])->name('permissions.delete');
+    });
+
 
 });
