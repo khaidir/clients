@@ -25,7 +25,7 @@
                         <div class="col-xl-8 col-sm-12">
                             <h4 class="card-title">{{ @$data->id ? 'Edit' : 'Create' }}</h4>
                             <p class="card-title-desc">Please fill out the form below completely.</p>
-                            <form action="/visitor/ppe/store" method="post" class="needs-validation">
+                            <form action="/visitor/ppe/store-bulk" method="post" class="needs-validation">
                                 @csrf
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
                                 <input type="hidden" name="visitor_id" class="form-control" value="{{ (@$data->id) ? @$data->visitor_id : @$id }}">
@@ -47,7 +47,7 @@
 
                                 <div class="row mb-4">
                                     <label for="ppe_id" class="col-sm-3 col-form-label">Select Goods Item</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-8">
                                         <select name="ppe_id[]" id="ppe" multiple="multiple" style="width:100%">
                                             <option value="">Pilih</option>
                                         </select>
@@ -155,7 +155,6 @@ $(document).ready(function() {
             $.ajax({
                 url: "/get-goods/" + id,
                 type: "GET",
-                // data: { id: id },
                 dataType: "json",
                 success: function(data) {
                     $('#ppe').empty();

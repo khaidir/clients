@@ -25,11 +25,11 @@ class VisitorPpeController extends Controller
             ->leftJoin('ppe', 'visitor_ppe.ppe_id', '=', 'ppe.id')
             ->leftJoin('ppe_type', 'ppe.type_id', '=', 'ppe_type.id')
             ->where('visitor_id', $id)
+            ->orderBy('ppe.code', 'asc')
             ->get();
 
         $ppe->transform(function ($row) {
             $row->date_return = ($row->date_return == null) ? '<a href="/visitor/ppe/return/'.@$row->id.'" class="btn btn-success btn-sm">Return</a>': $row->date_return;
-            $row->status = ($row->date_return == null) ? 'Not returned' : 'Has been returned';
             return $row;
         });
 
@@ -68,7 +68,7 @@ class VisitorPpeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ppe_id' => 'required|string',
+            'ppe_id' => 'string',
             'date_pickup' => 'required|string',
             'status' => 'boolean',
         ],[
@@ -109,7 +109,7 @@ class VisitorPpeController extends Controller
     public function store_bulk(Request $request)
     {
         $request->validate([
-            'ppe_id' => 'required|string',
+            // 'ppe_id' => 'required|array',
             'date_pickup' => 'required|string',
             'status' => 'boolean',
         ],[
@@ -117,21 +117,24 @@ class VisitorPpeController extends Controller
             'email.required' => 'Email is required',
         ]);
 
+
+        // die('selesai input');
+
         DB::beginTransaction();
         try {
 
-            $request['date_pickup'] = date('Y-m-d H:i:s', strtotime(@$request->date_pickup));
-            if( @$request->id ) {
-                $request['date_return'] = @$request->id ? date('Y-m-d H:i:s', strtotime(@$request->date_return)) : null;
+            $ppeIds = $request->input('ppe_id');
+            foreach ($ppeIds as $ppeId) {
+                VisitorPpe::create([
+                    'visitor_id' => $request->visitor_id,
+                    'ppe_id' => $ppeId,
+                    'date_pickup' => date("Y-m-d H:i:s"),
+                    'notes' => 'Sedang digunakan',
+                    'status' => true,
+                ]);
+                // update status ppe goods
+                Ppe::where('id', $ppeId)->update(['status' => false]);
             }
-
-            $person = VisitorPpe::updateOrCreate([
-                'id' => $request->id
-            ], $request->only([
-                'ppe_id', 'visitor_id', 'date_pickup', 'notes', 'status'
-            ]));
-
-            Ppe::where('id', $request->ppe_id)->update(['status' => ($request->date_return) ? false : true]);
 
             DB::commit();
             return redirect()->route('visitor-ppe.index', @$request->visitor_id)->with(['success' => 'Data has been saved']);
@@ -153,7 +156,12 @@ class VisitorPpeController extends Controller
             ->where('ppe.status', true)
             ->get();
 
-        $data = VisitorPpe::find($id);
+        // $data = VisitorPpe::find($id);
+        $data = VisitorPpe::select('visitor_ppe.*', 'ppe.code', 'ppe_type.goods')
+                ->leftJoin('ppe', 'visitor_ppe.ppe_id', '=', 'ppe.id')
+                ->leftJoin('ppe_type', 'ppe.type_id', '=', 'ppe_type.id')
+                ->find($id);
+
         return view('admin.visitor.form-ppe', compact('data', 'ppes'));
     }
 
@@ -164,6 +172,7 @@ class VisitorPpeController extends Controller
             $ppes = Ppe::select('ppe.id', 'ppe.code', 'ppe.merk', 'ppe.colour', 'ppe_type.goods')
                 ->leftJoin('ppe_type', 'ppe.type_id', '=', 'ppe_type.id')
                 ->where('ppe.type_id', @$id)
+                ->where('ppe.status', true)
                 ->get();
         } else {
             $ppes = [];
@@ -177,22 +186,22 @@ class VisitorPpeController extends Controller
 
         DB::beginTransaction();
         try {
-            $person = VisitorPpe::find($id)->update($request->only([
-                'date_return', 'status'
-            ]));
+            $ppe = VisitorPpe::find($id);
 
-            $person->delete();
+            $ppe->delete();
+
+            Ppe::where('id', $ppe->ppe_id)->update(['status' => true]);
 
             DB::commit();
-            return redirect()->route('visitor-ppe.index', $person->visitor_id)->with(['success' => 'Data delete successfully']);
+            return redirect()->route('visitor-ppe.index', $ppe->visitor_id)->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-ppe.index', $person->visitor_id)->with(['warning' => @$e->errors()]);
+            return redirect()->route('visitor-ppe.index', $ppe->visitor_id)->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('visitor-ppe.index', $person->visitor_id)->with(['error' => @$e->getMessage()]);
+            return redirect()->route('visitor-ppe.index', $ppe->visitor_id)->with(['error' => @$e->getMessage()]);
         }
 
     }
@@ -207,9 +216,12 @@ class VisitorPpeController extends Controller
 
             if ($visitor_ppe) {
                 $visitor_ppe->date_return = date('Y-m-d H:i:s');
+                $visitor_ppe->notes = "-";
                 $visitor_ppe->status = false;
                 $visitor_ppe->save();
             }
+
+            Ppe::where('id', $visitor_ppe->ppe_id)->update(['status' => true]);
 
             DB::commit();
             return redirect()->route('visitor-ppe.index', $visitor_ppe->visitor_id)->with(['success' => 'Data delete successfully']);

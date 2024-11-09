@@ -22,7 +22,7 @@ class Ppe extends Model
         'status',
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'status' => 'boolean',
+    // ];
 }

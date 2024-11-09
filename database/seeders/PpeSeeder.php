@@ -28,7 +28,52 @@ class PpeSeeder extends Seeder
             'code' => 'PPE-002',
             'merk' => 'DuPont',
             'colour' => 'Blue',
-            'condition' => 'Used',
+            'condition' => 'Good',
+            'notes' => 'Previously used in site.',
+            'status' => true,
+        ]);
+        PPE::create([
+            'type_id' => 2, // ID tipe PPE yang sesuai
+            'code' => 'PPE-003',
+            'merk' => 'DuPont',
+            'colour' => 'Blue',
+            'condition' => 'Good',
+            'notes' => 'Previously used in site.',
+            'status' => true,
+        ]);
+        PPE::create([
+            'type_id' => 2, // ID tipe PPE yang sesuai
+            'code' => 'PPE-004',
+            'merk' => 'DuPont',
+            'colour' => 'Blue',
+            'condition' => 'Good',
+            'notes' => 'Previously used in site.',
+            'status' => true,
+        ]);
+        PPE::create([
+            'type_id' => 2, // ID tipe PPE yang sesuai
+            'code' => 'PPE-005',
+            'merk' => 'DuPont',
+            'colour' => 'Blue',
+            'condition' => 'Good',
+            'notes' => 'Previously used in site.',
+            'status' => true,
+        ]);
+        PPE::create([
+            'type_id' => 2, // ID tipe PPE yang sesuai
+            'code' => 'PPE-006',
+            'merk' => 'DuPont',
+            'colour' => 'Blue',
+            'condition' => 'Good',
+            'notes' => 'Previously used in site.',
+            'status' => true,
+        ]);
+        PPE::create([
+            'type_id' => 2, // ID tipe PPE yang sesuai
+            'code' => 'PPE-007',
+            'merk' => 'DuPont',
+            'colour' => 'Blue',
+            'condition' => 'Good',
             'notes' => 'Previously used in site.',
             'status' => true,
         ]);

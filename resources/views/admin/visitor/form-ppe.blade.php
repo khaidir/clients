@@ -42,8 +42,7 @@
                                 </div>
                                 <hr class="mb-4"> --}}
 
-
-
+                                @if (!@$data->id)
                                 <div class="row mb-4">
                                     <label for="badge" class="col-sm-3 col-form-label">Goods/PPE</label>
                                     <div class="col-sm-4">
@@ -54,10 +53,17 @@
                                             @endforeach
                                         </select>
                                         @if ($errors->has('citizenship'))
-                                            <span class="text-danger">{{ $errors->first('citizenship') }}</span>
+                                        <span class="text-danger">{{ $errors->first('citizenship') }}</span>
                                         @endif
                                     </div>
                                 </div>
+                                @else
+                                <div class="row mb-4">
+                                    <label for="badge" class="col-sm-3 col-form-label">Goods/PPE</label>
+                                    <div class="col-sm-4 mt-2 page-title"> {{ @$data->code .' - '. @$data->goods }}
+                                    </div>
+                                </div>
+                                @endif
 
                                 <div class="row mb-4">
                                     <label for="date_pickup" class="col-sm-3 col-form-label">Date Pick Up</label>
