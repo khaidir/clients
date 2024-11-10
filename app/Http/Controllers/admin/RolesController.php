@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Companies;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -12,21 +13,29 @@ use Auth;
 
 class RolesController extends Controller
 {
+    function __construct()
+    {
+        // $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:role-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
-        return view('admin.company.index');
+        return view('admin.roles.index');
     }
 
     public function getData()
     {
-        $company = Companies::select('companies.*')
+        $company = Role::select('*')
             ->orderBy('created_at','desc')
             ->get();
 
         return DataTables::of($company)
             ->addColumn('action', function ($row) {
                 return '
-                    <a class="btn btn-sm btn-primary edit" href="/company/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
+                    <a class="btn btn-sm btn-primary edit" href="/roles/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
@@ -36,37 +45,17 @@ class RolesController extends Controller
 
     public function create()
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        return view('admin.company.form', compact('industries'));
+        $permission = Permission::get();
+        return view('admin.roles.form', compact('permission'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'address' => 'required|string',
-            'phone' => 'nullable|string',
-            'email' => 'required|string',
-            'status' => 'boolean',
+            'name' => 'required',
+            'permission' => 'required',
         ],[
-            'name.required' => 'Company is required',
-            'address.required' => 'Address is required',
-            'email.required' => 'Email is required',
+            'name.required' => 'Roles is required',
         ]);
 
         DB::beginTransaction();
@@ -76,43 +65,36 @@ class RolesController extends Controller
                 $request['user_id'] = Auth::id();
             }
 
-            $dokumen = Companies::updateOrCreate([
+            $role = Role::updateOrCreate([
                 'id' => @$request->id
             ], @$request->all());
 
+            $permissions = Permission::whereIn('id', $request->permission)->get(['name'])->toArray();
+
+            $role->syncPermissions($permissions);
+
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data has been saved']);
+            return redirect()->route('roles.index')->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('roles.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['error' => @$e->getMessage()]);
+            return redirect()->route('roles.index')->with(['error' => @$e->getMessage()]);
         }
     }
 
     public function edit($id = null)
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        $data = Companies::find($id);
-        return view('admin.company.form', compact('data', 'industries'));
+        $data = Role::find($id);
+        $permission = Permission::get();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+
+        return view('admin.roles.form', compact('data','permission','rolePermissions'));
     }
 
     public function destroy($id)
@@ -120,19 +102,19 @@ class RolesController extends Controller
 
         DB::beginTransaction();
         try {
-            $sia = Companies::find($id);
-            $sia->delete();
+            $role = Role::find($id);
+            $role->delete();
 
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data delete successfully']);
+            return redirect()->route('roles.index')->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('roles.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['danger' => @$e->getMessage()]);
+            return redirect()->route('roles.index')->with(['danger' => @$e->getMessage()]);
         }
 
     }

@@ -3,116 +3,117 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Companies;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Hash;
 use DB;
 use Auth;
 
-class PpeController extends Controller
+class UsersController extends Controller
 {
     public function index()
     {
-        return view('admin.company.index');
+        return view('admin.users.index');
     }
 
     public function getData()
     {
-        $company = Companies::select('companies.*')
+        $user = User::select('*')
             ->orderBy('created_at','desc')
             ->get();
 
-        return DataTables::of($company)
+        $user->transform(function ($user) {
+            $roles = $user->getRoleNames();
+
+            $rolesString = implode(', ', $roles->toArray());
+            $rolesString = ucwords($rolesString);
+
+            $badgeHtml = '';
+            foreach ($roles as $role) {
+                $badgeHtml .= "<span class='badge bg-primary'>{$role}</span> ";
+            }
+            $user->roles_names = $badgeHtml;
+
+            return $user;
+        });
+
+        return DataTables::of($user)
             ->addColumn('action', function ($row) {
                 return '
-                    <a class="btn btn-sm btn-primary edit" href="/company/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
+                    <a class="btn btn-sm btn-primary edit" href="/users/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'roles_names'])
             ->make(true);
     }
 
     public function create()
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        return view('admin.company.form', compact('industries'));
+        $roles = Role::all();
+        return view('admin.users.form', compact('roles'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'address' => 'required|string',
-            'phone' => 'nullable|string',
-            'email' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'position' => 'nullable|string',
+            'address' => 'nullable|string',
             'status' => 'boolean',
+            'roles' => 'nullable|array',
+            'roles.*' => 'exists:roles,id',
         ],[
-            'name.required' => 'Company is required',
-            'address.required' => 'Address is required',
+            'name.required' => 'Fullname is required',
             'email.required' => 'Email is required',
+            'roles.*.exists' => 'Some selected roles do not exist',
         ]);
 
         DB::beginTransaction();
         try {
 
-            if ( @$request->id == '' ) {
-                $request['user_id'] = Auth::id();
+            $input = $request->all();
+
+            if (isset($input['password']) && !empty($input['password'])) {
+                $input['password'] = Hash::make($input['password']);
+            } else {
+                unset($input['password']);
             }
 
-            $dokumen = Companies::updateOrCreate([
-                'id' => @$request->id
-            ], @$request->all());
+            $user = User::updateOrCreate([
+                'id' => $input['id']
+            ], $input);
+
+            if (isset($input['roles'])) {
+                $validRoles = Role::whereIn('id', $input['roles'])->pluck('id')->toArray();
+                $user->syncRoles($validRoles);
+            }
 
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data has been saved']);
+            return redirect()->route('users.index')->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('users.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['error' => @$e->getMessage()]);
+            return redirect()->route('users.index')->with(['error' => @$e->getMessage()]);
         }
     }
 
     public function edit($id = null)
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        $data = Companies::find($id);
-        return view('admin.company.form', compact('data', 'industries'));
+
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $userRole = $user->roles->pluck('id')->toArray();
+
+        return view('admin.users.form', compact('user','roles', 'userRole'));
     }
 
     public function destroy($id)
@@ -120,19 +121,19 @@ class PpeController extends Controller
 
         DB::beginTransaction();
         try {
-            $sia = Companies::find($id);
-            $sia->delete();
+            $user = User::find($id);
+            $user->delete();
 
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data delete successfully']);
+            return redirect()->route('users.index')->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('users.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['danger' => @$e->getMessage()]);
+            return redirect()->route('users.index')->with(['danger' => @$e->getMessage()]);
         }
 
     }

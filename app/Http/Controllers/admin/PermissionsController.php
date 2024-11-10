@@ -14,19 +14,19 @@ class PermissionsController extends Controller
 {
     public function index()
     {
-        return view('admin.company.index');
+        return view('admin.permissions.index');
     }
 
     public function getData()
     {
-        $company = Companies::select('companies.*')
+        $permissions = Permissions::select('companies.*')
             ->orderBy('created_at','desc')
             ->get();
 
-        return DataTables::of($company)
+        return DataTables::of($permissions)
             ->addColumn('action', function ($row) {
                 return '
-                    <a class="btn btn-sm btn-primary edit" href="/company/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
+                    <a class="btn btn-sm btn-primary edit" href="/permissions/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
@@ -36,23 +36,7 @@ class PermissionsController extends Controller
 
     public function create()
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        return view('admin.company.form', compact('industries'));
+        return view('admin.permissions.form');
     }
 
     public function store(Request $request)
@@ -76,20 +60,20 @@ class PermissionsController extends Controller
                 $request['user_id'] = Auth::id();
             }
 
-            $dokumen = Companies::updateOrCreate([
+            $dokumen = Permissions::updateOrCreate([
                 'id' => @$request->id
             ], @$request->all());
 
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data has been saved']);
+            return redirect()->route('permissions.index')->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('permissions.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['error' => @$e->getMessage()]);
+            return redirect()->route('permissions.index')->with(['error' => @$e->getMessage()]);
         }
     }
 
@@ -111,8 +95,8 @@ class PermissionsController extends Controller
             'Media',
             'Telecommunications'
         ];
-        $data = Companies::find($id);
-        return view('admin.company.form', compact('data', 'industries'));
+        $data = Permissions::find($id);
+        return view('admin.permissions.form', compact('data', 'industries'));
     }
 
     public function destroy($id)
@@ -120,19 +104,19 @@ class PermissionsController extends Controller
 
         DB::beginTransaction();
         try {
-            $sia = Companies::find($id);
-            $sia->delete();
+            $pms = Permissions::find($id);
+            $pms->delete();
 
             DB::commit();
-            return redirect()->route('company.index')->with(['success' => 'Data delete successfully']);
+            return redirect()->route('permissions.index')->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('permissions.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('company.index')->with(['danger' => @$e->getMessage()]);
+            return redirect()->route('permissions.index')->with(['danger' => @$e->getMessage()]);
         }
 
     }

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sias;
-use App\Models\Companies;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use DB;
 use Auth;
 
@@ -15,15 +15,15 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('admin.profile.index');
+        $data = User::find(Auth::id());
+        return view('admin.profile.index', compact('data'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|integer',
-            'email' => 'required|integer',
-            'status' => 'boolean',
+            'name' => 'required|string',
+            'email' => 'required|string',
         ],[
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
@@ -32,9 +32,21 @@ class ProfileController extends Controller
         DB::beginTransaction();
         try {
 
-            $dokumen = Users::find(Auth::id())->update([
-                'id' => @$request->id
-            ], @$request->all());
+            $user = User::find(auth()->user()->id);
+
+            if ($request->filled('password')) {
+                $request->validate([
+                    'password' => 'required|min:8|confirmed',
+                ]);
+
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->position = $request->position;
+            $user->address = $request->address;
+            $user->save();
 
             DB::commit();
             return redirect()->route('profile')->with(['success' => 'Profile has been saved']);

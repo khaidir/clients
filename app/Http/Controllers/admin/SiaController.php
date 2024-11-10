@@ -13,6 +13,15 @@ use Auth;
 
 class SiaController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:sia-list|sia-create|sia-edit|sia-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:sia-create', ['only' => ['create','store']]);
+        $this->middleware('permission:sia-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:sia-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         return view('admin.new-worker.index');

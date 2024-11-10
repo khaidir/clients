@@ -15,9 +15,9 @@ use App\Http\Controllers\admin\VisitorPpeController;
 use App\Http\Controllers\admin\CompanyController;
 use App\Http\Controllers\admin\PpeController;
 use App\Http\Controllers\admin\PpeTypeController;
-// use App\Http\Controllers\admin\UsersController;
-// use App\Http\Controllers\admin\RolesController;
-// use App\Http\Controllers\admin\PermissionsController;
+use App\Http\Controllers\admin\UsersController;
+use App\Http\Controllers\admin\RolesController;
+use App\Http\Controllers\admin\PermissionsController;
 
 // public
 use App\Http\Controllers\public\CompanyPublicController;
@@ -28,7 +28,6 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
     ->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class)
     ->name('login');
 Route::post('login', [AuthController::class, 'login']);
-// Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group([
@@ -45,7 +44,7 @@ Route::group([
 
     $router->get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     $router->get('profile', [ProfileController::class, 'index'])->name('profile');
-    $router->post('store', [ProfileController::class, 'store'])->name('profile.store');
+    $router->post('profile/store', [ProfileController::class, 'store'])->name('profile.store');
 
     Route::group([
         'prefix' => 'worker',

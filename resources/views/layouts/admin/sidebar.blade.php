@@ -76,10 +76,10 @@
                         <span key="t-provider">Rules</span>
                     </a>
                 </li>
-                <li class="{{ request()->is('permission/*') == 1 ? 'mm-active' : ''}}">
-                    <a href="/permission" class="waves-effect {{ request()->is('permission/*') == 1 ? 'active' : ''}}">
+                <li class="{{ request()->is('permissions/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/permissions" class="waves-effect {{ request()->is('permissions/*') == 1 ? 'active' : ''}}">
                         <i class='bx bx-user-circle'></i>
-                        <span key="t-provider">Permission</span>
+                        <span key="t-provider">Permissions</span>
                     </a>
                 </li>
             </ul>
