@@ -40,14 +40,32 @@
                                 </div>
                                 <div class="row mb-4">
                                     <label for="email" class="col-sm-3 col-form-label">Email</label>
-                                    <div class="col-sm-5">
-                                        @foreach($permission as $value)
-                                            <label>
-                                                <input type="checkbox" name="permission[]" value="{{ $value->id }}"
-                                                    class="name" {{ in_array($value->id, @$rolePermissions ?? []) ? 'checked' : '' }}>
-                                                {{ $value->name }}
-                                            </label>
-                                            <br/>
+                                    <div class="col-sm-9">
+                                        @foreach ($permissions as $group_name => $permissionGroup)
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <strong>{{ $group_name }}</strong>
+                                                </div>
+                                                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                                                    <div class="row">
+                                                        @foreach ($permissionGroup as $index => $permission)
+                                                            <div class="col-md-4 mb-2">
+                                                                <label>
+                                                                    <input type="checkbox" name="permission[]" value="{{ $permission->id }}"
+                                                                        class="name" {{ in_array($permission->id, @$rolePermissions ?? []) ? 'checked' : '' }}>
+                                                                    {{ $permission->name }}
+                                                                </label>
+                                                            </div>
+
+                                                            <!-- Untuk memastikan tidak lebih dari 5 per baris, setelah 5 checkbox, pindah baris -->
+                                                            @if (($index + 1) % 5 == 0)
+                                                                </div>
+                                                                <div class="row">
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                         @if ($errors->has('permission'))
                                             <span class="text-danger">{{ $errors->first('permission') }}</span>
@@ -58,7 +76,7 @@
                                 <div class="row justify-content-end">
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-md">Save</button>
-                                        <a href="/company" class="btn btn-light w-md">Back</a>
+                                        <a href="/roles" class="btn btn-light w-md">Back</a>
                                     </div>
                                 </div>
                             </form>

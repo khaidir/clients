@@ -45,8 +45,14 @@ class RolesController extends Controller
 
     public function create()
     {
-        $permission = Permission::get();
-        return view('admin.roles.form', compact('permission'));
+        // $permissions = Permission::get();
+        $permissions = DB::table('permissions')
+            ->leftJoin('permission_groups', 'permissions.group_id', '=', 'permission_groups.id')
+            ->select('permissions.group_id', 'permissions.id', 'permissions.name', 'permission_groups.name as group_name')
+            ->get()
+            ->groupBy('group_name');
+
+        return view('admin.roles.form', compact('permissions'));
     }
 
     public function store(Request $request)
@@ -89,12 +95,17 @@ class RolesController extends Controller
     public function edit($id = null)
     {
         $data = Role::find($id);
-        $permission = Permission::get();
+        // $permission = Permission::get();
+        $permissions = DB::table('permissions')
+            ->leftJoin('permission_groups', 'permissions.group_id', '=', 'permission_groups.id')
+            ->select('permissions.group_id', 'permissions.id', 'permissions.name', 'permission_groups.name as group_name')
+            ->get()
+            ->groupBy('group_name');
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
 
-        return view('admin.roles.form', compact('data','permission','rolePermissions'));
+        return view('admin.roles.form', compact('data','permissions','rolePermissions'));
     }
 
     public function destroy($id)
