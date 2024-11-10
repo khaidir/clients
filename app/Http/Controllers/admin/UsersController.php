@@ -22,7 +22,7 @@ class UsersController extends Controller
     public function getData()
     {
         $user = User::select('*')
-            ->orderBy('created_at','desc')
+            ->orderBy('id','asc')
             ->get();
 
         $user->transform(function ($user) {
@@ -53,7 +53,7 @@ class UsersController extends Controller
 
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::pluck('name')->all();
         return view('admin.users.form', compact('roles'));
     }
 
@@ -110,8 +110,8 @@ class UsersController extends Controller
     {
 
         $user = User::findOrFail($id);
-        $roles = Role::all();
-        $userRole = $user->roles->pluck('id')->toArray();
+        $roles = Role::pluck('name')->all();
+        $userRole = $user->roles->pluck('name')->toArray();
 
         return view('admin.users.form', compact('user','roles', 'userRole'));
     }

@@ -42,12 +42,12 @@
                                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                                     <div class="col-sm-5">
                                         @foreach($permission as $value)
-                                        <label>
-                                            <input type="checkbox" name="permission[]" value="{{ $value->id }}"
-                                                class="name" {{ in_array($value->id, $rolePermissions) ? 'checked' : '' }}>
-                                            {{ $value->name }}
-                                        </label>
-                                        <br/>
+                                            <label>
+                                                <input type="checkbox" name="permission[]" value="{{ $value->id }}"
+                                                    class="name" {{ in_array($value->id, @$rolePermissions ?? []) ? 'checked' : '' }}>
+                                                {{ $value->name }}
+                                            </label>
+                                            <br/>
                                         @endforeach
                                         @if ($errors->has('permission'))
                                             <span class="text-danger">{{ $errors->first('permission') }}</span>

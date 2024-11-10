@@ -92,7 +92,6 @@ $(document).ready(function() {
             { data: 'position' },
             { data: 'address' },
             { data: 'roles_names' },
-            // { data: 'status' },
             { data: 'action', orderable: false, searchable: false }
         ]
     });

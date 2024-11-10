@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SiaSeeder::class);
         $this->call(SiaPersonSeeder::class);
         $this->call(SiaExtendedSeeder::class);
+        $this->call(PermissionGroupsSeeder::class);
         $this->call(RolesSeeder::class);
 
         $this->call(VisitorSeeder::class);

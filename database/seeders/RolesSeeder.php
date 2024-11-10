@@ -20,24 +20,22 @@ class RolesSeeder extends Seeder
 
         foreach ($permissions as $key => $actions) {
             foreach ($actions as $action) {
-                Permission::create(['name' => "{$key}-{$action}"]);
+                Permission::create(['name' => "{$key}-{$action}", 'permission_group_id' => 1]);
             }
         }
 
         // Buat roles dan tetapkan permissions
         $roles = [
-            'sia' => ['sia', 'sia-person'],
-            'sia-person' => ['sia-person', 'sia-extended'],
-            'sia-extended' => ['sia-extended'],
-            'visitor-access' => ['visitor-access'],
+            'administrator' => ['administrator'],
+            'assistent' => ['assistent'],
+            'operator' => ['operator'],
             'company' => ['company'],
+            'personil' => ['personil'],
+            'root' => ['root'],
         ];
 
         foreach ($roles as $role => $permissions) {
             $roleInstance = Role::create(['name' => $role]);
-            // foreach ($permissions as $permission) {
-            //     $roleInstance->givePermissionTo($permission);
-            // }
         }
     }
 }

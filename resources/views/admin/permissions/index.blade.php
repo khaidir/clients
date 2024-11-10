@@ -50,10 +50,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40">ID</th>
-                                            <th width="300">Permissions</th>
-                                            <th width="80">Group</th>
-                                            <th width="480">Description</th>
-                                            <th width="100">Action</th>
+                                            <th width="300">Group</th>
+                                            <th width="1000">Permission</th>
+                                            <th width="140">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -73,7 +72,7 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('company.data') }}",
+        ajax: "{{ route('permissions.data') }}",
         columns: [
             {
                 data: null,
@@ -84,11 +83,36 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
+            { data: 'group_name' },
             { data: 'name' },
-            { data: 'industry' },
-            { data: 'address' },
             { data: 'action', orderable: false, searchable: false }
-        ]
+        ],
+        columnDefs: [
+            {
+                targets: [1],
+                visible: false,
+                searchable: false
+            },
+        ],
+        drawCallback: function (settings) {
+            var api = this.api();
+            var rows = api.rows({ page: 'current' }).nodes();
+            var last = null;
+
+            api.column(1, { page: 'current' }).data().each(function (group, i) {
+                var groupName = api.row(i).data().group_name;
+                var slug = api.row(i).data().group_slug;
+                var description = api.row(i).data().group_description;
+                if (last !== groupName) {
+                    $(rows).eq(i).before(
+                        '<tr class="group">'+
+                            '<td colspan="3">' + groupName + '</td>' +
+                        '</tr>'
+                    );
+                    last = groupName;
+                }
+            });
+        }
     });
 
     $("#dlength").append($("#table_length"));

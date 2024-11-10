@@ -52,7 +52,7 @@
                                 <div class="row mb-4">
                                     <label for="password" class="col-sm-3 col-form-label">Password</label>
                                     <div class="col-sm-4">
-                                        <input name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Your Password">
+                                        <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Your Password">
                                         @if ($errors->has('password'))
                                             <span class="text-danger">{{ $errors->first('password') }}</span>
                                         @endif
@@ -61,7 +61,7 @@
                                 <div class="row mb-4">
                                     <label for="password_confirmation" class="col-sm-3 col-form-label">Confirm Password</label>
                                     <div class="col-sm-4">
-                                        <input name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Your Password">
+                                        <input name="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Your Password">
                                         @if ($errors->has('password_confirmation'))
                                             <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
                                         @endif
@@ -93,11 +93,9 @@
                                     <div class="col-sm-5">
                                         <select name="roles[]" class="form-control" multiple>
                                             @foreach($roles as $role)
-                                                <option value="{{ @$role->id }}"
-                                                    @if(in_array($role->id, old('roles', $userRole)))
-                                                        selected
-                                                    @endif>
-                                                    {{ $role->name }}
+                                                <option value="{{ $role }}"
+                                                    @if(isset($user) && in_array($role, $userRole)) selected @endif>
+                                                    {{ ucwords($role) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -110,7 +108,7 @@
                                 <div class="row justify-content-end">
                                     <div class="col-sm-9">
                                         <button type="submit" class="btn btn-primary w-md">Save</button>
-                                        <a href="/company" class="btn btn-light w-md">Back</a>
+                                        <a href="/users" class="btn btn-light w-md">Back</a>
                                     </div>
                                 </div>
                             </form>

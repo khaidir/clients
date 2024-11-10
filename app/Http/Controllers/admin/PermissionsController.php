@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Companies;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -19,8 +19,10 @@ class PermissionsController extends Controller
 
     public function getData()
     {
-        $permissions = Permissions::select('companies.*')
+        $permissions = Permission::select('permissions.*', 'permission_groups.name as group_name', 'permission_groups.slug as group_slug', 'permission_groups.description as group_description')
+            ->leftJoin('permission_groups', 'permissions.group_id', '=', 'permission_groups.id')
             ->orderBy('created_at','desc')
+            ->orderBy('group_name','desc')
             ->get();
 
         return DataTables::of($permissions)
