@@ -52,9 +52,9 @@
                                             <th width="40">ID</th>
                                             <th width="200">Email</th>
                                             <th width="180">Fullname</th>
-                                            <th width="80">Positions</th>
+                                            <th width="180">Positions</th>
                                             <th width="250">Address</th>
-                                            <th width="120">Roles</th>
+                                            <th width="220">Roles</th>
                                             {{-- <th width="80">Status</th> --}}
                                             <th width="100">Action</th>
                                         </tr>

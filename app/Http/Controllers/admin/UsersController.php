@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Companies;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -33,7 +34,12 @@ class UsersController extends Controller
 
             $badgeHtml = '';
             foreach ($roles as $role) {
-                $badgeHtml .= "<span class='badge bg-primary'>{$role}</span> ";
+                if ($role == 'company') {
+                    $company = Companies::where('id', $user->company_id)->first();
+                    $badgeHtml .= "<span class='badge bg-primary'>".ucwords($role) .': '. $company->name."</span> ";
+                } else {
+                    $badgeHtml .= "<span class='badge bg-primary'>". ucwords($role) ."</span> ";
+                }
             }
             $user->roles_names = $badgeHtml;
 
@@ -53,8 +59,9 @@ class UsersController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('name')->all();
-        return view('admin.users.form', compact('roles'));
+        $roles = Role::select('id', 'name')->get();
+        $company = Companies::select('id', 'name')->get();
+        return view('admin.users.form', compact('roles', 'company'));
     }
 
     public function store(Request $request)
@@ -110,10 +117,11 @@ class UsersController extends Controller
     {
 
         $user = User::findOrFail($id);
-        $roles = Role::pluck('name')->all();
-        $userRole = $user->roles->pluck('name')->toArray();
+        $roles = Role::select('id', 'name')->get();
+        $userRole = $user->roles->pluck('id', 'name')->toArray();
+        $company = Companies::select('id', 'name')->get();
 
-        return view('admin.users.form', compact('user','roles', 'userRole'));
+        return view('admin.users.form', compact('user','roles', 'userRole', 'company'));
     }
 
     public function destroy($id)

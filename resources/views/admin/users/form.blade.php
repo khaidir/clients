@@ -32,7 +32,7 @@
                                 <div class="row mb-4">
                                     <label for="name" class="col-sm-3 col-form-label">Fullname</label>
                                     <div class="col-sm-6">
-                                        <input name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', @$user->name) }}" placeholder="Company">
+                                        <input name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', @$user->name) }}" placeholder="Fullname">
                                         @if ($errors->has('name'))
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
@@ -43,6 +43,22 @@
                                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                                     <div class="col-sm-5">
                                         <input name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', @$user->email) }}" placeholder="Email">
+                                        @if ($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <label for="company" class="col-sm-3 col-form-label">Company</label>
+                                    <div class="col-sm-5">
+                                        <select name="company_id" class="form-control">
+                                            <option value="">Choose</option>
+                                            @foreach($company as $c)
+                                            <option value="{{ $c->id }}" {{ $c->id == @$user->company_id ? 'selected' : '' }}>
+                                                {{ $c->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                         @if ($errors->has('email'))
                                             <span class="text-danger">{{ $errors->first('email') }}</span>
                                         @endif
@@ -93,9 +109,9 @@
                                     <div class="col-sm-5">
                                         <select name="roles[]" class="form-control" multiple>
                                             @foreach($roles as $role)
-                                                <option value="{{ $role }}"
-                                                    @if(isset($user) && in_array($role, $userRole)) selected @endif>
-                                                    {{ ucwords($role) }}
+                                                <option value="{{ $role->id }}"
+                                                    @if(isset($user) && in_array($role->id, @$userRole)) selected @endif>
+                                                    {{ ucwords($role->name) }}
                                                 </option>
                                             @endforeach
                                         </select>
