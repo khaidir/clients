@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
+use App\Models\PermissionGroup;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -38,31 +39,24 @@ class PermissionsController extends Controller
 
     public function create()
     {
-        return view('admin.permissions.form');
+        $group = PermissionGroup::get();
+        return view('admin.permissions.form', compact('group'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'address' => 'required|string',
-            'phone' => 'nullable|string',
-            'email' => 'required|string',
-            'status' => 'boolean',
+            'group_id' => 'required|integer',
+            'name' => 'required|string',
         ],[
-            'name.required' => 'Company is required',
-            'address.required' => 'Address is required',
-            'email.required' => 'Email is required',
+            'required.required' => 'Group is required',
+            'name.required' => 'Permission name is required',
         ]);
 
         DB::beginTransaction();
         try {
 
-            if ( @$request->id == '' ) {
-                $request['user_id'] = Auth::id();
-            }
-
-            $dokumen = Permissions::updateOrCreate([
+            $permission = Permission::updateOrCreate([
                 'id' => @$request->id
             ], @$request->all());
 
@@ -81,24 +75,9 @@ class PermissionsController extends Controller
 
     public function edit($id = null)
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        $data = Permissions::find($id);
-        return view('admin.permissions.form', compact('data', 'industries'));
+        $group = PermissionGroup::get();
+        $data = Permission::find($id);
+        return view('admin.permissions.form', compact('data', 'group'));
     }
 
     public function destroy($id)

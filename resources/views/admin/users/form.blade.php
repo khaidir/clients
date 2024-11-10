@@ -59,8 +59,8 @@
                                             </option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('email'))
-                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @if ($errors->has('company'))
+                                            <span class="text-danger">{{ $errors->first('company') }}</span>
                                         @endif
                                     </div>
                                 </div>
