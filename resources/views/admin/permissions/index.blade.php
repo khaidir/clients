@@ -72,6 +72,8 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
+        lengthMenu: [25, 50, 100, 250],
+        pageLength: 50,
         ajax: "{{ route('permissions.data') }}",
         columns: [
             {

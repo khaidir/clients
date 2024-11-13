@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
 use App\Models\Sias;
 use App\Models\Companies;
 use Illuminate\Http\Request;
@@ -17,13 +16,7 @@ class SiaController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth');
-        // $this->middleware('permission:sia-create');
-        // $this->middleware(PermissionMiddleware::class . 'sia-create');
-        // $this->middleware('permission:sia-create|sia-edit|sia-delete', ['only' => ['index','store']]);
-        // $this->middleware('permission:sia-create', ['only' => ['create','store']]);
-        // $this->middleware('permission:sia-edit', ['only' => ['edit','update']]);
-        // $this->middleware('permission:sia-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:sia-list', ['only' => ['index', 'store']]);
     }
 
     public function index()

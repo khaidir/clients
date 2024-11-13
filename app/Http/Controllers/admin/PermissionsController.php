@@ -22,8 +22,8 @@ class PermissionsController extends Controller
     {
         $permissions = Permission::select('permissions.*', 'permission_groups.name as group_name', 'permission_groups.slug as group_slug', 'permission_groups.description as group_description')
             ->leftJoin('permission_groups', 'permissions.group_id', '=', 'permission_groups.id')
-            ->orderBy('created_at','desc')
-            ->orderBy('group_name','desc')
+            ->orderBy('group_name','asc')
+            ->orderBy('permissions.name','asc')
             ->get();
 
         return DataTables::of($permissions)
