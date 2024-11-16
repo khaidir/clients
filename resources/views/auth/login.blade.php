@@ -105,9 +105,9 @@
                         <a href="/" class="mb-0 mb-lg-12">
                         <img alt="Logo" src="/images/clients-white-2.png" class="h-60px h-lg-75px"/>
                         </a>
-                        <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="/assets/media/misc/auth-screens.png" alt=""/>
+                        <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="/images/vektor_pabrik.png" alt=""/>
                         <h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">
-                            Fast, Efficient and Productive
+                            Solution of Approval
                         </h1>
                         <div class="d-none d-lg-block text-white fs-base text-center">
                             In this kind of post, <a href="#" class="opacity-75-hover text-warning fw-bold me-1">the blogger</a>
