@@ -20,7 +20,13 @@ use App\Http\Controllers\admin\RolesController;
 use App\Http\Controllers\admin\PermissionsController;
 
 // public
-use App\Http\Controllers\public\CompanyPublicController;
+use App\Http\Controllers\public\PublicDashboardController;
+use App\Http\Controllers\public\PublicProfileController;
+use App\Http\Controllers\public\PublicCompanyController;
+use App\Http\Controllers\public\PublicContractsController;
+use App\Http\Controllers\public\PublicWorkerController;
+use App\Http\Controllers\public\PublicExtendedController;
+use App\Http\Controllers\public\PublicHistoryController;
 
 Route::view('/', 'welcome');
 
@@ -30,14 +36,66 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
 Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
+// public access
 Route::group([
     'middleware' => 'auth'
 ], function ($router) {
 
-    Route::get('public/dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
+    Route::get('dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
+
+    Route::group([
+        'prefix' => 'u',
+    ], function ($router) {
+
+        Route::group([
+            'prefix' => 'profile',
+        ], function ($router) {
+            $router->get('/', [PublicProfileController::class, 'index'])->name('public.profile');
+            $router->post('store', [PublicProfileController::class, 'store'])->name('public.profile-store');
+        });
+
+        Route::group([
+            'prefix' => 'company',
+        ], function ($router) {
+            $router->get('/', [PublicCompanyController::class, 'index'])->name('public.company');
+            $router->post('store', [PublicCompanyController::class, 'store'])->name('public.company.store');
+        });
+
+
+        Route::group([
+            'prefix' => 'contracts',
+        ], function ($router) {
+
+            $router->get('/', [PublicContractsController::class, 'index'])->name('public.new-worker');
+            $router->get('/data', [PublicContractsController::class, 'getData'])->name('public.new-worker.data');
+
+            Route::group([
+                'prefix' => 'workers',
+            ], function ($router) {
+                $router->get('/{id}', [PublicWorkerController::class, 'index'])->name('public.new-worker');
+                $router->post('store', [PublicWorkerController::class, 'store'])->name('public.new-worker-store');
+            });
+
+            Route::group([
+                'prefix' => 'extended',
+            ], function ($router) {
+                $router->get('/', [PublicExtendedController::class, 'index'])->name('public.extended');
+                $router->post('store', [PublicExtendedController::class, 'store'])->name('public.extended-store');
+            });
+
+        });
+
+        Route::group([
+            'prefix' => 'history',
+        ], function ($router) {
+            $router->get('/', [PublicHistoryController::class, 'index'])->name('public.history');
+        });
+
+    });
 
 });
 
+// admin access
 Route::group([
     'middleware' => 'auth'
 ], function ($router) {

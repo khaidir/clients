@@ -70,7 +70,7 @@
                                     <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
                                 </div>
                                 <div class="fv-row mb-8">
-                                    <input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent @error('email') is-invalid @enderror"/>
+                                    <input type="text" placeholder="Email" name="email" autocomplete="off" value="{{ old('email') }}" class="form-control bg-transparent @error('email') is-invalid @enderror"/>
                                     @if ($errors->has('email'))
                                         <span class="text-danger">{{ $errors->first('email') }}</span>
                                     @endif

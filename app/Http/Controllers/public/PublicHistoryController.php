@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use DB;
 use Auth;
 
-class CompanyPublicController extends Controller
+class PublicHistoryController extends Controller
 {
     public function index()
     {

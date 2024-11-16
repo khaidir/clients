@@ -18,6 +18,14 @@
         <link href="{{ asset('assets/landing/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/landing/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/landing/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+        <style>
+            .image-input-placeholder {
+                background-image: url('/assets/media/svg/files/blank-image.svg');
+            }
+            [data-bs-theme="dark"] .image-input-placeholder {
+                background-image: url('/assets/media/svg/files/blank-image-dark.svg');
+            }
+        </style>
         <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
     </head>
     <body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true" class="app-default">
