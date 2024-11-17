@@ -18,12 +18,60 @@
         <link href="{{ asset('assets/landing/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/landing/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/landing/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+        <link href="/libs/toastr/build/toastr.min.css?v=1.0" rel="stylesheet" type="text/css" />
         <style>
             .image-input-placeholder {
                 background-image: url('/assets/media/svg/files/blank-image.svg');
             }
             [data-bs-theme="dark"] .image-input-placeholder {
                 background-image: url('/assets/media/svg/files/blank-image-dark.svg');
+            }
+            .upload-container.slim {
+                border: 2px dashed #d1d5db;
+                border-radius: 8px;
+                padding: 15px 15px;
+                background-color: #f9fafb;
+                transition: border-color 0.3s ease;
+                text-align: left;
+                min-height: 65px;
+                cursor: pointer;
+            }
+            .upload-container.slim:hover {
+                border-color: #2563eb;
+            }
+            .upload-content {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                height: 65px;
+            }
+            .upload-icon {
+                font-size: 24px;
+                color: #2563eb;
+                flex-shrink: 0;
+            }
+            .upload-text {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .upload-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 4px;
+            }
+            .upload-subtitle {
+                font-size: 13px;
+                color: #6b7280;
+                margin-bottom: 8px;
+            }
+            .upload-filename {
+                font-size: 12px;
+                color: #4b5563;
+                word-break: break-all;
+                margin-top: -2px;
             }
         </style>
         <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>

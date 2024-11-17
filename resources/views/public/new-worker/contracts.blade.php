@@ -80,7 +80,7 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('public.new-worker.data') }}",
+        ajax: "{{ route('public.contracts.data') }}",
         columns: [
             {
                 data: null,

@@ -14,28 +14,6 @@ class PublicCompanyController extends Controller
 {
     public function index()
     {
-        return view('public.company.index');
-    }
-
-    public function getData()
-    {
-        $company = Companies::select('companies.*')
-            ->orderBy('created_at','desc')
-            ->get();
-
-        return DataTables::of($company)
-            ->addColumn('action', function ($row) {
-                return '
-                    <a class="btn btn-sm btn-primary edit" href="/company/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
-                    <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
-                ';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-
-    public function create()
-    {
         $industries = [
             'Technology',
             'Finance',
@@ -52,7 +30,13 @@ class PublicCompanyController extends Controller
             'Media',
             'Telecommunications'
         ];
-        return view('public.company.form', compact('industries'));
+
+        $data = Companies::select('companies.*')
+            ->orderBy('created_at','desc')
+            ->where('id', Auth::user()->company_id)
+            ->first();
+
+        return view('public.company.index', compact('data', 'industries'));
     }
 
     public function store(Request $request)
@@ -62,7 +46,6 @@ class PublicCompanyController extends Controller
             'address' => 'required|string',
             'phone' => 'nullable|string',
             'email' => 'required|string',
-            'status' => 'boolean',
         ],[
             'name.required' => 'Company is required',
             'address.required' => 'Address is required',
@@ -72,68 +55,20 @@ class PublicCompanyController extends Controller
         DB::beginTransaction();
         try {
 
-            if ( @$request->id == '' ) {
-                $request['user_id'] = Auth::id();
-            }
-
-            $dokumen = Companies::updateOrCreate([
-                'id' => @$request->id
-            ], @$request->all());
+            $company = Companies::where('id', Auth::user()->company_id)
+                    ->update($request->only(['name', 'address', 'phone', 'email', 'industry', 'website']));
 
             DB::commit();
-            return redirect()->route('public.company.index')->with(['success' => 'Data has been saved']);
+            return redirect()->route('public.company')->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('public.company.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('public.company')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('public.company.index')->with(['error' => @$e->getMessage()]);
+            return redirect()->route('public.company')->with(['error' => @$e->getMessage()]);
         }
     }
 
-    public function edit($id = null)
-    {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        $data = Companies::find($id);
-        return view('public.company.form', compact('data', 'industries'));
-    }
-
-    public function destroy($id)
-    {
-
-        DB::beginTransaction();
-        try {
-            $sia = Companies::find($id);
-            $sia->delete();
-
-            DB::commit();
-            return redirect()->route('public.company.index')->with(['success' => 'Data delete successfully']);
-        } catch (ValidationException $e)
-        {
-            DB::rollback();
-            return redirect()->route('public.company.index')->with(['warning' => @$e->errors()]);
-        } catch (\Exception $e)
-        {
-            DB::rollback();
-            return redirect()->route('publi.company.index')->with(['danger' => @$e->getMessage()]);
-        }
-
-    }
 }

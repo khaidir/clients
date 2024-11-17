@@ -16,7 +16,7 @@ class SiaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:sia-list', ['only' => ['index', 'store']]);
+        // $this->middleware('permission:sia-list', ['only' => ['index', 'store']]);
     }
 
     public function index()

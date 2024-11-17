@@ -14,7 +14,6 @@ class PublicContractsController extends Controller
 {
     public function index()
     {
-        // dd(Auth::user()->company_id);
         return view('public.new-worker.contracts');
     }
 

@@ -66,23 +66,29 @@ Route::group([
             'prefix' => 'contracts',
         ], function ($router) {
 
-            $router->get('/', [PublicContractsController::class, 'index'])->name('public.new-worker');
-            $router->get('/data', [PublicContractsController::class, 'getData'])->name('public.new-worker.data');
+            $router->get('/', [PublicContractsController::class, 'index'])->name('public.contracts');
+            $router->get('/data', [PublicContractsController::class, 'getData'])->name('public.contracts.data');
 
             Route::group([
                 'prefix' => 'workers',
             ], function ($router) {
-                $router->get('/{id}', [PublicWorkerController::class, 'index'])->name('public.new-worker');
                 $router->post('store', [PublicWorkerController::class, 'store'])->name('public.new-worker-store');
+                $router->get('/data/{id}', [PublicWorkerController::class, 'getData'])->name('public.new-worker.data');
+                $router->get('new/{id}', [PublicWorkerController::class, 'create'])->name('public.new-worker.create');
+                $router->get('edit/{id}', [PublicWorkerController::class, 'edit'])->name('public.new-worker.edit');
+                $router->get('detail/{id}', [PublicWorkerController::class, 'detail'])->name('public.new-worker.detail');
+                $router->get('delete/{id}', [PublicWorkerController::class, 'delete'])->name('public.new-worker.delete');
+                $router->get('/{id}', [PublicWorkerController::class, 'index'])->name('public.new-worker.index');
             });
 
-            Route::group([
-                'prefix' => 'extended',
-            ], function ($router) {
-                $router->get('/', [PublicExtendedController::class, 'index'])->name('public.extended');
-                $router->post('store', [PublicExtendedController::class, 'store'])->name('public.extended-store');
-            });
+        });
 
+        Route::group([
+            'prefix' => 'extended',
+        ], function ($router) {
+            $router->get('/', [PublicExtendedController::class, 'index'])->name('public.extended');
+            $router->get('/data', [PublicExtendedController::class, 'getData'])->name('public.extended.data');
+            $router->post('store', [PublicExtendedController::class, 'store'])->name('public.extended-store');
         });
 
         Route::group([

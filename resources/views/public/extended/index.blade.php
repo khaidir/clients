@@ -19,15 +19,15 @@
                             <li class="breadcrumb-item">
                                 <i class="ki-outline ki-right fs-4 text-white mx-n1"></i>
                             </li>
-                            <li class="breadcrumb-item text-white fw-bold lh-1"> Workers </li>
+                            <li class="breadcrumb-item text-white fw-bold lh-1"> Extended </li>
                         </ul>
                     </div>
                     <div class="d-flex flex-stack flex-wrap flex-lg-nowrap gap-4 gap-lg-10 pt-6 pb-18 py-lg-13">
                         <div class="page-title d-flex align-items-center me-3">
                             <img alt="Logo" src="/assets/media/svg/misc/layer.svg" class="h-60px me-5">
                             <h1 class="page-heading d-flex text-white fw-bolder fs-2 flex-column justify-content-center my-0">
-                                Workers
-                                <span class="page-desc text-white opacity-50 fs-6 fw-bold pt-4"> Lists Workers Contract Company </span>
+                                Extended
+                                <span class="page-desc text-white opacity-50 fs-6 fw-bold pt-4"> Lists Extended Contract Company </span>
                             </h1>
                         </div>
                     </div>
@@ -57,8 +57,8 @@
                                     <div class="card-headers border-0">
                                         <div class="card-toolbar mt-4 mb-5">
                                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                                <a href="/u/contracts/workers/new/{{ @$id }}" class="btn btn-light-primary me-3">
-                                                    <i class="ki-outline ki-user fs-2"></i> New Worker
+                                                <a href="/u/xxtended/new" class="btn btn-light-primary me-3">
+                                                    <i class="ki-outline ki-user fs-2"></i> New Extended
                                                 </a>
                                             </div>
                                             <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
@@ -73,12 +73,14 @@
                                         <thead class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <tr>
                                                 <th width="40">ID</th>
-                                                <th width="180">Card ID</th>
-                                                <th width="250">Fullname/Email</th>
-                                                <th width="250">Position</th>
-                                                <th width="180">Status</th>
-                                                <th width="190">Post</th>
-                                                <th width="200">Action</th>
+                                                <th width="200">Type Contract</th>
+                                                <th width="220">Periode</th>
+                                                <th width="120">Requested At</th>
+                                                <th width="150">Request By</th>
+                                                <th width="150">Approved By</th>
+                                                <th width="150">Verified By</th>
+                                                <th width="90">Status</th>
+                                                <th width="100">Action</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -98,7 +100,7 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('public.new-worker.data', @$id) }}",
+        ajax: "{{ route('public.extended.data') }}",
         columns: [
             {
                 data: null,
@@ -109,14 +111,14 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'id_card' },
-            { data: 'fullname' },
-            { data: 'position' },
+            { data: 'type_contract' },
+            { data: 'periode_start' },
+            { data: 'requested_at' },
+            { data: 'request_by_name' },
+            { data: 'approved_by_name' },
+            { data: 'verified_by_name' },
             { data: 'status', render: function(data) {
-                return data ? 'Uploaded' : 'Not uploaded yet';
-            }},
-            { data: 'post', render: function(data) {
-                return data ? 'Sended' : 'Not send yet';
+                return data ? 'Active' : 'Inactive';
             }},
             { data: 'action', orderable: false, searchable: false }
         ]
@@ -137,5 +139,58 @@ $(document).ready(function() {
         placeholder: 'Choose'
     });
     $('#generate').addClass("mm-active");
+
+    $(document).on('click', '.delete', function () {
+
+        var id = $(this).data('id');
+        const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success btn-rounded',
+            cancelButtonClass: 'btn btn-danger btn-rounded mr-3',
+            buttonsStyling: false,
+        })
+
+        Swal.fire({
+            title: 'Are your sure ?',
+            icon: 'warning',
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-danger',
+            confirmButtonText: "Yes, delete!",
+            confirmButtonAriaLabel: 'Yes delete',
+            cancelButtonClass: 'btn btn-secondary',
+            cancelButtonText:'Cancel!',
+            cancelButtonAriaLabel: 'Cancel'
+        }).then(function(result) {
+            if (result?.value && (result?.value[0] != "")) {
+                $.ajax({
+                    url : '/u/extended/delete/' + id,
+                    type : "get",
+                    success: function(response){
+                        Swal.fire(
+                            'Success!',
+                            'Data deleted',
+                            'success'
+                        )
+                        $('.data-table').dataTable().api().ajax.reload();
+                    },
+                    error: function (data) {
+                        Swal.fire(
+                            'Wrong',
+                            'Internal server error',
+                            'error'
+                        )
+                    }
+                });
+            } else if (
+            result.dismiss === swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                    'Cancel',
+                    'Data do not delete',
+                    'error'
+                )
+            }
+        })
+    });
 });
 </script>

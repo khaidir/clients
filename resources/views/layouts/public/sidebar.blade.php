@@ -16,7 +16,7 @@
                 <div class="menu menu-rounded menu-active-bg menu-state-primary menu-column menu-lg-row menu-title-gray-700 menu-icon-gray-500 menu-arrow-gray-500 menu-bullet-gray-500 my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
                     <div class="menu-item {{ request()->is('user') ? 'here show' : '' }} menu-lg-down-accordion me-0 me-lg-2">
                         <span class="menu-link">
-                        <a href="/"><span class="menu-title">Home</span></a>
+                        <a href="/dashboard"><span class="menu-title">Home</span></a>
                         </span>
                     </div>
                     <div class="menu-item {{ request()->is('company') ? 'here show' : '' }} menu-here-bg menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -69,7 +69,7 @@
                             <a href="/u/profile" class="menu-link px-5">My Profile</a>
                         </div>
                         <div class="menu-item px-5 my-1">
-                            <a href="/u/company" class="menu-link px-5">Account Settings</a>
+                            <a href="/u/company" class="menu-link px-5">My Company</a>
                         </div>
                         <div class="menu-item px-5 my-1">
                             <a href="/u/contact" class="menu-link px-5">Contact</a>
