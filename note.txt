@@ -2,11 +2,11 @@ NOTE CLIENTS
 
 USER
 ===================
-- Menu Request Visitor Access (Belum ada) -> tidak perlu
+- Menu Request Visitor Access (Belum ada) -> tidak perlu (akses dari halaman admin)
 - Menu New Worker (Eror tambah Worker) -> done
 - Menu Extend (Tambah Extend belum ada) -> done
 - Menu History (Error | Undefined variable $industries ) -> done
-#Ketika login pada Halaman User jika dihapus link dashboard masuk ke Dashboard Admin -> in progress
+#Ketika login pada Halaman User jika dihapus link dashboard masuk ke Dashboard Admin -> done
 
 ADMIN
 ===================
