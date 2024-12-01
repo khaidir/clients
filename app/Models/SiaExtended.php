@@ -14,6 +14,7 @@ class SiaExtended extends Model
     protected $table = 'sia_extended';
 
     protected $fillable = [
+        'user_id',
         'company_id',
         'type_contract', // lump sum/volume base
         'periode_start',
@@ -22,6 +23,7 @@ class SiaExtended extends Model
         'request_by', //end user
         'approved_by', //hod
         'verified_by', //h&s
+        'sia_id',
     ];
 
     protected $dates = ['created_at', 'updated_at'];

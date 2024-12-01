@@ -36,229 +36,34 @@
             <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
                     <div id="kt_app_content" class="app-content ">
-                        <form action="{{ route('public.new-worker-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
+                        <form action="{{ route('public.extended.store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
                             @csrf
-                            {{-- <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                                <div class="card card-flush py-4">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <h2>Thumbnail</h2>
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-center pt-0">
-                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
-                                            <div class="image-input-wrapper w-150px h-150px"></div>
-                                            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-pencil fs-7"></i>
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                                                <input type="hidden" name="avatar_remove">
-                                            </label>
-                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-cross fs-2"></i>
-                                            </span>
-                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-cross fs-2"></i>
-                                            </span>
-                                        </div>
-                                        <div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <div class="card card-flush py-4">
                                         <div class="card-header">
                                             <div class="card-title">
-                                                <h3>Biodata</h3>
+                                                <h3>Extended Periode Contract</h3>
                                             </div>
                                         </div>
                                         <div class="row card-body pt-0">
-                                            <div class="col-md-6 mb-10">
+                                            <div class="col-md-12 mb-10">
                                                 <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="form-label">Card ID</label>
-                                                    <input type="text" name="id_card" class="form-control @error('id_card') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('id_card', @$data->id_card) }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-10">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Fullname</label>
-                                                    <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname', @$data->fullname) }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Email</label>
-                                                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email', @$data->email) }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="form-label">Position</label>
-                                                    <input type="text" name="position" class="form-control @error('position') is-invalid @enderror mb-2" placeholder="Position" value="{{ old('position', @$data->position) }}">
+                                                    <label class="form-label">Work Contract</label>
+                                                    <select name="sia_id" class="form-control @error('sia_id') is-invalid @enderror mb-2" id="">
+                                                        <option value="">Choose</option>
+                                                        @foreach ($contract as $c)
+                                                        <option value="{{ @$c->id }}">{{ @$c->description }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card card-flush py-4">
-                                        <div class="card-header">
-                                            <div class="card-title">
-                                                <h3>Attachments</h3>
-                                            </div>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <div class="row fv-row mb-2">
-                                                <div class="col-sm-4">
-                                                    <div class="upload-container slim" onclick="document.getElementById('ktp-input').click();">
-                                                        <label for="ktp-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose KTP</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="ktp-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="ktp-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="ktp-filename" name="ktp" value="{{ old('ktp', @$data->ktp) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="upload-container slim" onclick="document.getElementById('passport-input').click();">
-                                                        <label for="passport-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose Passport</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="passport-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="passport-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="passport-filename" name="passport" value="{{ old('passport', @$data->passport) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="upload-container slim" onclick="document.getElementById('card_id-input').click();">
-                                                        <label for="card_id-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose Card ID</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="card-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="card-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="card-filename" name="card" value="{{ old('card_id', @$data->card_id) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('bpjs-input').click();">
-                                                        <label for="bpjs-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose BPJS</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="bpjs-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="bpjs-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="bpjs-filename" name="bpjs" value="{{ old('bpjs', @$data->bpjs) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('contract-input').click();">
-                                                        <label for="contract-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose Contract</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="contract-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="contract-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="contract-filename" name="contract" value="{{ old('contract', @$data->contract) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('cert_competence-input').click();">
-                                                        <label for="cert_competence-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose Competence</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="cert_competence-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="cert_competence-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="cert_competence-filename" name="cert_competence" value="{{ old('cert_competence', @$data->cert_competence) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('medical_checkup-input').click();">
-                                                        <label for="medical_checkup-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose Medical Checkup</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="medical_checkup-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="medical_checkup-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="medical_checkup-filename" name="medical_checkup" value="{{ old('medical_checkup', @$data->medical_checkup) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('license_driver-input').click();">
-                                                        <label for="license_driver-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose License Driver</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="license_driver-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="license_driver-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="license_driver-filename" name="license_driver" value="{{ old('license_driver', @$data->license_driver) }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 mt-7">
-                                                    <div class="upload-container slim" onclick="document.getElementById('license_vaccinated-input').click();">
-                                                        <label for="license_vaccinated-input" class="upload-label">
-                                                            <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up text-primary fs-3x upload-icon"></i>
-                                                                <div class="upload-text">
-                                                                    <h3 class="upload-title">Choose License Vaccinated</h3>
-                                                                    <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="license_vaccinated-name" class="upload-filename"></span>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="license_vaccinated-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="license_vaccinated-filename" name="license_vaccinated" value="{{ old('license_vaccinated', @$data->license_vaccinated) }}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <a href="/u/contracts/workers/{{ @$data->sia_id }}" class="btn btn-light me-5"> Cancel </a>
+                                    <a href="/u/extended" class="btn btn-light me-5"> Cancel </a>
                                     <button type="submit" class="btn btn-primary">
                                         <span class="indicator-label"> Save Changes </span>
                                         <span class="indicator-progress"> Please wait...

@@ -87,14 +87,18 @@ Route::group([
             'prefix' => 'extended',
         ], function ($router) {
             $router->get('/', [PublicExtendedController::class, 'index'])->name('public.extended');
+            $router->get('new', [PublicExtendedController::class, 'create'])->name('public.extended.create');
             $router->get('/data', [PublicExtendedController::class, 'getData'])->name('public.extended.data');
-            $router->post('store', [PublicExtendedController::class, 'store'])->name('public.extended-store');
+            $router->get('edit/{id}', [PublicExtendedController::class, 'edit'])->name('public.extended.edit');
+            $router->post('store', [PublicExtendedController::class, 'store'])->name('public.extended.store');
+            $router->get('delete/{id}', [PublicExtendedController::class, 'delete'])->name('public.extended.delete');
         });
 
         Route::group([
             'prefix' => 'history',
         ], function ($router) {
             $router->get('/', [PublicHistoryController::class, 'index'])->name('public.history');
+            $router->get('/data', [PublicHistoryController::class, 'getData'])->name('public.history.data');
         });
 
     });

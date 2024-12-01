@@ -40,5 +40,6 @@ class DatabaseSeeder extends Seeder
         $this->call(VisitorPpeSeeder::class);
         $this->call(PpeSeeder::class);
         $this->call(PpeTypeSeeder::class);
+        $this->call(HistorySeeder::class);
     }
 }

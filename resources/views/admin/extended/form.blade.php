@@ -73,13 +73,13 @@
                                     <label for="date_request" class="col-sm-3 col-form-label">Periode</label>
                                     <div class="col-sm-3">
                                         <div class="input-group" id="datepicker1">
-                                            <input type="text" name="date_request"
+                                            <input type="text" name="periode_start"
                                                 data-date-format="dd M, yyyy"
                                                 data-date-container='#datepicker1'
                                                 data-provide="datepicker"
                                                 data-date-autoclose="true"
                                                 class="form-control @error('date_request') is-invalid @enderror"
-                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_request)) : date('d M, Y')) }}"
+                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->periode_start)) : date('d M, Y')) }}"
                                                 id="date_request"
                                                 placeholder="Date Request">
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
@@ -91,13 +91,13 @@
                                     <div class="col-sm-1 text-center mt-2"> s/d </div>
                                     <div class="col-sm-3">
                                         <div class="input-group" id="datepicker1">
-                                            <input type="text" name="date_request"
+                                            <input type="text" name="periode_end"
                                                 data-date-format="dd M, yyyy"
                                                 data-date-container='#datepicker1'
                                                 data-provide="datepicker"
                                                 data-date-autoclose="true"
                                                 class="form-control @error('date_request') is-invalid @enderror"
-                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->date_request)) : date('d M, Y')) }}"
+                                                value="{{ old('date_request', ( @$data->id ) ? date('d M, Y', strtotime(@$data->periode_end)) : date('d M, Y')) }}"
                                                 id="date_request"
                                                 placeholder="Date Request">
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
@@ -105,20 +105,6 @@
                                                 <span class="text-danger">{{ $errors->first('date_request') }}</span>
                                             @endif
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <label for="status" class="col-sm-3 col-form-label">Status</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-check form-switch form-switch-md mb-2" dir="ltr">
-                                            <input name="status" class="form-check-input" type="checkbox" value="1" id="SwitchCheckSizemd" {{ (@$data->status === true) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="SwitchCheckSizemd"></label>
-                                        </div>
-                                        <p class="text-muted mb-2">Switch Knots to Approve or Unapprove</p>
-                                        @if ($errors->has('status'))
-                                            <span class="text-danger">{{ $errors->first('status') }}</span>
-                                        @endif
                                     </div>
                                 </div>
 

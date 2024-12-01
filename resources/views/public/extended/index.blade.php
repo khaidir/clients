@@ -57,7 +57,7 @@
                                     <div class="card-headers border-0">
                                         <div class="card-toolbar mt-4 mb-5">
                                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                                <a href="/u/xxtended/new" class="btn btn-light-primary me-3">
+                                                <a href="/u/extended/new" class="btn btn-light-primary me-3">
                                                     <i class="ki-outline ki-user fs-2"></i> New Extended
                                                 </a>
                                             </div>
@@ -76,11 +76,9 @@
                                                 <th width="200">Type Contract</th>
                                                 <th width="220">Periode</th>
                                                 <th width="120">Requested At</th>
-                                                <th width="150">Request By</th>
-                                                <th width="150">Approved By</th>
-                                                <th width="150">Verified By</th>
-                                                <th width="90">Status</th>
-                                                <th width="100">Action</th>
+                                                <th width="50">Approved</th>
+                                                <th width="50">Verified</th>
+                                                <th width="120">Action</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -114,12 +112,11 @@ $(document).ready(function() {
             { data: 'type_contract' },
             { data: 'periode_start' },
             { data: 'requested_at' },
-            { data: 'request_by_name' },
             { data: 'approved_by_name' },
             { data: 'verified_by_name' },
-            { data: 'status', render: function(data) {
-                return data ? 'Active' : 'Inactive';
-            }},
+            // { data: 'status', render: function(data) {
+            //     return data ? 'Active' : 'Inactive';
+            // }},
             { data: 'action', orderable: false, searchable: false }
         ]
     });

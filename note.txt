@@ -1,0 +1,25 @@
+NOTE CLIENTS
+
+USER
+===================
+- Menu Request Visitor Access (Belum ada) -> tidak perlu
+- Menu New Worker (Eror tambah Worker) -> done
+- Menu Extend (Tambah Extend belum ada) -> done
+- Menu History (Error | Undefined variable $industries ) -> done
+#Ketika login pada Halaman User jika dihapus link dashboard masuk ke Dashboard Admin -> in progress
+
+ADMIN
+===================
+- Menu Dashboard (Statistic & Grafik) -> butuh
+- Menu New Worker (Detail Woker Error) -> butuh
+
+RULES & PERMISSION
+- Super Admin (All Access) -> in setup
+- Admin   (Approval, Export Data, Check Dokument) -> in setup
+==================================================
+- End User / Job Owner (Aproval 1)
+- HOD 	(Aproval 2) -> inprogres setup
+- Procurement (Aproval 3) -> inprogres setup
+- Permit & Legal (Aproval 4) -> inprogres setup
+- Dokter  (Aproval 5 & Validasi MCU) -> inprogres setup
+- Company -> inprogres setup

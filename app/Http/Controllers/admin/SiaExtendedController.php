@@ -59,7 +59,6 @@ class SiaExtendedController extends Controller
             'user_id' => 'nullable|integer',
             'company_id' => 'required|integer',
             'type_contract' => 'required|string',
-            'status' => 'nullable|boolean',
         ],[
             'company_id.required' => 'Company is required',
             'type_contract.required' => 'Contract is required',
@@ -69,6 +68,7 @@ class SiaExtendedController extends Controller
         try {
 
             if ( @$request->id == '' ) {
+                $request['requested_at'] = date('Y-m-d H:i:sP');
                 $request['user_id'] = Auth::id();
             }
 

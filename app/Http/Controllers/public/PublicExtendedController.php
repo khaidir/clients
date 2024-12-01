@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\public;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sias;
 use App\Models\SiaExtended as Extended;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,9 +20,9 @@ class PublicExtendedController extends Controller
 
     public function getData()
     {
-        $extend = Extended::select('sia_extended.*', 'requester.name as request_by_name',
+        $extend = Extended::select('sia_extended.*',
             'approver.name as approved_by_name', 'verifier.name as verified_by_name')
-            ->leftJoin('users as requester', 'sia_extended.request_by', '=', 'requester.id')
+            // ->leftJoin('users as requester', 'sia_extended.request_by', '=', 'requester.id')
             ->leftJoin('users as approver', 'sia_extended.approved_by', '=', 'approver.id')
             ->leftJoin('users as verifier', 'sia_extended.verified_by', '=', 'verifier.id')
             ->orderBy('created_at','desc')
@@ -52,43 +53,29 @@ class PublicExtendedController extends Controller
 
     public function create()
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        return view('public.extended.form', compact('industries'));
+        $contract = Sias::where('company_id', Auth::user()->company_id)->get();
+        return view('public.extended.form', compact('contract'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'address' => 'required|string',
-            'phone' => 'nullable|string',
-            'email' => 'required|string',
+            'sia_id' => 'required|string',
             'status' => 'boolean',
         ],[
-            'name.required' => 'Company is required',
-            'address.required' => 'Address is required',
-            'email.required' => 'Email is required',
+            'sia_id.required' => 'Choose Contract Worker'
         ]);
 
         DB::beginTransaction();
         try {
 
-            $dokumen = Extended::updateOrCreate([
+            $request['company_id'] = Auth::user()->company_id;
+            $request['user_id'] = Auth::user()->id;
+            $request['request_by'] = Auth::user()->id;
+            $request['requested_at'] = date('Y-m-d H:i:sP');
+            $request['sia_id'] = $request->sia_id;
+
+            $extended = Extended::updateOrCreate([
                 'id' => @$request->id
             ], @$request->all());
 
@@ -107,24 +94,9 @@ class PublicExtendedController extends Controller
 
     public function edit($id = null)
     {
-        $industries = [
-            'Technology',
-            'Finance',
-            'Healthcare',
-            'Education',
-            'Manufacturing',
-            'Retail',
-            'Transportation',
-            'Agriculture',
-            'Energy',
-            'Construction',
-            'Real Estate',
-            'Hospitality',
-            'Media',
-            'Telecommunications'
-        ];
-        $data = SiaExtended::find($id);
-        return view('public.extended.form', compact('data', 'industries'));
+        $contract = Sias::where('company_id', Auth::user()->company_id)->get();
+        $data = Extended::find($id);
+        return view('public.extended.form', compact('data', 'contract'));
     }
 
     public function destroy($id)
@@ -132,7 +104,7 @@ class PublicExtendedController extends Controller
 
         DB::beginTransaction();
         try {
-            $ex = SiaExtended::find($id);
+            $ex = Extended::find($id);
             $ex->delete();
 
             DB::commit();

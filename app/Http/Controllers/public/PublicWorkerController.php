@@ -29,7 +29,7 @@ class PublicWorkerController extends Controller
                     <a class="btn btn-sm btn-primary edit" href="/u/contracts/workers/edit/' . $row->id . '">
                         <i class="ki-outline ki-pencil fs-5 ms-1"></i>
                     </a>
-                    <a class="btn btn-sm btn-success edit" href="/u/contracts/workers/detail/' . $row->id . '">
+                    <a class="btn btn-sm btn-success edit disabled" href="/u/contracts/workers/detail/' . $row->id . '">
                         <i class="ki-outline ki-paper-clip fs-5 ms-1"></i>
                     </a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);">
@@ -107,7 +107,9 @@ class PublicWorkerController extends Controller
 
     public function edit($id = null)
     {
-        $data = Sia_person::find($id);
+        $data = Sia_person::where([
+            'id' => $id
+        ])->first();
         return view('public.new-worker.form', compact('data'));
     }
 
