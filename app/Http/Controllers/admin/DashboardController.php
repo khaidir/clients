@@ -15,7 +15,21 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard.index');
+        $data = DB::table('sia')
+            ->selectRaw("TO_CHAR(dete_request AT TIME ZONE 'Asia/Jakarta', 'Mon YYYY') as month, COUNT(*) as total")
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        $labels = $data->pluck('month')->toArray();
+        $values = $data->pluck('total')->toArray();
+
+
+        $total_sia = DB::table('sia')->count();
+        $total_visitor = DB::table('sia_person')->count();
+        $total_company = DB::table('companies')->count();
+        $total_goods = DB::table('ppe')->count();
+        return view('admin.dashboard.index', compact('labels', 'values', 'total_sia', 'total_visitor', 'total_company', 'total_goods'));
     }
 
     public function getData()

@@ -133,6 +133,7 @@ Route::group([
             $router->post('store', [SiaPersonController::class, 'store'])->name('sia-person.store');
             $router->post('upload', [SiaPersonController::class, 'upload'])->name('sia-person.upload');
             $router->get('edit/{id}', [SiaPersonController::class, 'edit'])->name('sia-person.edit');
+            $router->get('detail/{id}', [SiaPersonController::class, 'detail'])->name('sia-person.detail');
             $router->get('delete/{id}', [SiaPersonController::class, 'destroy'])->name('sia-person.delete');
         });
 

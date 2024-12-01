@@ -10,16 +10,17 @@ USER
 
 ADMIN
 ===================
-- Menu Dashboard (Statistic & Grafik) -> butuh
-- Menu New Worker (Detail Woker Error) -> butuh
+- Menu Dashboard (Statistic & Grafik) -> done
+- Menu New Worker (Detail Woker Error) -> checking
 
 RULES & PERMISSION
-- Super Admin (All Access) -> in setup
-- Admin   (Approval, Export Data, Check Dokument) -> in setup
-==================================================
+- Super Admin (All Access)
+- Admin   (Approval, "Export Data", "Check Dokument") -> in progress
+
+================================================== -> done
 - End User / Job Owner (Aproval 1)
-- HOD 	(Aproval 2) -> inprogres setup
-- Procurement (Aproval 3) -> inprogres setup
-- Permit & Legal (Aproval 4) -> inprogres setup
-- Dokter  (Aproval 5 & Validasi MCU) -> inprogres setup
-- Company -> inprogres setup
+- HOD 	(Aproval 2)
+- Procurement (Aproval 3)
+- Permit & Legal (Aproval 4)
+- Dokter  (Aproval 5 & Validasi MCU)
+- Company

@@ -35,6 +35,16 @@ class SiaPersonController extends Controller
             ->make(true);
     }
 
+    public function detail($id = null)
+    {
+        $data = Sia_person::select('*')
+            // ->leftJoin('users', 'sia.user_id', '=', 'users.id')
+            // ->leftJoin('companies', 'sia.company_id', '=', 'companies.id')
+            ->find($id);
+
+        return view('admin.new-worker-person.detail', compact('data', 'id'));
+    }
+
     public function create($id = null)
     {
         return view('admin.new-worker-person.form', compact('id'));

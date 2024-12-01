@@ -174,7 +174,7 @@
                                             <div class="col-9">
                                                 <input type="file" id="medical-checkup-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
                                                 <label for="medical-checkup-input" id="label" style="cursor: pointer;">
-                                                    <span id="medical-checkup-text"><i class='bx bx-paperclip bx-xs bx-rotate-270'></i>Choose BPJS</span>
+                                                    <span id="medical-checkup-text"><i class='bx bx-paperclip bx-xs bx-rotate-270'></i>Choose Medical Checkup</span>
                                                 </label>
                                                 <input type="hidden" id="medical-checkup-filename" name="medical_checkup" value="{{ old('medical_checkup', @$data->medical_checkup) }}">
                                             </div>
