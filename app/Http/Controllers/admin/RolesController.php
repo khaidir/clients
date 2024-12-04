@@ -29,7 +29,7 @@ class RolesController extends Controller
     public function getData()
     {
         $company = Role::select('*')
-            ->orderBy('created_at','desc')
+            ->orderBy('created_at','asc')
             ->get();
 
         return DataTables::of($company)
