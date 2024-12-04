@@ -73,8 +73,8 @@
                                         <select name="industry" class="form-control">
                                             <option value="">Choose</option>
                                             @foreach($industries as $industry)
-                                            <option value="{{ $industry }}" {{ $industry == $data->industry ? 'selected' : '' }}>
-                                                {{ $industry }}
+                                            <option value="{{ @$industry }}" {{ @$industry == @$data->industry ? 'selected' : '' }}>
+                                                {{ @$industry }}
                                             </option>
                                             @endforeach
                                         </select>
