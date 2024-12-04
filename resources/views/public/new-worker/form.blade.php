@@ -66,7 +66,7 @@
                             </div> --}}
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
-                                <input type="hidden" name="sia_id" class="form-control" id="sia_id" value="{{ @$data->sia_id }}">
+                                <input type="hidden" name="sia_id" class="form-control" id="sia_ids" value="{{ @$data->sia_id }}">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <div class="card card-flush py-4">
                                         <div class="card-header">
