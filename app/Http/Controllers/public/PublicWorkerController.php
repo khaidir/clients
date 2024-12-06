@@ -58,7 +58,6 @@ class PublicWorkerController extends Controller
             'email.required' => 'Email is required',
         ]);
 
-
         DB::beginTransaction();
         try {
 
@@ -76,15 +75,15 @@ class PublicWorkerController extends Controller
             ]));
 
             DB::commit();
-            return redirect()->route('public.new-worker.index', @$data->sia_id)->with(['success' => 'Data has been saved']);
+            return redirect()->route('public.new-worker.index', @$request->sia_id)->with(['success' => 'Data has been saved']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('public.new-worker.index', @$data->sia_id)->with(['warning' => @$e->errors()]);
+            return redirect()->route('public.new-worker.index', @$request->sia_id)->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('public.new-worker.index', @$data->sia_id)->with(['error' => @$e->getMessage()]);
+            return redirect()->route('public.new-worker.index', @$request->sia_id)->with(['error' => @$e->getMessage()]);
         }
     }
 

@@ -38,35 +38,9 @@
                     <div id="kt_app_content" class="app-content ">
                         <form action="{{ route('public.new-worker-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
                             @csrf
-                            {{-- <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-                                <div class="card card-flush py-4">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <h2>Thumbnail</h2>
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-center pt-0">
-                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
-                                            <div class="image-input-wrapper w-150px h-150px"></div>
-                                            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-pencil fs-7"></i>
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                                                <input type="hidden" name="avatar_remove">
-                                            </label>
-                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-cross fs-2"></i>
-                                            </span>
-                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
-                                                <i class="ki-outline ki-cross fs-2"></i>
-                                            </span>
-                                        </div>
-                                        <div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
-                                <input type="hidden" name="sia_id" class="form-control" id="sia_id" value="{{ @$data->sia_id }}">
+                                <input type="hidden" name="sia_id" class="form-control" id="sia_id" value="{{ @$data->id ? @$data->sia_id : @$id }}">
                                 <div class="d-flex flex-column gap-7 gap-lg-10">
                                     <div class="card card-flush py-4">
                                         <div class="card-header">
