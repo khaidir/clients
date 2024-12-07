@@ -135,6 +135,17 @@ Route::group([
             $router->get('edit/{id}', [SiaPersonController::class, 'edit'])->name('sia-person.edit');
             $router->get('detail/{id}', [SiaPersonController::class, 'detail'])->name('sia-person.detail');
             $router->get('delete/{id}', [SiaPersonController::class, 'destroy'])->name('sia-person.delete');
+
+            Route::group([
+                'prefix' => 'approve',
+            ], function ($router) {
+                $router->get('/end-user/{id}', [SiaPersonController::class, 'approve']);
+                $router->get('hod/{id}', [SiaPersonController::class, 'approve']);
+                $router->get('purchasing/{id}', [SiaPersonController::class, 'approve']);
+                $router->get('legal/{id}', [SiaPersonController::class, 'approve']);
+                $router->get('hs/{id}', [SiaPersonController::class, 'approve']);
+                $router->get('health/{id}', [SiaPersonController::class, 'approve']);
+            });
         });
 
     });

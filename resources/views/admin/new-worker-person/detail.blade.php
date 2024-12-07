@@ -271,6 +271,16 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="row justify-content-end">
+                                <div class="col-md-10">
+                                    <a href="http://localhost:8000/worker/person/approve/end-user/1" class="btn btn-success btn-md">End User</a>
+                                    <a href="http://localhost:8000/worker/person/approve/hod/1" class="btn btn-success btn-md">HOD</a>
+                                    <a href="http://localhost:8000/worker/person/approve/purchasing/1" class="btn btn-success btn-md">Purchasing</a>
+                                    <a href="http://localhost:8000/worker/person/approve/legal/1" class="btn btn-success btn-md">Legal / Health & Safety</a>
+                                    <a href="http://localhost:8000/worker/person/approve/hs/1" class="btn btn-success btn-md">End User / H&S</a>
+                                    <a href="http://localhost:8000/worker/person/approve/health/1" class="btn btn-success btn-md">Health & Safety</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

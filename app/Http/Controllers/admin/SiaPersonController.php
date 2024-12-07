@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sias;
 use App\Models\Sia_person;
 use App\Models\Companies;
 use Illuminate\Http\Request;
@@ -88,6 +89,41 @@ class SiaPersonController extends Controller
         {
             DB::rollback();
             return redirect()->route('sia.detail', @$request->sia_id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
+
+    public function approve($id)
+    {
+        DB::beginTransaction();
+        try {
+
+            $person = Sias::findOrFail($id);
+            if (@$slug == 'end-user') {
+                $person->request_by = Auth::user()->id;
+            } elseif (@$slug == 'hod') {
+                $person->approved_by = Auth::user()->id;
+            } elseif (@$slug == 'purchasing') {
+                $person->doc_verified_by = Auth::user()->id;
+            } elseif (@$slug == 'legal') {
+                $person->license_verified_by = Auth::user()->id;
+            } elseif (@$slug == 'hs') {
+                $person->inducted_verified_by = Auth::user()->id;
+            } elseif (@$slug == 'health') {
+                $person->evaluated_verified_by = Auth::user()->id;
+            }
+            $person->save();
+
+            DB::commit();
+            return redirect('worker/person/detail/'. @$id)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['error' => @$e->getMessage()]);
         }
     }
 
