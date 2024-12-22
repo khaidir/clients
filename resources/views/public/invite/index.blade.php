@@ -39,7 +39,7 @@
                         <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
                             @csrf
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                                <input type="hidden" name="token" class="form-control" id="token" value="{{ $token }}">
+                                <input type="hidden" name="token" class="form-control" id="token" value="{{ $token->token }}">
                                 <div class="d-flex flex-column gap-4 gap-lg-6">
                                     <div class="card card-flush">
                                         <div class="row card-body">
@@ -47,19 +47,19 @@
                                             <div class="col-md-12 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Description</label>
-                                                    <input type="text" name="description" class="form-control @error('description') is-invalid @enderror mb-2" placeholder="Description" value="{{ old('description') }}">
+                                                    <input type="text" name="description" class="form-control @error('description') is-invalid @enderror mb-2" placeholder="Description" value="{{ old('description', @$data->description) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Destination</label>
-                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Destination" value="{{ old('destination') }}">
+                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Destination" value="{{ old('destination', @$data->destination) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Duration</label>
-                                                    <input type="text" name="duration" class="form-control @error('duration') is-invalid @enderror mb-2" placeholder="Duration" value="{{ old('duration') }}">
+                                                    <input type="text" name="duration" class="form-control @error('duration') is-invalid @enderror mb-2" placeholder="Duration" value="{{ old('duration', @$data->duration) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -71,7 +71,6 @@
                                                         <option value="{{ @$p->id }}">{{ @$p->fullname .' ('.@$p->name.')' }}</option>
                                                         @endforeach
                                                     </select>
-                                                    {{-- <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email') }}"> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -83,19 +82,19 @@
                                             <div class="col-md-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Card ID</label>
-                                                    <input type="text" name="citizenship_id" class="form-control @error('citizenship_id') is-invalid @enderror mb-2" placeholder="Card ID" value="">
+                                                    <input type="text" name="citizenship_id" class="form-control @error('citizenship_id') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_id', @$data->citizenship_id) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Fullname</label>
-                                                    <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname') }}">
+                                                    <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname', @$data->fullname) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Email</label>
-                                                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email') }}">
+                                                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email', @$data->email) }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +131,7 @@
                                 <div class="d-flex justify-content-end">
                                     <a href="/u/contracts/workers" class="btn btn-light me-5"> Cancel </a>
                                     <button type="submit" class="btn btn-primary">
-                                        <span class="indicator-label"> Save Changes </span>
+                                        <span class="indicator-label"> Add Person </span>
                                         <span class="indicator-progress"> Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
@@ -167,7 +166,7 @@
             formData.append('file', file);
             document.getElementById(filenameDisplayId).textContent = file.name;
 
-            fetch('{{ route("sia-person.upload") }}', {
+            fetch('{{ route("visitor-public-upload") }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -190,5 +189,5 @@
     }
 
     // Panggil fungsi untuk setiap elemen file input
-    setupFileUpload('citizenship-input', 'citizenship-filename', 'citizenship_doc');
+    setupFileUpload('ktp-input', 'ktp-filename', 'ktp-name');
 </script>

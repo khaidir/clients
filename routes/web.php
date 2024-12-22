@@ -10,9 +10,11 @@ use App\Http\Controllers\admin\SiaController;
 use App\Http\Controllers\admin\SiaPersonController;
 use App\Http\Controllers\admin\SiaExtendedController;
 use App\Http\Controllers\admin\VisitorController;
+use App\Http\Controllers\admin\TokenController;
 use App\Http\Controllers\admin\VisitorPersonController;
 use App\Http\Controllers\admin\VisitorPpeController;
 use App\Http\Controllers\admin\CompanyController;
+use App\Http\Controllers\admin\PicController;
 use App\Http\Controllers\admin\PpeController;
 use App\Http\Controllers\admin\PpeTypeController;
 use App\Http\Controllers\admin\UsersController;
@@ -37,12 +39,13 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
 Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('direct/invite/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
+Route::get('direct/i/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
 
 Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('visitor-public');
 Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
 Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-public-store');
 Route::post('invite/upload', [PublicVisitorController::class, 'upload'])->name('visitor-public-upload');
+Route::get('invite/delete/{id}', [PublicVisitorController::class, 'destroy'])->name('visitor-public-delete');
 
 // public access
 Route::group([
@@ -182,6 +185,10 @@ Route::group([
         $router->get('ppe/{id}', [VisitorController::class, 'ppe'])->name('visitor-ppe.index');
         $router->get('delete/{id}', [VisitorController::class, 'destroy'])->name('visitor.delete');
 
+        $router->get('approve/pic/{id}', [VisitorController::class, 'pic'])->name('visitor-approve.pic');
+        $router->get('approve/security/{id}', [VisitorController::class, 'security'])->name('visitor-approve.security');
+        $router->get('approve/safety/{id}', [VisitorController::class, 'safety'])->name('visitor-approve.safety');
+
         Route::group([
             'prefix' => 'person',
         ], function ($router) {
@@ -191,6 +198,18 @@ Route::group([
             $router->post('upload', [VisitorPersonController::class, 'upload'])->name('visitor-person.upload');
             $router->get('edit/{id}', [VisitorPersonController::class, 'edit'])->name('visitor-person.edit');
             $router->get('delete/{id}', [VisitorPersonController::class, 'destroy'])->name('visitor-person.delete');
+        });
+
+        Route::group([
+            'prefix' => 'token',
+        ], function ($router) {
+            $router->get('/', [TokenController::class, 'index'])->name('token.index');
+            $router->get('/data', [TokenController::class, 'getData'])->name('token.data');
+            $router->get('new', [TokenController::class, 'create'])->name('token.create');
+            $router->post('store', [TokenController::class, 'store'])->name('token.store');
+            $router->post('upload', [TokenController::class, 'upload'])->name('token.upload');
+            $router->get('edit/{id}', [TokenController::class, 'edit'])->name('tokenn.edit');
+            $router->get('delete/{id}', [TokenController::class, 'destroy'])->name('token.delete');
         });
 
         Route::group([
@@ -221,7 +240,16 @@ Route::group([
         $router->get('delete/{id}', [CompanyController::class, 'destroy'])->name('company.delete');
     });
 
-
+    Route::group([
+        'prefix' => 'pic',
+    ], function ($router) {
+        $router->get('/', [PicController::class, 'index'])->name('pic.index');
+        $router->get('data', [PicController::class, 'getData'])->name('pic.data');
+        $router->get('new', [PicController::class, 'create'])->name('pic.create');
+        $router->post('store', [PicController::class, 'store'])->name('pic.store');
+        $router->get('edit/{id}', [PicController::class, 'edit'])->name('pic.edit');
+        $router->get('delete/{id}', [PicController::class, 'destroy'])->name('pic.delete');
+    });
 
     Route::group([
         'prefix' => 'ppe',

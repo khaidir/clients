@@ -110,18 +110,18 @@
                                             <div class="row fv-row">
                                                 <div class="col-sm-4">
                                                     <div class="upload-container slim">
-                                                        <label for="citizenship-input" class="upload-label">
+                                                        <label for="ktp-input" class="upload-label">
                                                             <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up fs-3x upload-icon"></i>
+                                                                <i class="ki-outline ki-file-up {{ (@$data->ktp_checked)?'text-primary':'text-dark' }} fs-3x upload-icon"></i>
                                                                 <div class="upload-text">
                                                                     <h3 class="upload-title">Choose KTP</h3>
                                                                     <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="citizenship-name" class="citizenship-filename"></span>
+                                                                    <span id="ktp-name" class="upload-filename">{{ @$data->ktp }}</span>
                                                                 </div>
                                                             </div>
                                                         </label>
-                                                        <input type="file" id="citizenship-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="citizenship_doc" name="citizenship_doc" value="{{ old('citizenship_doc') }}">
+                                                        <input type="file" id="ktp-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                                        <input type="hidden" id="ktp-filename" name="ktp" value="{{ old('ktp', @$data->ktp) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,7 +137,7 @@
                                                         <div class="col-md-4">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
-                                                                <input type="hidden" name="vid[]" class="form-control" placeholder="Fullname" value="{{ $personil->id }}">
+                                                                <input type="text" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
@@ -164,7 +164,7 @@
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
-                                                                <a href="javascript:;" class="btn btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">Delete</a>
+                                                                <a href="/invite/delete/{{ $personil->id }}" class="btn btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">Delete</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -263,7 +263,7 @@
             formData.append('file', file);
             document.getElementById(filenameDisplayId).textContent = file.name;
 
-            fetch('{{ route("sia-person.upload") }}', {
+            fetch('{{ route("visitor-public-upload") }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -286,5 +286,5 @@
     }
 
     // Panggil fungsi untuk setiap elemen file input
-    setupFileUpload('citizenship-input', 'citizenship-filename', 'citizenship_doc');
+    setupFileUpload('ktp-input', 'ktp-filename', 'ktp-name');
 </script>

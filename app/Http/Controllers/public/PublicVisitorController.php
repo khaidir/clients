@@ -19,13 +19,19 @@ class PublicVisitorController extends Controller
     public function index($token = null)
     {
         // cek token, ready standby at this page else redirect with sorry word
+        $token = Token::where('token', $token)->first();
 
         $pic = Pic::select('pic.*', 'users.name as fullname')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
             ->orderBy('created_at','desc')
             ->get();
 
-        return view('public.invite.index', compact('pic', 'token'));
+        $data = Visitor::select('visitor.*')
+            ->leftJoin('pic', 'pic.id', '=', 'visitor.pic_id')
+            ->leftJoin('users', 'pic.user_id', '=', 'users.id')
+            ->where('token_id', $token->id)->first();
+
+        return view('public.invite.index', compact('data', 'pic', 'token'));
     }
 
     public function draft($token = null)
@@ -45,6 +51,13 @@ class PublicVisitorController extends Controller
         $personils = VisitorPerson::where('visitor_id', $data->id)->get();
 
         return view('public.invite.draft', compact('data', 'personils', 'pic', 'token'));
+    }
+
+    public function direct_token($token = null)
+    {
+        $token = $this->base64_decrypt($token, 7);
+        $token = Token::where('token', $token)->first();
+        return redirect('/invite/'. $token->token)->with(['success' => 'Selamat, silahkan masukkan data anda dengan lengkap.']);
     }
 
     public function store(Request $request)
@@ -76,7 +89,7 @@ class PublicVisitorController extends Controller
                     'fullname' => $request->fullname,
                     'email' => $request->email,
                     'citizenship_id' => $request->citizenship_id,
-                    'citizenship_doc' => $request->citizenship_doc,
+                    'citizenship_doc' => $request->ktp,
                     'description' => $request->description,
                     'destination' => $request->destination,
                     'duration' => $request->duration,
@@ -84,13 +97,21 @@ class PublicVisitorController extends Controller
                 ]
             );
 
-            if (!empty($request->name)) {
+            if (!empty($request->name) && !empty($request->citi_id)) {
                 $personilData = [];
                 foreach ($request->name as $index => $name) {
+                    // Pastikan bahwa nama dan citi_id tidak kosong
+                    if (empty($name) || empty($request->citi_id[$index])) {
+                        continue; // Skip iterasi ini jika salah satu kosong
+                    }
+
+                    // Mengambil ID berdasarkan input 'vid[]'
+                    $personilId = $request->vid[$index] ?? null; // Jika tidak ada, set null
+
                     $personil = [
                         'visitor_id' => $visitor->id,
                         'name' => $name,
-                        'citizenship' => $request->citi_id[$index] ?? null,
+                        'citizenship' => $request->citi_id[$index],
                         'notes' => null,
                         'status' => 'false',
                     ];
@@ -104,21 +125,22 @@ class PublicVisitorController extends Controller
                         $personil['docs_citizenship'] = null;
                     }
 
-                    // Check if the personil already exists
-                    $existingPersonil = VisitorPerson::where('visitor_id', $visitor->id)
-                                                      ->where('name', $name)
-                                                      ->first();
+                    // Check if the personil already exists (based on 'vid[]' value)
+                    if ($personilId) {
+                        $existingPersonil = VisitorPerson::find($personilId); // Find person by ID
 
-                    if ($existingPersonil) {
-                        // Update the existing personil data
-                        $existingPersonil->update([
-                            'citizenship' => $personil['citizenship'],
-                            'docs_citizenship' => $personil['docs_citizenship'], // Allow null if no file is uploaded
-                            'notes' => $personil['notes'],
-                            'status' => $personil['status'],
-                        ]);
+                        if ($existingPersonil) {
+                            // Update the existing personil data
+                            $existingPersonil->update([
+                                'name' => $personil['name'],
+                                'citizenship' => $personil['citizenship'],
+                                'docs_citizenship' => $personil['docs_citizenship'], // Allow null if no file is uploaded
+                                'notes' => $personil['notes'],
+                                'status' => $personil['status'],
+                            ]);
+                        }
                     } else {
-                        // If personil doesn't exist, add new data
+                        // If personil doesn't exist (i.e., no 'vid[]' value), add new data
                         $personilData[] = $personil;
                     }
                 }
@@ -132,6 +154,7 @@ class PublicVisitorController extends Controller
                     );
                 }
             }
+
 
             DB::commit();
             return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
@@ -153,13 +176,60 @@ class PublicVisitorController extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filename = time() . '_' . $file->getClientOriginalName();
-            // $file->storeAs('public/uploads', $filename);
             $file->storeAs('uploads', $filename, 'public');
 
             return response()->json(['filename' => $filename, 'message' => 'File uploaded successfully'], 200);
         }
 
         return response()->json(['message' => 'File upload failed'], 400);
+    }
+
+    public function destroy($id)
+    {
+        $person = VisitorPerson::select('visitor_person.visitor_id')
+                ->where('visitor_person.id', $id)
+                ->first();
+        $visitor = Visitor::select('token_id')->find($person->visitor_id);
+        $token = Token::select('token')->find($visitor->token_id);
+
+        DB::beginTransaction();
+        try {
+            $visitor = VisitorPerson::find($id);
+            $visitor->delete();
+
+            DB::commit();
+            return redirect('invite/draft/'. $token->token)->with(['success' => 'Data delete successfully']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('invite/draft/'. $token->token)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('invite/draft/'. $token->token)->with(['danger' => @$e->getMessage()]);
+        }
+
+    }
+
+    function base64_encrypt(string $text, int $times = 1): string
+    {
+        $encoded = $text;
+        for ($i = 0; $i < $times; $i++) {
+            $encoded = base64_encode($encoded);
+        }
+        return $encoded;
+    }
+
+    function base64_decrypt(string $encodedText, int $times = 1): string
+    {
+        $decoded = $encodedText;
+        for ($i = 0; $i < $times; $i++) {
+            $decoded = base64_decode($decoded, true);
+            if ($decoded === false) {
+                throw new Exception("Invalid Base64 string");
+            }
+        }
+        return $decoded;
     }
 
 }
