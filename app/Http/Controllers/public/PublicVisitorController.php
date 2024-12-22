@@ -63,8 +63,8 @@ class PublicVisitorController extends Controller
             'citizenship_id.required' => 'Card ID is required',
         ]);
 
-        // DB::beginTransaction();
-        // try {
+        DB::beginTransaction();
+        try {
 
             $dateRequest = now();
             $token = $request->token;
@@ -92,36 +92,56 @@ class PublicVisitorController extends Controller
                         'name' => $name,
                         'citizenship' => $request->citi_id[$index] ?? null,
                         'notes' => null,
-                        'status' => false,
+                        'status' => 'false',
                     ];
 
-                    // Handle file uploads
+                    // Handle file uploads (only if the file exists)
                     if ($request->hasFile("attachment.$index")) {
+                        // Store the uploaded file if it exists, otherwise leave it as null
                         $personil['docs_citizenship'] = $request->file("attachment.$index")->store('attachments', 'public');
+                    } else {
+                        // If no file is uploaded, set docs_citizenship as null
+                        $personil['docs_citizenship'] = null;
                     }
 
-                    // Add condition for upsert (matching `name` and `visitor_id`)
-                    $personil['unique_key'] = "{$visitor->id}_{$name}"; // Temporary unique identifier
-                    $personilData[] = $personil;
+                    // Check if the personil already exists
+                    $existingPersonil = VisitorPerson::where('visitor_id', $visitor->id)
+                                                      ->where('name', $name)
+                                                      ->first();
+
+                    if ($existingPersonil) {
+                        // Update the existing personil data
+                        $existingPersonil->update([
+                            'citizenship' => $personil['citizenship'],
+                            'docs_citizenship' => $personil['docs_citizenship'], // Allow null if no file is uploaded
+                            'notes' => $personil['notes'],
+                            'status' => $personil['status'],
+                        ]);
+                    } else {
+                        // If personil doesn't exist, add new data
+                        $personilData[] = $personil;
+                    }
                 }
 
-                // Insert or update personil data
-                VisitorPerson::upsert(
-                    collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
-                    ['visitor_id', 'name'], // Fields to match for update
-                    ['citizenship', 'docs_citizenship', 'notes', 'status'] // Fields to update
-                );
+                // Insert or update personil data if there is new data to insert
+                if (count($personilData) > 0) {
+                    VisitorPerson::upsert(
+                        collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
+                        ['id'], // Use 'id' for conflict detection
+                        ['citizenship', 'docs_citizenship', 'notes', 'status'] // Update only these fields
+                    );
+                }
             }
 
-        //     DB::commit();
-        //     return redirect('invite/draft/'. $token)->with(['success' => 'Data has been saved']);
-        // } catch (ValidationException $e) {
-        //     DB::rollback();
-        //     return redirect('invite/'. $token)->with(['warning' => $e->errors()]);
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return redirect('invite/'. $token)->with(['error' => $e->getMessage()]);
-        // }
+            DB::commit();
+            return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e) {
+            DB::rollback();
+            return redirect('invite/draft/'. $token->token)->with(['warning' => $e->errors()]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('invite/draft/'. $token->token)->with(['error' => $e->getMessage()]);
+        }
     }
 
     public function upload(Request $request)
