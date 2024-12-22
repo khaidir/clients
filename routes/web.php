@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\TokenController;
 use App\Http\Controllers\admin\VisitorPersonController;
 use App\Http\Controllers\admin\VisitorPpeController;
 use App\Http\Controllers\admin\CompanyController;
+use App\Http\Controllers\admin\PicController;
 use App\Http\Controllers\admin\PpeController;
 use App\Http\Controllers\admin\PpeTypeController;
 use App\Http\Controllers\admin\UsersController;
@@ -234,7 +235,16 @@ Route::group([
         $router->get('delete/{id}', [CompanyController::class, 'destroy'])->name('company.delete');
     });
 
-
+    Route::group([
+        'prefix' => 'pic',
+    ], function ($router) {
+        $router->get('/', [PicController::class, 'index'])->name('pic.index');
+        $router->get('data', [PicController::class, 'getData'])->name('pic.data');
+        $router->get('new', [PicController::class, 'create'])->name('pic.create');
+        $router->post('store', [PicController::class, 'store'])->name('pic.store');
+        $router->get('edit/{id}', [PicController::class, 'edit'])->name('pic.edit');
+        $router->get('delete/{id}', [PicController::class, 'destroy'])->name('pic.delete');
+    });
 
     Route::group([
         'prefix' => 'ppe',

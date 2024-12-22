@@ -56,9 +56,15 @@
                         <span key="t-lokasi">Companies</span>
                     </a>
                 </li>
+                <li class="{{ request()->is('pic/*') == 1 ? 'mm-active' : ''}}">
+                    <a href="/pic" class="waves-effect {{ request()->is('pic/*') == 1 ? 'active' : ''}}">
+                        <i class='bx bx-user' ></i>
+                        <span key="t-lokasi">PIC</span>
+                    </a>
+                </li>
                 <li class="{{ request()->is('ppe/*') == 1 ? 'mm-active' : ''}}">
                     <a href="/ppe" class="waves-effect {{ request()->is('ppe/*') == 1 ? 'active' : ''}}">
-                        <i class='bx bx-user'></i>
+                        <i class='bx bx-data' ></i>
                         <span key="t-provider">Goods/PPE</span>
                     </a>
                 </li>
@@ -66,7 +72,7 @@
                 <li class="menu-title" key="t-apps">Settings</li>
                 <li class="{{ request()->is('users/*') == 1 ? 'mm-active' : ''}}">
                     <a href="/users" class="waves-effect {{ request()->is('users/*') == 1 ? 'active' : ''}}">
-                        <i class='bx bx-user'></i>
+                        <i class='bx bx-group'></i>
                         <span key="t-provider">Users</span>
                     </a>
                 </li>

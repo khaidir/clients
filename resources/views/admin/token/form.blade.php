@@ -27,7 +27,7 @@
                             <p class="card-title-desc">Please fill out the form below completely.</p>
                             <form action="/visitor/token/store" method="post" class="needs-validation">
                                 @csrf
-                                <input type="text" name="id" class="form-control" id="id" value="{{ @$data->id }}">
+                                <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
 
                                 <div class="row mb-4">
                                     <label for="description" class="col-sm-3 col-form-label">Description</label>
