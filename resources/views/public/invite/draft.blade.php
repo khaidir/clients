@@ -132,22 +132,22 @@
                                         <div class="row card-body">
                                             <h3 class="mb-4">Personil</h3>
                                             <div class="mb-6" id="personilContainer">
-                                                <!-- Looping untuk Personil yang sudah ada -->
                                                 @foreach($personils as $personil)
                                                     <div class="row mb-6 personil-row">
                                                         <div class="col-md-4">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
+                                                                <input type="hidden" name="vid[]" class="form-control" placeholder="Fullname" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="form-label">Card ID</label>
                                                                 <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Attachment</label>
                                                                 <input type="file" name="attachment[]" class="form-control">
@@ -156,10 +156,20 @@
                                                                 @endif
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-1">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">*</label>
+                                                                <a href="javascript:;" class="btn btn-light-secondary">View</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <a href="javascript:;" class="btn btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">Delete</a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 @endforeach
 
-                                                <!-- Default Row (Hidden for Cloning) -->
                                                 <div class="row mb-6 personil-row personil-template">
                                                     <div class="col-md-4">
                                                         <div class="fv-row fv-plugins-icon-container">
@@ -167,16 +177,24 @@
                                                             <input type="text" name="name[]" class="form-control" placeholder="Fullname">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="form-label">Card ID</label>
                                                             <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Attachment</label>
                                                             <input type="file" name="attachment[]" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            {{-- <a href="javascript:;" class="btn btn-light-secondary add-personil">Add</a> --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -185,9 +203,6 @@
                                             <button type="button" class="btn btn-primary btn-md" id="addPersonil">Add Personil</button>
                                         </div>
                                     </div>
-
-
-
 
                                 </div>
 
