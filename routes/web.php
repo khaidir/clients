@@ -23,6 +23,7 @@ use App\Http\Controllers\admin\PermissionsController;
 use App\Http\Controllers\public\PublicDashboardController;
 use App\Http\Controllers\public\PublicProfileController;
 use App\Http\Controllers\public\PublicCompanyController;
+use App\Http\Controllers\public\PublicVisitorController;
 use App\Http\Controllers\public\PublicContractsController;
 use App\Http\Controllers\public\PublicWorkerController;
 use App\Http\Controllers\public\PublicExtendedController;
@@ -31,10 +32,17 @@ use App\Http\Controllers\public\PublicHistoryController;
 Route::view('/', 'welcome');
 
 Route::get('login', [AuthController::class, 'showLoginForm'])
-    ->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class)
-    ->name('login');
+->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class)
+->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('direct/invite/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
+
+Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('visitor-public');
+Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
+Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-public-store');
+Route::post('invite/upload', [PublicVisitorController::class, 'upload'])->name('visitor-public-upload');
 
 // public access
 Route::group([
