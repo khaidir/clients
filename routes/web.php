@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\SiaController;
 use App\Http\Controllers\admin\SiaPersonController;
 use App\Http\Controllers\admin\SiaExtendedController;
 use App\Http\Controllers\admin\VisitorController;
+use App\Http\Controllers\admin\TokenController;
 use App\Http\Controllers\admin\VisitorPersonController;
 use App\Http\Controllers\admin\VisitorPpeController;
 use App\Http\Controllers\admin\CompanyController;
@@ -37,7 +38,7 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
 Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('direct/invite/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
+Route::get('direct/i/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
 
 Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('visitor-public');
 Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
@@ -191,6 +192,18 @@ Route::group([
             $router->post('upload', [VisitorPersonController::class, 'upload'])->name('visitor-person.upload');
             $router->get('edit/{id}', [VisitorPersonController::class, 'edit'])->name('visitor-person.edit');
             $router->get('delete/{id}', [VisitorPersonController::class, 'destroy'])->name('visitor-person.delete');
+        });
+
+        Route::group([
+            'prefix' => 'token',
+        ], function ($router) {
+            $router->get('/', [TokenController::class, 'index'])->name('token.index');
+            $router->get('/data', [TokenController::class, 'getData'])->name('token.data');
+            $router->get('new', [TokenController::class, 'create'])->name('token.create');
+            $router->post('store', [TokenController::class, 'store'])->name('token.store');
+            $router->post('upload', [TokenController::class, 'upload'])->name('token.upload');
+            $router->get('edit/{id}', [TokenController::class, 'edit'])->name('tokenn.edit');
+            $router->get('delete/{id}', [TokenController::class, 'destroy'])->name('token.delete');
         });
 
         Route::group([

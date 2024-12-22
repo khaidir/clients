@@ -47,6 +47,13 @@ class PublicVisitorController extends Controller
         return view('public.invite.draft', compact('data', 'personils', 'pic', 'token'));
     }
 
+    public function direct_token($token = null)
+    {
+        $token = $this->base64_decrypt($token, 7);
+        $token = Token::where('token', $token)->first();
+        return redirect('/invite/'. $token->token)->with(['success' => 'Selamat, silahkan masukkan data anda dengan lengkap.']);
+    }
+
     public function store(Request $request)
     {
 
@@ -160,6 +167,27 @@ class PublicVisitorController extends Controller
         }
 
         return response()->json(['message' => 'File upload failed'], 400);
+    }
+
+    function base64_encrypt(string $text, int $times = 1): string
+    {
+        $encoded = $text;
+        for ($i = 0; $i < $times; $i++) {
+            $encoded = base64_encode($encoded);
+        }
+        return $encoded;
+    }
+
+    function base64_decrypt(string $encodedText, int $times = 1): string
+    {
+        $decoded = $encodedText;
+        for ($i = 0; $i < $times; $i++) {
+            $decoded = base64_decode($decoded, true);
+            if ($decoded === false) {
+                throw new Exception("Invalid Base64 string");
+            }
+        }
+        return $decoded;
     }
 
 }

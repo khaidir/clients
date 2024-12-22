@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box mb-0 d-sm-flex align-items-center justify-content-between">
-                    <h2 class="mb-sm-0 m-0 font-size-18 page-title">Visitor</h2>
+                    <h2 class="mb-sm-0 m-0 font-size-18 page-title">Token</h2>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
-                            <li class="breadcrumb-item">Visitor</li>
+                            <li class="breadcrumb-item">Token</li>
                             <li class="breadcrumb-item active">Lists</li>
                         </ol>
                     </div>
@@ -30,8 +30,7 @@
                                             <span id="dlength"></span>
                                         </div>
                                         <div class="col-12 col-sm-12">
-                                            <a href="/visitor/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New</a>
-                                            <a href="/visitor/token" class="btn btn-md btn-secondary btn-float" style="margin-top:;">Manage Token</a>
+                                            <a href="/visitor/token/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New</a>
                                         </div>
                                         <div class="col-12 col-sm-12 mt-4">
                                             <span id="dfilter"></span>
@@ -51,13 +50,11 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40">ID</th>
-                                            <th width="150">User ID</th>
-                                            <th width="200">Description</th>
-                                            <th width="350">Destination</th>
-                                            <th width="150">Duration</th>
-                                            <th width="150">Date Request</th>
-                                            <th width="90">Status</th>
-                                            <th width="140">Action</th>
+                                            <th width="200">Token</th>
+                                            <th width="600">Description</th>
+                                            <th width="80">Share</th>
+                                            <th width="80">Status</th>
+                                            <th width="100">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -77,7 +74,7 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('visitor.data') }}",
+        ajax: "{{ route('token.data') }}",
         columns: [
             {
                 data: null,
@@ -88,14 +85,10 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'fullname' },
+            { data: 'token' },
             { data: 'description' },
-            { data: 'destination' },
-            { data: 'duration' },
-            { data: 'date_request' },
-            { data: 'status', render: function(data) {
-                return data ? 'Active' : 'Inactive';
-            }},
+            { data: 'share' },
+            { data: 'status' },
             { data: 'action', orderable: false, searchable: false }
         ]
     });
@@ -139,7 +132,7 @@ $(document).ready(function() {
         }).then(function(result) {
             if (result?.value && (result?.value[0] != "")) {
                 $.ajax({
-                    url : '/visitor/delete/' + id,
+                    url : '/visitor/token/delete/' + id,
                     type : "get",
                     success: function(response){
                         Swal.fire(
@@ -167,7 +160,30 @@ $(document).ready(function() {
                 )
             }
         })
-        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('btn-copy') || event.target.closest('.btn-copy')) {
+            event.preventDefault();
+
+            const copyText = event.target.getAttribute('data-copy') ||
+                            event.target.closest('.btn-copy').getAttribute('data-copy');
+
+            navigator.clipboard.writeText(copyText).then(() => {
+                Swal.fire(
+                    'Success!',
+                    'Link successfully copied',
+                    'success'
+                )
+            }).catch(err => {
+                Swal.fire(
+                    'Cancel',
+                    'Link failed copied',
+                    'error'
+                )
+            });
+        }
+    });
 });
 </script>
 @endsection
