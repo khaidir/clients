@@ -13,11 +13,24 @@ return new class extends Migration
     {
         Schema::create('visitor', function (Blueprint $table) {
             $table->increments('id');
+
+            $table->integer('token_id')->default(0);
+            $table->integer('pic_id')->default(0);
             $table->integer('user_id')->nullable();
+
+            $table->string('fullname', 160)->nullable();
+            $table->string('email', 160)->nullable();
+            $table->string('citizenship_id', 20)->nullable();
+            $table->string('citizenship_doc', 255)->nullable();
+
             $table->string('description', 160)->nullable();
             $table->string('destination', 40)->nullable();
-            $table->string('duration', 3)->nullable();
+            $table->string('duration', 120)->nullable();
+
             $table->dateTime('date_request', precision: 0);
+            $table->integer('approve_1')->default(0);
+            $table->integer('approve_2')->default(0);
+            $table->integer('approve_3')->default(0);
             $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
