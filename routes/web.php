@@ -185,6 +185,10 @@ Route::group([
         $router->get('ppe/{id}', [VisitorController::class, 'ppe'])->name('visitor-ppe.index');
         $router->get('delete/{id}', [VisitorController::class, 'destroy'])->name('visitor.delete');
 
+        $router->get('approve/pic/{id}', [VisitorController::class, 'pic'])->name('visitor-approve.pic');
+        $router->get('approve/security/{id}', [VisitorController::class, 'security'])->name('visitor-approve.security');
+        $router->get('approve/safety/{id}', [VisitorController::class, 'safety'])->name('visitor-approve.safety');
+
         Route::group([
             'prefix' => 'person',
         ], function ($router) {

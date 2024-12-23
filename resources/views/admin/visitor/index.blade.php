@@ -51,11 +51,13 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40">ID</th>
-                                            <th width="150">User ID</th>
+                                            {{-- <th width="150">User ID</th> --}}
+                                            <th width="150">PIC</th>
                                             <th width="200">Description</th>
                                             <th width="350">Destination</th>
                                             <th width="150">Duration</th>
                                             <th width="150">Date Request</th>
+                                            <th width="90">Approval</th>
                                             <th width="90">Status</th>
                                             <th width="140">Action</th>
                                         </tr>
@@ -88,11 +90,13 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'fullname' },
+            // { data: 'fullname' },
+            { data: 'pic' },
             { data: 'description' },
             { data: 'destination' },
             { data: 'duration' },
             { data: 'date_request' },
+            { data: 'approval' },
             { data: 'status', render: function(data) {
                 return data ? 'Active' : 'Inactive';
             }},

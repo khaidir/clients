@@ -20,10 +20,50 @@ class VisitorController extends Controller
 
     public function getData()
     {
-        $visitor = Visitor::select('visitor.*', 'users.name as fullname')
+        $visitor = Visitor::select('visitor.*', 'users.name as fullname', 'pic.name as pic_name')
             ->leftJoin('users', 'visitor.user_id', '=', 'users.id')
+            ->leftJoin('pic', 'visitor.pic_id', '=', 'pic.id')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $visitor->transform(function ($row) {
+            $row->pic = $row->pic_name;
+            return $row;
+        });
+
+        $visitor->transform(function ($row) {
+            $btn = '';
+
+            if ($row->approve_1 == 1 && $row->approve_2 == 1 && $row->approve_3 == 1) {
+                $btn .= "Approved";
+            } else {
+                if (auth()->user()->hasRole('pic') || auth()->user()->hasRole('administrator')) {
+                    if ($row->approve_1 == 0) {
+                        $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> '; // 1
+                    } else {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
+                    }
+                }
+                if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
+                    if ($row->approve_2 == 0) {
+                        $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> '; // 2
+                    } else {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
+                    }
+                }
+                if (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
+                    if ($row->approve_3 == 0) {
+                        $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>'; // 3
+                    } else {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a>'; // 1
+                    }
+                }
+            }
+
+            $row->approval = $btn;
+
+            return $row;
+        });
 
         $visitor->transform(function ($row) {
             $row->date_request = date('d M, Y', strtotime($row->date_request));
@@ -38,7 +78,7 @@ class VisitorController extends Controller
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'pic', 'approval'])
             ->make(true);
     }
 
@@ -137,5 +177,107 @@ class VisitorController extends Controller
             return redirect()->route('sia.index')->with(['error' => @$e->getMessage()]);
         }
 
+    }
+
+    public function pic($id = null)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::find($id);
+
+            if (!$visitor) {
+                return redirect()->route('visitor.index')->with(['success' => 'Visitor not found']);
+            }
+
+            $visitor->update([
+                'approve_1' => 1,
+            ]);
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('visitor.index')->with(['success' => 'Data has been approved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
+        }
+    }
+
+    public function security($id = null)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::find($id);
+
+            if (!$visitor) {
+                return redirect()->route('visitor.index')->with(['success' => 'Visitor not found']);
+            }
+
+            $visitor->update([
+                'approve_2' => 1,
+            ]);
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('visitor.index')->with(['success' => 'Data has been approved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
+        }
+    }
+
+    public function safety($id = null)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::find($id);
+
+            if (!$visitor) {
+                return redirect()->route('visitor.index')->with(['success' => 'Visitor not found']);
+            }
+
+            $visitor->update([
+                'approve_3' => 1,
+            ]);
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('visitor.index')->with(['success' => 'Data has been approved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
+        }
     }
 }
