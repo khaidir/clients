@@ -10,6 +10,8 @@ use App\Models\VisitorPerson;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Arr;
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use DB;
 use Auth;
@@ -92,6 +94,7 @@ class PublicVisitorController extends Controller
                     'citizenship_doc' => $request->ktp,
                     'description' => $request->description,
                     'destination' => $request->destination,
+                    'pic_id' => $request->pic,
                     'duration' => $request->duration,
                     'date_request' => $dateRequest,
                 ]
@@ -155,6 +158,15 @@ class PublicVisitorController extends Controller
                 }
             }
 
+            $this->sendmailuser($request->fullname, $request->email);
+
+            // get data pic
+            $pic = Pic::select('pic.id', 'pic.name', 'pic.email')
+                ->where('pic.id', $request->pic)
+                ->first();
+            if ($pic) {
+                $this->sendmailpic($pic->name, $pic->email);
+            }
 
             DB::commit();
             return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
@@ -165,6 +177,30 @@ class PublicVisitorController extends Controller
             DB::rollback();
             return redirect('invite/draft/'. $token->token)->with(['error' => $e->getMessage()]);
         }
+    }
+
+    public function sendmailuser($name = null, $email = null)
+    {
+        $data = [
+            'subject' => 'Invitation Notification',
+            'content' => "Hi, ".$name."<br><br>Selamat anda telah berhasil mengisi data invitation dengan benar dan dibutuhkan approval dari PIC, Security, dan Safety.<br><br>Terima Kasih.",
+        ];
+
+        Mail::to($email)->send(new SendEmail($data));
+
+        return response()->json(['message' => 'Email sent successfully!']);
+    }
+
+    public function sendmailpic($name = null, $email = null)
+    {
+        $data = [
+            'subject' => 'Visitor Notification',
+            'content' => "Hi, ".$name."<br><br>Anda memiliki visitor baru yang harus anda tindak lanjuti.<br><br>Terima Kasih.",
+        ];
+
+        Mail::to($email)->send(new SendEmail($data));
+
+        return response()->json(['message' => 'Email sent successfully!']);
     }
 
     public function upload(Request $request)

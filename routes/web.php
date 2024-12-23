@@ -47,6 +47,8 @@ Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-
 Route::post('invite/upload', [PublicVisitorController::class, 'upload'])->name('visitor-public-upload');
 Route::get('invite/delete/{id}', [PublicVisitorController::class, 'destroy'])->name('visitor-public-delete');
 
+Route::get('/mail', [PublicVisitorController::class, 'sendmailuser']);
+
 // public access
 Route::group([
     'middleware' => 'auth'
