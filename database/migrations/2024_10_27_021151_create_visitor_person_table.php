@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('visitor_id')->nullable();
 
             $table->string('name', 160)->nullable();
+            $table->string('foreign', 1)->default(1);
             $table->string('citizenship', 40)->nullable();
             $table->string('docs_citizenship', 255)->nullable();
             $table->string('notes', 255)->nullable();

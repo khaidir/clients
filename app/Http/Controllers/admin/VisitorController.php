@@ -27,6 +27,12 @@ class VisitorController extends Controller
             ->get();
 
         $visitor->transform(function ($row) {
+            $hour = ($row->duration > 1) ? ' Hours' : ' Hour';
+            $row->duration = $row->duration .$hour;
+            return $row;
+        });
+
+        $visitor->transform(function ($row) {
             $row->pic = $row->pic_name;
             return $row;
         });
@@ -78,7 +84,7 @@ class VisitorController extends Controller
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
-            ->rawColumns(['action', 'pic', 'approval'])
+            ->rawColumns(['action', 'pic', 'approval', 'duration'])
             ->make(true);
     }
 
@@ -279,5 +285,21 @@ class VisitorController extends Controller
             DB::rollback();
             return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
         }
+    }
+
+    function generateUniqueCode($length = 8) {
+        // Ambil timestamp saat ini
+        $timestamp = microtime(true);
+
+        // Konversi timestamp ke format unik (heksadesimal)
+        $timestampHex = dechex($timestamp);
+
+        // Buat string acak
+        $randomString = bin2hex(random_bytes($length / 2));
+
+        // Gabungkan timestamp dan string acak
+        $uniqueCode = strtoupper($timestampHex . $randomString);
+
+        return substr($uniqueCode, 0, $length);
     }
 }

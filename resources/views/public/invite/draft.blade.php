@@ -130,6 +130,93 @@
 
                                     <div class="card card-flush">
                                         <div class="row card-body">
+                                            <h3 class="mb-4">PPE</h3>
+                                            <div class="mb-6" id="personilContainer">
+                                                <div class="row mb-6">
+                                                    <div class="col-md-12 mb-5 mt-3">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <div class="form-group form-check">
+                                                                <input type="checkbox" name="ppe" class="form-check-input" id="ppes" value="1" {{ (@$data->ppe == 1) ? 'checked':'' }}>
+                                                                <label class="form-check-label text-dark" for="ppes">PPE</label>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-3 mb-5">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Helmet</label>
+                                                                <input type="number" name="ppe_helmet" class="form-control ppe-field" placeholder="Helmet" value="{{ @$data->ppe_helmet }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-3 mb-5">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Glasses</label>
+                                                                <input type="number" name="ppe_glasses" class="form-control ppe-field" placeholder="Glasses" value="{{ @$data->ppe_glasses }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-3">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Shoes</label>
+                                                                <input type="number" name="ppe_shoes" id="ppe_shoes" max="100" class="form-control ppe-field" placeholder="Shoes" value="{{ @$data->ppe_shoes }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Size 41</label>
+                                                                <input type="number" name="ppe_shoes_size_1" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_shoes[0] }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Size 42</label>
+                                                                <input type="number" name="ppe_shoes_size_2" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_shoes[1] }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Size 43</label>
+                                                                <input type="number" name="ppe_shoes_size_3" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_shoes[2] }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-5">
+                                                        <div class="col-md-3">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Vest</label>
+                                                                <input type="number" name="ppe_vest" max="100" class="form-control ppe-field" placeholder="Shoes" value="{{ @$data->ppe_vest }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Size L</label>
+                                                                <input type="number" name="ppe_vest_size_1" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_vest[0] }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Size XL</label>
+                                                                <input type="number" name="ppe_vest_size_2" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_vest[1] }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Card XXL</label>
+                                                                <input type="number" name="ppe_vest_size_3" max="100" class="form-control ppe-field" placeholder="Size" value="{{ @$size_vest[2] }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <small id="emailHelp" class="form-text text-dark">Note:<br> Fill in the fields above as in the following example: Shoesses 10; size 41: 4 pairs; size 42: 4 pairs; 43: 2 pairs;<br> So the total is 10 pairs</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card card-flush">
+                                        <div class="row card-body">
                                             <h3 class="mb-4">Personil</h3>
                                             <div class="mb-6" id="personilContainer">
                                                 @foreach($personils as $personil)
@@ -248,7 +335,35 @@
                 personilContainer.appendChild(newPersonilRow);
             }
         });
+    });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const ppeFields = document.querySelectorAll('.ppe-field');
+
+        ppeFields.forEach(field => {
+            field.addEventListener('input', function () {
+                if (this.value > 100) {
+                    this.value = 100; // Set nilai maksimum menjadi 100
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ppeCheckbox = document.getElementById('ppes');
+        const ppeFields = document.querySelectorAll('.ppe-field');
+
+        function togglePPEFields() {
+            ppeFields.forEach(field => {
+                field.disabled = !ppeCheckbox.checked;
+            });
+        }
+
+        // Initial state toggle
+        togglePPEFields();
+
+        // Add event listener
+        ppeCheckbox.addEventListener('change', togglePPEFields);
     });
 
     function setupFileUpload(inputId, hiddenInputId, filenameDisplayId) {
