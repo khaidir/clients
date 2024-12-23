@@ -36,7 +36,7 @@
             <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
                     <div id="kt_app_content" class="app-content ">
-                        <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
+                        <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                                 <input type="hidden" name="token" class="form-control" id="token" value="{{ $token->token }}">
@@ -123,6 +123,11 @@
                                                         <input type="file" id="ktp-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
                                                         <input type="hidden" id="ktp-filename" name="ktp" value="{{ old('ktp', @$data->ktp) }}">
                                                     </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                @if($data->citizenship_doc)
+                                                <img class="img-modal" src="/storage/uploads/{{ @$data->citizenship_doc }}" class="img-fluid img-thumbnail rounded mx-auto" width="180px" alt="KTP {{ @$data->name }}">
+                                                @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -241,14 +246,16 @@
                                                                 <label class="required form-label">Attachment</label>
                                                                 <input type="file" name="attachment[]" class="form-control">
                                                                 @if($personil->docs_citizenship)
-                                                                    <a href="{{ asset('storage/' . $personil->docs_citizenship) }}" target="_blank">View Attachment</a>
+                                                                    <a href="{{ asset('storage/uploads/' . $personil->docs_citizenship) }}" target="_blank">View Attachment</a>
                                                                 @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">*</label>
-                                                                <a href="javascript:;" class="btn btn-light-secondary">View</a>
+                                                                @if($personil->docs_citizenship)
+                                                                <img class="img-modal" src="/storage/{{ @$personil->docs_citizenship }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" alt="KTP {{ @$personil->name }}">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -297,7 +304,7 @@
 
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">
-                                        <span class="indicator-label"> Pubish </span>
+                                        <span class="indicator-label"> Publish </span>
                                         <span class="indicator-progress"> Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
@@ -306,6 +313,11 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div id="myModal" class="modal">
+                    <span class="close">&times;</span>
+                    <img class="modal-content" id="imgModal">
+                    <div id="caption"></div>
                 </div>
                 @include('layouts.public.footerlint')
             </div>
@@ -338,6 +350,40 @@
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ambil elemen modal, gambar dalam modal, caption, dan tombol close
+        var modal = document.getElementById('myModal');
+        var modalImg = document.getElementById("imgModal");
+        var captionText = document.getElementById("caption");
+        var closeBtn = document.getElementsByClassName("close")[0];
+
+        // Ambil semua gambar dengan class 'img-modal'
+        var images = document.querySelectorAll('.img-modal');
+
+        // Loop untuk setiap gambar, dan tambahkan event listener
+        images.forEach(function(img) {
+            img.addEventListener('click', function() {
+                modal.style.display = "block";  // Tampilkan modal
+                modalImg.src = this.src;       // Set gambar besar di dalam modal
+                captionText.innerHTML = this.alt; // Set caption dari gambar
+            });
+        });
+
+        // Ketika pengguna mengklik tombol close, tutup modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Ketika pengguna mengklik di luar gambar (area gelap), tutup modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+
+
 
     document.addEventListener('DOMContentLoaded', function () {
         const ppeFields = document.querySelectorAll('.ppe-field');
