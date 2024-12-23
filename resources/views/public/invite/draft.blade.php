@@ -137,7 +137,7 @@
                                                         <div class="col-md-4">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
-                                                                <input type="text" name="vid[]" class="form-control" value="{{ $personil->id }}">
+                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>

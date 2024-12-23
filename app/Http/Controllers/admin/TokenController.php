@@ -42,7 +42,7 @@ class TokenController extends Controller
         return DataTables::of($token)
             ->addColumn('action', function ($row) {
                 return '
-                    <a class="btn btn-sm btn-primary edit" href="/token/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
+                    <a class="btn btn-sm btn-primary edit" href="/visitor/token/edit/' . $row->id . '"><i class="bx bx-pencil"></i></a>
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
