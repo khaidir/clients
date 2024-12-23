@@ -39,7 +39,7 @@
                         <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
                             @csrf
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                                <input type="hidden" name="token" class="form-control" id="token" value="{{ $token }}">
+                                <input type="hidden" name="token" class="form-control" id="token" value="{{ $token->token }}">
                                 <div class="d-flex flex-column gap-4 gap-lg-6">
                                     <div class="card card-flush">
                                         <div class="row card-body">
@@ -166,7 +166,7 @@
             formData.append('file', file);
             document.getElementById(filenameDisplayId).textContent = file.name;
 
-            fetch('{{ route("sia-person.upload") }}', {
+            fetch('{{ route("visitor-public-upload") }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -189,5 +189,5 @@
     }
 
     // Panggil fungsi untuk setiap elemen file input
-    setupFileUpload('citizenship-input', 'citizenship-filename', 'citizenship_doc');
+    setupFileUpload('ktp-input', 'ktp-filename', 'ktp-name');
 </script>

@@ -45,6 +45,7 @@ Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('v
 Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
 Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-public-store');
 Route::post('invite/upload', [PublicVisitorController::class, 'upload'])->name('visitor-public-upload');
+Route::get('invite/delete/{id}', [PublicVisitorController::class, 'destroy'])->name('visitor-public-delete');
 
 // public access
 Route::group([
