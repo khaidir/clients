@@ -43,7 +43,7 @@
                                     <label for="status" class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-8">
                                         <div class="form-check form-switch form-switch-md mb-2" dir="ltr">
-                                            <input name="status" class="form-check-input" type="checkbox" value="1" id="SwitchCheckSizemd" {{ (@$data->status === true) ? 'checked' : '' }}>
+                                            <input name="status" class="form-check-input" type="checkbox" value="1" id="SwitchCheckSizemd" {{ (@$data->status === 1) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="SwitchCheckSizemd"></label>
                                         </div>
                                         <p class="text-muted mb-2">Switch Knots to Approve or Unapprove</p>

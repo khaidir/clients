@@ -14,38 +14,14 @@
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
             <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
                 <div class="menu menu-rounded menu-active-bg menu-state-primary menu-column menu-lg-row menu-title-gray-700 menu-icon-gray-500 menu-arrow-gray-500 menu-bullet-gray-500 my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
-                    <div class="menu-item {{ @request()->is('user') ? 'here show' : '' }} menu-lg-down-accordion me-0 me-lg-2">
-                        <span class="menu-link">
-                        <a href="/dashboard"><span class="menu-title">Home</span></a>
-                        </span>
-                    </div>
-                    <div class="menu-item {{ request()->is('company') ? 'here show' : '' }} menu-here-bg menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-                        <span class="menu-link">
-                        <a href="/u/contracts">
-                            <span class="menu-title">New Worker Access</span></a>
-                        </span>
-                    </div>
-                    <div class="menu-item {{ request()->is('company') ? 'here show' : '' }} menu-here-bg menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-                        <span class="menu-link">
-                        <a href="/u/extended">
-                            <span class="menu-title">Extend Periode</span></a>
-                        </span>
-                    </div>
-                    <div class="menu-item {{ request()->is('company') ? 'here show' : '' }} menu-here-bg menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
-                        <span class="menu-link">
-                        <a href="/u/history">
-                            <span class="menu-title">History</span></a>
-                        </span>
-                    </div>
                     <div class="menu-item {{ request()->is('landing/faq') ? 'here show' : '' }} menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <span class="menu-link">
-                        <a href="">
+                        <a href="/faq">
                         <span class="menu-title">FAQ</span></a>
                         </span>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

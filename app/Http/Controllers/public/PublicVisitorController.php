@@ -19,13 +19,19 @@ class PublicVisitorController extends Controller
     public function index($token = null)
     {
         // cek token, ready standby at this page else redirect with sorry word
+        $token = Token::where('token', $token)->first();
 
         $pic = Pic::select('pic.*', 'users.name as fullname')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
             ->orderBy('created_at','desc')
             ->get();
 
-        return view('public.invite.index', compact('pic', 'token'));
+        $data = Visitor::select('visitor.*')
+            ->leftJoin('pic', 'pic.id', '=', 'visitor.pic_id')
+            ->leftJoin('users', 'pic.user_id', '=', 'users.id')
+            ->where('token_id', $token->id)->first();
+
+        return view('public.invite.index', compact('data', 'pic', 'token'));
     }
 
     public function draft($token = null)

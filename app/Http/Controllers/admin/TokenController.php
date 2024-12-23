@@ -59,7 +59,7 @@ class TokenController extends Controller
     {
         $request->validate([
             'description' => 'required|string',
-            'status' => 'nullable|boolean',
+            'status' => 'nullable',
         ],[
             'description.required' => 'Description is required',
         ]);
@@ -68,7 +68,7 @@ class TokenController extends Controller
         try {
 
             $request['token'] = $this->generateUniqueCode(24);
-            $data = $request->only(['id', 'token', 'description']);
+            $data = $request->only(['id', 'token', 'description', 'status']);
 
             $token = Token::updateOrCreate(
                 ['id' => $data['id'] ?? null],
