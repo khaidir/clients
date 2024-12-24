@@ -58,7 +58,7 @@
                                         Client Segmention
                                     </div>
                                 </div>
-                                <div class="row g-3 mb-9">
+                                {{-- <div class="row g-3 mb-9">
                                     <div class="col-md-12">
                                         <a href="#" class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
                                         <img alt="Logo" src="/assets/media/svg/brand-logos/google-icon.svg" class="h-15px me-3"/>
@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="separator separator-content my-14">
                                     <span class="w-125px text-gray-500 fw-semibold fs-7">Or with email</span>
-                                </div>
+                                </div> --}}
                                 <div class="fv-row mb-8">
                                     <input type="text" placeholder="Email" name="email" autocomplete="off" value="{{ old('email') }}" class="form-control bg-transparent @error('email') is-invalid @enderror"/>
                                     @if ($errors->has('email'))

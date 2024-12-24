@@ -116,7 +116,7 @@ class PublicVisitorController extends Controller
                         'name' => $name,
                         'citizenship' => $request->citi_id[$index],
                         'notes' => null,
-                        'status' => 'false',
+                        'status' => '1',
                     ];
 
                     // Handle file uploads (only if the file exists)
