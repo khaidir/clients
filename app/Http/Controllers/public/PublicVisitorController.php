@@ -48,11 +48,15 @@ class PublicVisitorController extends Controller
         $data = Visitor::select('visitor.*')
             ->leftJoin('pic', 'pic.id', '=', 'visitor.pic_id')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
-            ->where('token_id', $token->id)->first();
+            ->where('token_id', $token->id)
+            ->first();
+
+        $size_shoes = explode(';', $data->ppe_shoes_size);
+        $size_vest = explode(';', $data->ppe_vest_size);
 
         $personils = VisitorPerson::where('visitor_id', $data->id)->get();
 
-        return view('public.invite.draft', compact('data', 'personils', 'pic', 'token'));
+        return view('public.invite.draft', compact('data', 'personils', 'pic', 'token', 'size_shoes', 'size_vest'));
     }
 
     public function direct_token($token = null)
@@ -85,15 +89,28 @@ class PublicVisitorController extends Controller
             $token = $request->token;
             $token = Token::where('token', $token)->first();
 
+            $ppe_shoes_size = $request->ppe_shoes_size_1 .';'. $request->ppe_shoes_size_2 .';'. $request->ppe_shoes_size_3;
+            $ppe_vest_size = $request->ppe_vest_size_1 .';'. $request->ppe_vest_size_2 .';'. $request->ppe_vest_size_3;
+
             $visitor = Visitor::updateOrCreate(
                 ['token_id' => $token->id],
                 [
+                    'request_code' => $this->generateUniqueCode(8),
                     'fullname' => $request->fullname,
                     'email' => $request->email,
                     'citizenship_id' => $request->citizenship_id,
                     'citizenship_doc' => $request->ktp,
                     'description' => $request->description,
                     'destination' => $request->destination,
+
+                    'ppe' => $request->ppe,
+                    'ppe_helmet' => $request->ppe_helmet,
+                    'ppe_glasses' => $request->ppe_glasses,
+                    'ppe_shoes' => $request->ppe_shoes,
+                    'ppe_shoes_size' => $ppe_shoes_size,
+                    'ppe_vest' => $request->ppe_shoes,
+                    'ppe_vest_size' => $ppe_vest_size,
+
                     'pic_id' => $request->pic,
                     'duration' => $request->duration,
                     'date_request' => $dateRequest,
@@ -114,6 +131,7 @@ class PublicVisitorController extends Controller
                     $personil = [
                         'visitor_id' => $visitor->id,
                         'name' => $name,
+                        'foreign' => $request->foreign[$index],
                         'citizenship' => $request->citi_id[$index],
                         'notes' => null,
                         'status' => '1',
@@ -136,6 +154,7 @@ class PublicVisitorController extends Controller
                             // Update the existing personil data
                             $existingPersonil->update([
                                 'name' => $personil['name'],
+                                'foreign' => $personil['foreign'],
                                 'citizenship' => $personil['citizenship'],
                                 'docs_citizenship' => $personil['docs_citizenship'], // Allow null if no file is uploaded
                                 'notes' => $personil['notes'],
@@ -153,7 +172,7 @@ class PublicVisitorController extends Controller
                     VisitorPerson::upsert(
                         collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
                         ['id'], // Use 'id' for conflict detection
-                        ['citizenship', 'docs_citizenship', 'notes', 'status'] // Update only these fields
+                        ['foreign','citizenship', 'docs_citizenship', 'notes', 'status'] // Update only these fields
                     );
                 }
             }
@@ -266,6 +285,22 @@ class PublicVisitorController extends Controller
             }
         }
         return $decoded;
+    }
+
+    function generateUniqueCode($length = 8) {
+        // Ambil timestamp saat ini
+        $timestamp = microtime(true);
+
+        // Konversi timestamp ke format unik (heksadesimal)
+        $timestampHex = dechex($timestamp);
+
+        // Buat string acak
+        $randomString = bin2hex(random_bytes($length / 2));
+
+        // Gabungkan timestamp dan string acak
+        $uniqueCode = strtoupper($timestampHex . $randomString);
+
+        return substr($uniqueCode, 0, $length);
     }
 
 }

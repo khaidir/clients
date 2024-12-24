@@ -36,7 +36,7 @@
             <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
                     <div id="kt_app_content" class="app-content ">
-                        <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
+                        <form action="{{ route('visitor-public-store') }}" class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
                                 <input type="hidden" name="token" class="form-control" id="token" value="{{ $token->token }}">
@@ -124,6 +124,100 @@
                                                         <input type="hidden" id="ktp-filename" name="ktp" value="{{ old('ktp', @$data->ktp) }}">
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-4">
+                                                @if($data->citizenship_doc)
+                                                <img class="img-modal" src="/storage/uploads/{{ @$data->citizenship_doc }}" class="img-fluid img-thumbnail rounded mx-auto" width="180px" alt="KTP {{ @$data->name }}">
+                                                @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card card-flush">
+                                        <div class="row card-body">
+                                            <h3 class="mb-4">PPE</h3>
+                                            <div class="mb-6" id="personilContainer">
+                                                <div class="row mb-6">
+                                                    <div class="col-md-12 mb-5 mt-3">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <div class="form-group form-check">
+                                                                <input type="checkbox" name="ppe" class="form-check-input" id="ppes" value="1" {{ (@$data->ppe == 1) ? 'checked':'' }}>
+                                                                <label class="form-check-label text-dark" for="ppes">PPE</label>
+                                                              </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ppe-field">
+                                                        <div class="row mb-5">
+                                                            <div class="col-md-3 mb-5">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Helmet</label>
+                                                                    <input type="number" name="ppe_helmet" class="form-control" placeholder="Helmet" value="{{ @$data->ppe_helmet }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-5">
+                                                            <div class="col-md-3 mb-5">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Glasses</label>
+                                                                    <input type="number" name="ppe_glasses" class="form-control" placeholder="Glasses" value="{{ @$data->ppe_glasses }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-5">
+                                                            <div class="col-md-3">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Shoes</label>
+                                                                    <input type="number" name="ppe_shoes" id="ppe_shoes" max="100" class="form-control" placeholder="Shoes" value="{{ @$data->ppe_shoes }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Size 41</label>
+                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Size 42</label>
+                                                                    <input type="number" name="ppe_shoes_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[1] }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Size 43</label>
+                                                                    <input type="number" name="ppe_shoes_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[2] }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-5">
+                                                            <div class="col-md-3">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Vest</label>
+                                                                    <input type="number" name="ppe_vest" max="100" class="form-control" placeholder="Shoes" value="{{ @$data->ppe_vest }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Size L</label>
+                                                                    <input type="number" name="ppe_vest_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[0] }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Size XL</label>
+                                                                    <input type="number" name="ppe_vest_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[1] }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Card XXL</label>
+                                                                    <input type="number" name="ppe_vest_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[2] }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <small id="emailHelp" class="form-text text-dark">Note:<br> Fill in the fields above as in the following example: Shoesses 10; size 41: 4 pairs; size 42: 4 pairs; 43: 2 pairs;<br> So the total is 10 pairs</small>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -134,14 +228,24 @@
                                             <div class="mb-6" id="personilContainer">
                                                 @foreach($personils as $personil)
                                                     <div class="row mb-6 personil-row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
                                                                 <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Foreign</label>
+                                                                <select name="foreign[]" class="form-control">
+                                                                    <option value="">Choose</option>
+                                                                    <option value="1" {{ ($personil->foreign == 1) ? 'selected':'' }}>KTP</option>
+                                                                    <option value="2"  {{ ($personil->foreign == 2) ? 'selected':'' }}>Passport/Kitas</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="form-label">Card ID</label>
                                                                 <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
@@ -152,14 +256,16 @@
                                                                 <label class="required form-label">Attachment</label>
                                                                 <input type="file" name="attachment[]" class="form-control">
                                                                 @if($personil->docs_citizenship)
-                                                                    <a href="{{ asset('storage/' . $personil->docs_citizenship) }}" target="_blank">View Attachment</a>
+                                                                    <a href="{{ asset('storage/uploads/' . $personil->docs_citizenship) }}" target="_blank">View Attachment</a>
                                                                 @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">*</label>
-                                                                <a href="javascript:;" class="btn btn-light-secondary">View</a>
+                                                                @if($personil->docs_citizenship)
+                                                                <img class="img-modal" src="/storage/{{ @$personil->docs_citizenship }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" alt="KTP {{ @$personil->name }}">
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -171,13 +277,23 @@
                                                 @endforeach
 
                                                 <div class="row mb-6 personil-row personil-template">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Fullname</label>
                                                             <input type="text" name="name[]" class="form-control" placeholder="Fullname">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="form-label">Foreign</label>
+                                                            <select name="foreign[]" class="form-control">
+                                                                <option value="">Choose</option>
+                                                                <option value="1">KTP</option>
+                                                                <option value="2">Passport/Kitas</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="form-label">Card ID</label>
                                                             <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
@@ -187,14 +303,6 @@
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Attachment</label>
                                                             <input type="file" name="attachment[]" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-1">
-
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            {{-- <a href="javascript:;" class="btn btn-light-secondary add-personil">Add</a> --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,7 +316,7 @@
 
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">
-                                        <span class="indicator-label"> Pubish </span>
+                                        <span class="indicator-label"> Publish </span>
                                         <span class="indicator-progress"> Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
@@ -217,6 +325,11 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div id="myModal" class="modal">
+                    <span class="close">&times;</span>
+                    <img class="modal-content" id="imgModal">
+                    <div id="caption"></div>
                 </div>
                 @include('layouts.public.footerlint')
             </div>
@@ -248,7 +361,91 @@
                 personilContainer.appendChild(newPersonilRow);
             }
         });
+    });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ambil elemen modal, gambar dalam modal, caption, dan tombol close
+        var modal = document.getElementById('myModal');
+        var modalImg = document.getElementById("imgModal");
+        var captionText = document.getElementById("caption");
+        var closeBtn = document.getElementsByClassName("close")[0];
+
+        // Ambil semua gambar dengan class 'img-modal'
+        var images = document.querySelectorAll('.img-modal');
+
+        // Loop untuk setiap gambar, dan tambahkan event listener
+        images.forEach(function(img) {
+            img.addEventListener('click', function() {
+                modal.style.display = "block";  // Tampilkan modal
+                modalImg.src = this.src;       // Set gambar besar di dalam modal
+                captionText.innerHTML = this.alt; // Set caption dari gambar
+            });
+        });
+
+        // Ketika pengguna mengklik tombol close, tutup modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Ketika pengguna mengklik di luar gambar (area gelap), tutup modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ppeFields = document.querySelectorAll('.ppe-field');
+
+        ppeFields.forEach(field => {
+            field.addEventListener('input', function () {
+                if (this.value > 100) {
+                    this.value = 100; // Set nilai maksimum menjadi 100
+                }
+            });
+        });
+    });
+
+    // disable field
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const ppeCheckbox = document.getElementById('ppes');
+    //     const ppeFields = document.querySelectorAll('.ppe-field');
+
+    //     function togglePPEFields() {
+    //         ppeFields.forEach(field => {
+    //             field.disabled = !ppeCheckbox.checked;
+    //         });
+    //     }
+
+    //     // Initial state toggle
+    //     togglePPEFields();
+
+    //     // Add event listener
+    //     ppeCheckbox.addEventListener('change', togglePPEFields);
+    // });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ppeCheckbox = document.getElementById('ppes');
+        const ppeFields = document.querySelectorAll('.ppe-field');
+
+        function togglePPEFields() {
+            ppeFields.forEach(field => {
+                if (ppeCheckbox.checked) {
+                    field.style.display = 'block'; // Menampilkan field
+                } else {
+                    field.style.display = 'none'; // Menyembunyikan field
+                }
+            });
+        }
+
+        // Initial state toggle
+        togglePPEFields();
+
+        // Add event listener
+        ppeCheckbox.addEventListener('change', togglePPEFields);
     });
 
     function setupFileUpload(inputId, hiddenInputId, filenameDisplayId) {

@@ -110,18 +110,18 @@
                                             <div class="row fv-row">
                                                 <div class="col-sm-4">
                                                     <div class="upload-container slim">
-                                                        <label for="citizenship-input" class="upload-label">
+                                                        <label for="ktp-input" class="upload-label">
                                                             <div class="upload-content">
-                                                                <i class="ki-outline ki-file-up fs-3x upload-icon"></i>
+                                                                <i class="ki-outline ki-file-up {{ (@$data->ktp_checked)?'text-primary':'text-dark' }} fs-3x upload-icon"></i>
                                                                 <div class="upload-text">
                                                                     <h3 class="upload-title">Choose KTP</h3>
                                                                     <p class="upload-subtitle">Support format .jpg,.jpeg,.png,.pdf</p>
-                                                                    <span id="citizenship-name" class="citizenship-filename"></span>
+                                                                    <span id="ktp-name" class="upload-filename">{{ @$data->ktp }}</span>
                                                                 </div>
                                                             </div>
                                                         </label>
-                                                        <input type="file" id="citizenship-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
-                                                        <input type="hidden" id="citizenship_doc" name="citizenship_doc" value="{{ old('citizenship_doc') }}">
+                                                        <input type="file" id="ktp-input" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                                                        <input type="hidden" id="ktp-filename" name="ktp" value="{{ old('ktp', @$data->ktp) }}">
                                                     </div>
                                                 </div>
                                             </div>

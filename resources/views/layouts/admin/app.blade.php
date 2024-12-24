@@ -46,6 +46,60 @@
             display: block;
             margin: 0 auto 10px auto; /* Center image and add margin below */
         }
+        /* Modal Styling */
+        .modal {
+                display: none; /* Modal disembunyikan secara default */
+                position: fixed;
+                z-index: 9999; /* Pastikan modal muncul di atas semua elemen */
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8); /* Latar belakang gelap untuk fokus ke gambar */
+                justify-content: center;
+                overflow: auto;
+                text-align: center;
+            }
+
+            /* Gambar dalam modal */
+            .modal-content {
+                max-width: 80%;
+                max-height: 80%;
+                margin: auto;
+                justify-content: center;
+                display: block;
+            }
+
+            /* Close button di pojok kanan atas */
+            .close {
+                position: absolute;
+                top: 15px;
+                right: 25px;
+                color: #fff;
+                font-size: 35px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: #ccc;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            /* Caption di bawah gambar */
+            #caption {
+                margin: 10px;
+                text-align: center;
+                color: #fff;
+                font-size: 18px;
+            }
+            #modalImage {
+                max-height: 80vh; /* Maksimal tinggi gambar dalam modal */
+                object-fit: contain;
+            }
+
 
         </style>
         @yield('style')

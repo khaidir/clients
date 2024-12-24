@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('pic_id')->default(0);
             $table->integer('user_id')->nullable();
 
+            $table->string('request_code', 24)->nullable();
             $table->string('fullname', 160)->nullable();
             $table->string('email', 160)->nullable();
             $table->string('citizenship_id', 20)->nullable();
@@ -27,11 +28,20 @@ return new class extends Migration
             $table->string('destination', 40)->nullable();
             $table->string('duration', 120)->nullable();
 
-            $table->dateTime('date_request', precision: 0);
+            $table->tinyInteger('ppe')->default(1); // 2 = Yes, 1 = No
+            $table->string('ppe_helmet', 120)->nullable();
+            $table->tinyInteger('ppe_glasses')->nullable();
+            $table->tinyInteger('ppe_shoes')->nullable();
+            $table->string('ppe_shoes_size', 120)->nullable();
+            $table->tinyInteger('ppe_vest')->nullable();
+            $table->string('ppe_vest_size', 120)->nullable();
+
+            $table->dateTime('date_request');
             $table->integer('approve_1')->default(0);
             $table->integer('approve_2')->default(0);
             $table->integer('approve_3')->default(0);
             $table->boolean('status')->default(false);
+
             $table->timestamps();
             $table->softDeletes();
         });

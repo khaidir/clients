@@ -38,7 +38,7 @@
                                     </tr>
                                     <tr>
                                         <td>Duration</td>
-                                        <td>{{ @$data->duration}}</td>
+                                        <td>{{ (@$data->duration > 1 )? @$data->duration. " Hours": @$data->duration ." Hour" }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -64,14 +64,13 @@
                             <div class="tab-content p-3 text-muted">
                                 <div class="tab-pane active" role="tabpanel">
                                     <div class="row">
-                                        <div class="col-md-9 mt--2">
+                                        {{-- <div class="col-md-9 mt--2">
                                             <div class="col-9">
                                                 <div class="row row-cols-lg-auto g-3 align-items-center">
                                                     <div class="col-12 mt-4">
                                                         <span id="dlength"></span>
                                                     </div>
                                                     <div class="col-12 col-sm-12">
-                                                        {{-- <a href="/visitor/ppe/new/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New PPE</a> --}}
                                                         <a href="/visitor/ppe/new-bulk/{{ @$id }}" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add PPE</a>
                                                     </div>
                                                     <div class="col-12 col-sm-12 mt-4">
@@ -85,10 +84,30 @@
                                                 <div id="dinfo" class="dinfo"></div>
                                                 <div id="dpaging"></div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-12 responsive mt--2">
-                                            <table id="table" class="table table-hover data-table table-striped-columns dataTable" style="width:100%;">
+                                            <table class="table table-nowrap">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100px;">Helmet</td>
+                                                        <td style="width: 800px;"><strong>{{ @$data->ppe_helmet}}</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Glasses</td>
+                                                        <td><strong>{{ @$data->ppe_glasses}}</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Shoeses</td>
+                                                        <td><strong>{{ @$data->ppe_shoes }}</strong> <i class='bx bx-right-arrow-alt mt-1'></i> with size 41: <strong>{{ @$size_shoes[0] }}</strong>, 42: <strong>{{ @$size_shoes[1] }}</strong> and 43: <strong>{{ @$size_shoes[2] }}</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Vest</td>
+                                                        <td><strong>{{ @$data->ppe_vest }}</strong> <i class='bx bx-right-arrow-alt mt-1'></i> with size Large <strong>{{ @$size_vest[0] }}</strong>, Extra Large: <strong>{{ @$size_vest[1] }}</strong> and Double Extra LargeL: <strong>{{ @$size_vest[2] }}</strong></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            {{-- <table id="table" class="table table-hover data-table table-striped-columns dataTable" style="width:100%;">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th width="40">ID</th>
@@ -101,7 +120,7 @@
                                                         <th width="100">Action</th>
                                                     </tr>
                                                 </thead>
-                                            </table>
+                                            </table> --}}
                                         </div>
                                     </div>
                                 </div>

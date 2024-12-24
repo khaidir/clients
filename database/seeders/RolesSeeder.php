@@ -26,12 +26,16 @@ class RolesSeeder extends Seeder
 
         // Buat roles dan tetapkan permissions
         $roles = [
-            'administrator' => ['administrator'],
-            'assistent' => ['assistent'],
-            'operator' => ['operator'],
-            'company' => ['company'],
-            'personil' => ['personil'],
             'root' => ['root'],
+            'administrator' => ['administrator'],
+            'pic' => ['pic'],
+            'security' => ['security'],
+            'safety' => ['safety'],
+            'enduser' => ['enduser'],
+            'legal' => ['legal'],
+            'hod' => ['hod'],
+            'purchasing' => ['purchasing'],
+            'company' => ['company'],
         ];
 
         foreach ($roles as $role => $permissions) {
