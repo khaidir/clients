@@ -51,8 +51,8 @@ class PublicVisitorController extends Controller
             ->where('token_id', $token->id)
             ->first();
 
-        $size_shoes = explode(';', @$data->ppe_shoes_size);
-        $size_vest = explode(';', @$data->ppe_vest_size);
+        $size_shoes = !empty(@$data->ppe_shoes_size) ? explode(';', @$data->ppe_shoes_size) : [];
+        $size_vest = !empty(@$data->ppe_vest_size) ? explode(';', @$data->ppe_vest_size) : [];
 
         $personils = VisitorPerson::where('visitor_id', $data->id)->get();
 
