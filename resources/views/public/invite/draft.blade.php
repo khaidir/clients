@@ -228,14 +228,24 @@
                                             <div class="mb-6" id="personilContainer">
                                                 @foreach($personils as $personil)
                                                     <div class="row mb-6 personil-row">
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
                                                                 <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Foreign</label>
+                                                                <select name="foreign[]" class="form-control">
+                                                                    <option value="">Choose</option>
+                                                                    <option value="1">KTP</option>
+                                                                    <option value="2">Passport/Kitas</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="form-label">Card ID</label>
                                                                 <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
@@ -267,13 +277,23 @@
                                                 @endforeach
 
                                                 <div class="row mb-6 personil-row personil-template">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Fullname</label>
                                                             <input type="text" name="name[]" class="form-control" placeholder="Fullname">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="form-label">Foreign</label>
+                                                            <select name="foreign[]" class="form-control">
+                                                                <option value="">Choose</option>
+                                                                <option value="1">KTP</option>
+                                                                <option value="2">Passport/Kitas</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="form-label">Card ID</label>
                                                             <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
@@ -283,14 +303,6 @@
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Attachment</label>
                                                             <input type="file" name="attachment[]" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-1">
-
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            {{-- <a href="javascript:;" class="btn btn-light-secondary add-personil">Add</a> --}}
                                                         </div>
                                                     </div>
                                                 </div>

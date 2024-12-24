@@ -131,6 +131,7 @@ class PublicVisitorController extends Controller
                     $personil = [
                         'visitor_id' => $visitor->id,
                         'name' => $name,
+                        'foreign' => $request->foreign[$index],
                         'citizenship' => $request->citi_id[$index],
                         'notes' => null,
                         'status' => '1',
@@ -153,6 +154,7 @@ class PublicVisitorController extends Controller
                             // Update the existing personil data
                             $existingPersonil->update([
                                 'name' => $personil['name'],
+                                'foreign' => $personil['foreign'],
                                 'citizenship' => $personil['citizenship'],
                                 'docs_citizenship' => $personil['docs_citizenship'], // Allow null if no file is uploaded
                                 'notes' => $personil['notes'],
@@ -170,7 +172,7 @@ class PublicVisitorController extends Controller
                     VisitorPerson::upsert(
                         collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
                         ['id'], // Use 'id' for conflict detection
-                        ['citizenship', 'docs_citizenship', 'notes', 'status'] // Update only these fields
+                        ['foreign','citizenship', 'docs_citizenship', 'notes', 'status'] // Update only these fields
                     );
                 }
             }
