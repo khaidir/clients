@@ -240,8 +240,8 @@
                                                                 <label class="form-label">Foreign</label>
                                                                 <select name="foreign[]" class="form-control">
                                                                     <option value="">Choose</option>
-                                                                    <option value="1">KTP</option>
-                                                                    <option value="2">Passport/Kitas</option>
+                                                                    <option value="1" {{ ($personil->foreign == 1) ? 'selected':'' }}>KTP</option>
+                                                                    <option value="2"  {{ ($personil->foreign == 2) ? 'selected':'' }}>Passport/Kitas</option>
                                                                 </select>
                                                             </div>
                                                         </div>
