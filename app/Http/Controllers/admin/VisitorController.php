@@ -18,13 +18,18 @@ class VisitorController extends Controller
         return view('admin.visitor.index');
     }
 
-    public function getData()
+    public function getData(Request $request)
     {
-        $visitor = Visitor::select('visitor.*', 'users.name as fullname', 'pic.name as pic_name')
+        $query = Visitor::select('visitor.*', 'users.name as fullname', 'pic.name as pic_name')
             ->leftJoin('users', 'visitor.user_id', '=', 'users.id')
             ->leftJoin('pic', 'visitor.pic_id', '=', 'pic.id')
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc');
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('visitor.status', $request->status);
+        }
+
+        $visitor = $query->get();
 
         $visitor->transform(function ($row) {
             $hour = ($row->duration > 1) ? ' Hours' : ' Hour';
@@ -44,21 +49,21 @@ class VisitorController extends Controller
                 $btn .= "Approved";
             } else {
                 if (auth()->user()->hasRole('pic') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_1 == 0) {
+                    if ($row->approve_1 == 0 && $row->approve_2 == 0 && $row->approve_2 == 0) {
                         $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> '; // 1
                     } else {
                         $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
                     }
                 }
                 if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_2 == 0) {
+                    if ($row->approve_2 == 0 && $row->approve_1 == 1 && $row->approve_3 == 0) {
                         $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> '; // 2
                     } else {
                         $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
                     }
                 }
                 if (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_3 == 0) {
+                    if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>'; // 3
                     } else {
                         $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a>'; // 1
@@ -167,22 +172,63 @@ class VisitorController extends Controller
 
         DB::beginTransaction();
         try {
-            $sia = Visitor::find($id);
+            $visitor = Visitor::find($id);
 
-            $sia->delete();
+            $visitor->delete();
 
             DB::commit();
-            return redirect()->route('sia.index')->with(['success' => 'Data delete successfully']);
+            return redirect()->route('visitor.index')->with(['success' => 'Data delete successfully']);
         } catch (ValidationException $e)
         {
             DB::rollback();
-            return redirect()->route('sia.index')->with(['warning' => @$e->errors()]);
+            return redirect()->route('visitor.index')->with(['warning' => @$e->errors()]);
         } catch (\Exception $e)
         {
             DB::rollback();
-            return redirect()->route('sia.index')->with(['error' => @$e->getMessage()]);
+            return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
         }
 
+    }
+
+    public function massDelete(Request $request)
+    {
+        $ids = $request->ids;
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided.'], 400);
+        }
+
+        // Hapus data berdasarkan IDs
+        Visitor::whereIn('id', $ids)->delete();
+
+        return response()->json(['message' => 'Selected rows deleted successfully.']);
+    }
+
+    public function massApprove(Request $request)
+    {
+        $ids = $request->ids;
+        $status = $request->status;
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json(['message' => 'No IDs provided.'], 400);
+        }
+
+        if (!$status) {
+            return response()->json(['message' => 'No status provided.'], 400);
+        }
+
+        // Update status approval berdasarkan IDs
+        if (auth()->user()->hasRole('pic')) {
+            Visitor::whereIn('id', $ids)->update(['approve_1' => $status]);
+        }
+        if (auth()->user()->hasRole('security')) {
+            Visitor::whereIn('id', $ids)->update(['approve_2' => $status]);
+        }
+        if (auth()->user()->hasRole('safety')) {
+            Visitor::whereIn('id', $ids)->update(['approve_3' => $status]);
+        }
+
+        return response()->json(['message' => 'Selected rows updated successfully.']);
     }
 
     public function pic($id = null)

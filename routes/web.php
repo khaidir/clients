@@ -186,6 +186,9 @@ Route::group([
         $router->get('person/{id}', [VisitorController::class, 'person'])->name('visitor-person.index');
         $router->get('ppe/{id}', [VisitorController::class, 'ppe'])->name('visitor-ppe.index');
         $router->get('delete/{id}', [VisitorController::class, 'destroy'])->name('visitor.delete');
+        $router->post('/visitor/mass-delete', [VisitorController::class, 'massDelete'])->name('visitor.massDelete');
+        $router->post('/visitor/mass-approve', [VisitorController::class, 'massApprove'])->name('visitor.massApprove');
+
 
         $router->get('approve/pic/{id}', [VisitorController::class, 'pic'])->name('visitor-approve.pic');
         $router->get('approve/security/{id}', [VisitorController::class, 'security'])->name('visitor-approve.security');
