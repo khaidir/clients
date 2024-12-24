@@ -38,7 +38,15 @@
                                     </tr>
                                     <tr>
                                         <td>Duration</td>
-                                        <td>{{ @$data->duration}}</td>
+                                        <td>{{ (@$data->duration > 1 )? @$data->duration. " Hours": @$data->duration ." Hour" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Attachments</td>
+                                        <td>
+                                            @if(@$data->citizenship_doc)
+                                                <img class="img-modal" src="/storage/uploads/{{ $data->citizenship_doc }}" class="img-fluid img-thumbnail rounded mx-auto" width="180px" alt="KTP {{ @$data->name }}">
+                                            @endif
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,6 +99,7 @@
                                                     <tr>
                                                         <th width="40">ID</th>
                                                         <th width="220">Fullname</th>
+                                                        <th width="140">Foreign</th>
                                                         <th width="200">Citizenship</th>
                                                         <th width="150">Docs Citizenship</th>
                                                         <th width="280">Notes</th>
@@ -102,46 +111,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="profile1" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-md-9 mt--2">
-                                            <div class="col-9">
-                                                <div class="row row-cols-lg-auto g-3 align-items-center">
-                                                    <div class="col-12 mt-4">
-                                                        <span id="dlength"></span>
-                                                    </div>
-                                                    <div class="col-12 col-sm-12">
-                                                        <a href="/visitor/ppe/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add Person</a>
-                                                    </div>
-                                                    <div class="col-12 col-sm-12 mt-4">
-                                                        <span id="dfilter"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-12">
-                                            <div class="d-flex justify-content-end">
-                                                <div id="dinfo" class="dinfo"></div>
-                                                <div id="dpaging"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12 responsive mt--2">
-                                            <table id="table" class="table table-hover data-table table-striped-columns dataTable" style="width:100%;">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th width="40">ID</th>
-                                                        <th width="150">Type</th>
-                                                        <th width="240">Goods</th>
-                                                        <th width="120">Date Pickup</th>
-                                                        <th width="120">Date Return</th>
-                                                        <th width="300">Notes</th>
-                                                        <th width="90">Status</th>
-                                                        <th width="120">Action</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
+                            </div>
+                        </div>
+                        <div id="myModal" class="modal">
+                            <span class="close">&times;</span>
+                            <img class="modal-content" id="imgModal">
+                            <div id="caption"></div>
+                        </div>
+                        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="imageModalLabel">Document Image</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img id="modalImage" src="" alt="Document Image" class="img-fluid" style="max-width: 100%; height: auto;" />
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +141,39 @@
 
 @section('scripts')
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil elemen modal, gambar dalam modal, caption, dan tombol close
+    var modal = document.getElementById('myModal');
+    var modalImg = document.getElementById("imgModal");
+    var captionText = document.getElementById("caption");
+    var closeBtn = document.getElementsByClassName("close")[0];
+
+    // Ambil semua gambar dengan class 'img-modal'
+    var images = document.querySelectorAll('.img-modal');
+
+    // Loop untuk setiap gambar, dan tambahkan event listener
+    images.forEach(function(img) {
+        img.addEventListener('click', function() {
+            modal.style.display = "block";  // Tampilkan modal
+            modalImg.src = this.src;       // Set gambar besar di dalam modal
+            captionText.innerHTML = this.alt; // Set caption dari gambar
+        });
+    });
+
+    // Ketika pengguna mengklik tombol close, tutup modal
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Ketika pengguna mengklik di luar gambar (area gelap), tutup modal
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+});
+
 $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
@@ -172,14 +190,33 @@ $(document).ready(function() {
                 }
             },
             { data: 'name' },
+            { data: 'foreign' },
             { data: 'citizenship' },
-            { data: 'docs_citizenship' },
+            // { data: 'docs_citizenship' },
+            {
+                data: 'docs_citizenship',
+                render: function(data) {
+                    return `<img src="${data}" alt="Doc Image" style="width: 50px; height: auto;" />`;
+                }
+            },
             { data: 'notes' },
             { data: 'status', render: function(data) {
                 return data ? 'Visited' : 'Visiting';
             }},
             { data: 'action', orderable: false, searchable: false }
-        ]
+        ],
+        rowCallback: function(row, data) {
+            $(row).on('click', function() {
+                // Ambil URL gambar dari kolom `docs_citizenship`
+                const imageUrl = data.docs_citizenship;
+
+                // Set gambar ke dalam modal
+                $('#modalImage').attr('src', imageUrl);
+
+                // Tampilkan modal
+                $('#imageModal').modal('show');
+            });
+        }
     });
 
     $("#dlength").append($("#table_length"));

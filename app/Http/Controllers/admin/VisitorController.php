@@ -106,7 +106,10 @@ class VisitorController extends Controller
         $data = Visitor::select('*')
             ->find($id);
 
-        return view('admin.visitor.ppe', compact('data', 'id'));
+        $size_shoes = explode(';', $data->ppe_shoes_size);
+        $size_vest = explode(';', $data->ppe_vest_size);
+
+        return view('admin.visitor.ppe', compact('data', 'id', 'size_shoes', 'size_vest'));
     }
 
     public function create()

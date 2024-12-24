@@ -42,7 +42,7 @@
                                             </select>
 
                                             <select id="approval-status" class="form-select me-2">
-                                                <option value="">Select Approval Status</option>
+                                                <option value="">Select Approval</option>
                                                 <option value="approved">Approved</option>
                                                 <option value="rejected">Rejected</option>
                                                 <option value="pending">Pending</option>
