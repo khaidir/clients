@@ -82,8 +82,8 @@ class PublicVisitorController extends Controller
             'citizenship_id.required' => 'Card ID is required',
         ]);
 
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
 
             $dateRequest = now();
             $token = $request->token;
@@ -111,7 +111,7 @@ class PublicVisitorController extends Controller
                     'description' => $request->description,
                     'destination' => $request->destination,
 
-                    'ppe' => $request->ppe,
+                    'ppe' => ($request->ppe == null) ? false : true,
                     'ppe_helmet' => $request->ppe_helmet,
                     'ppe_glasses' => $request->ppe_glasses,
                     'ppe_shoes' => $request->ppe_shoes,
@@ -195,15 +195,15 @@ class PublicVisitorController extends Controller
                 $this->sendmailpic($pic->name, $pic->email);
             }
 
-            DB::commit();
-            return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
-        } catch (ValidationException $e) {
-            DB::rollback();
-            return redirect('invite/draft/'. $token->token)->with(['warning' => $e->errors()]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect('invite/draft/'. $token->token)->with(['error' => $e->getMessage()]);
-        }
+            // DB::commit();
+        //     return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
+        // } catch (ValidationException $e) {
+        //     DB::rollback();
+        //     return redirect('invite/draft/'. $token->token)->with(['warning' => $e->errors()]);
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return redirect('invite/draft/'. $token->token)->with(['error' => $e->getMessage()]);
+        // }
     }
 
     public function sendmailuser($name = null, $email = null)
