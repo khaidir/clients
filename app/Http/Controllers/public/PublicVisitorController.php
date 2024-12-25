@@ -89,8 +89,16 @@ class PublicVisitorController extends Controller
             $token = $request->token;
             $token = Token::where('token', $token)->first();
 
-            $ppe_shoes_size = $request->ppe_shoes_size_1 .';'. $request->ppe_shoes_size_2 .';'. $request->ppe_shoes_size_3;
-            $ppe_vest_size = $request->ppe_vest_size_1 .';'. $request->ppe_vest_size_2 .';'. $request->ppe_vest_size_3;
+            $ss_1 = ($request->ppe_shoes_size_1 == null) ? '' : $request->ppe_shoes_size_1;
+            $ss_2 = ($request->ppe_shoes_size_2 == null) ? '' : $request->ppe_shoes_size_2;
+            $ss_3 = ($request->ppe_shoes_size_3 == null) ? '' : $request->ppe_shoes_size_3;
+
+            $vs_1 = ($request->ppe_vest_size_1 == null) ? '' : $request->ppe_vest_size_1;
+            $vs_2 = ($request->ppe_vest_size_2 == null) ? '' : $request->ppe_vest_size_2;
+            $vs_3 = ($request->ppe_vest_size_3 == null) ? '' : $request->ppe_vest_size_3;
+
+            $ppe_shoes_size = $ss_1 .';'. $ss_2 .';'. $ss_3;
+            $ppe_vest_size = $vs_1 .';'. $vs_2 .';'. $vs_3;
 
             $visitor = Visitor::updateOrCreate(
                 ['token_id' => $token->id],
