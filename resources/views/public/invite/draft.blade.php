@@ -136,7 +136,7 @@
                                     <div class="card card-flush">
                                         <div class="row card-body">
                                             <h3 class="mb-4">PPE</h3>
-                                            <div class="mb-6" id="personilContainer">
+                                            <div class="mb-6" id="">
                                                 <div class="row mb-6">
                                                     <div class="col-md-12 mb-5 mt-3">
                                                         <div class="fv-row fv-plugins-icon-container">

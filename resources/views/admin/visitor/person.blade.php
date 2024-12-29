@@ -34,7 +34,7 @@
                                     </tr>
                                     <tr>
                                         <td>Destination</td>
-                                        <td>{{ @$data->desctination}}</td>
+                                        <td>{{ @$data->destination}}</td>
                                     </tr>
                                     <tr>
                                         <td>Duration</td>
