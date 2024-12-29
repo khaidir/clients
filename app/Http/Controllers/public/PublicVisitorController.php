@@ -18,6 +18,31 @@ use Auth;
 
 class PublicVisitorController extends Controller
 {
+    public function landing()
+    {
+        DB::beginTransaction();
+        try {
+
+            $code = $this->generateUniqueCode(24);
+            $token = Token::create([
+                'token' => $code,  // Misalkan 'code' adalah kolom yang ingin diisi
+                'description' => 'auto', // Status yang ingin diset
+                'status' => 1,     // Misalkan ini adalah ID pengguna yang sesuai
+            ]);
+
+            DB::commit();
+            return redirect('/invite/'. $code)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('/invite/'. $code)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('/invite/'. $code)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
     public function index($token = null)
     {
         // cek token, ready standby at this page else redirect with sorry word
@@ -32,6 +57,7 @@ class PublicVisitorController extends Controller
             ->leftJoin('pic', 'pic.id', '=', 'visitor.pic_id')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
             ->where('token_id', $token->id)->first();
+
 
         return view('public.invite.index', compact('data', 'pic', 'token'));
     }
@@ -61,9 +87,9 @@ class PublicVisitorController extends Controller
 
     public function direct_token($token = null)
     {
-        $token = $this->base64_decrypt($token, 7);
-        $token = Token::where('token', $token)->first();
-        return redirect('/invite/'. $token->token)->with(['success' => 'Selamat, silahkan masukkan data anda dengan lengkap.']);
+        // $token = $this->base64_decrypt($token, 7);
+        // $token = Token::where('token', $token)->first();
+        // return redirect('/invite/'. $token->token)->with(['success' => 'Selamat, silahkan masukkan data anda dengan lengkap.']);
     }
 
     public function store(Request $request)
@@ -92,13 +118,23 @@ class PublicVisitorController extends Controller
             $ss_1 = ($request->ppe_shoes_size_1 == null) ? '' : $request->ppe_shoes_size_1;
             $ss_2 = ($request->ppe_shoes_size_2 == null) ? '' : $request->ppe_shoes_size_2;
             $ss_3 = ($request->ppe_shoes_size_3 == null) ? '' : $request->ppe_shoes_size_3;
+            $ss_4 = ($request->ppe_shoes_size_4 == null) ? '' : $request->ppe_shoes_size_4;
+            $ss_5 = ($request->ppe_shoes_size_5 == null) ? '' : $request->ppe_shoes_size_5;
+            $ss_6 = ($request->ppe_shoes_size_6 == null) ? '' : $request->ppe_shoes_size_6;
+            $ss_7 = ($request->ppe_shoes_size_7 == null) ? '' : $request->ppe_shoes_size_7;
+            $ss_8 = ($request->ppe_shoes_size_8 == null) ? '' : $request->ppe_shoes_size_8;
+            $ss_9 = ($request->ppe_shoes_size_9 == null) ? '' : $request->ppe_shoes_size_9;
 
             $vs_1 = ($request->ppe_vest_size_1 == null) ? '' : $request->ppe_vest_size_1;
             $vs_2 = ($request->ppe_vest_size_2 == null) ? '' : $request->ppe_vest_size_2;
             $vs_3 = ($request->ppe_vest_size_3 == null) ? '' : $request->ppe_vest_size_3;
+            $vs_4 = ($request->ppe_vest_size_4 == null) ? '' : $request->ppe_vest_size_4;
+            $vs_5 = ($request->ppe_vest_size_5 == null) ? '' : $request->ppe_vest_size_5;
+            $vs_6 = ($request->ppe_vest_size_6 == null) ? '' : $request->ppe_vest_size_6;
+            $vs_7 = ($request->ppe_vest_size_7 == null) ? '' : $request->ppe_vest_size_7;
 
-            $ppe_shoes_size = $ss_1 .';'. $ss_2 .';'. $ss_3;
-            $ppe_vest_size = $vs_1 .';'. $vs_2 .';'. $vs_3;
+            $ppe_shoes_size = $ss_1 .';'. $ss_2 .';'. $ss_3 . $ss_4 . $ss_5 . $ss_6 . $ss_7 . $ss_8 . $ss_9;
+            $ppe_vest_size = $vs_1 .';'. $vs_2 .';'. $vs_3 . $vs_4 . $vs_5 . $vs_6 . $vs_7;
 
             $visitor = Visitor::updateOrCreate(
                 ['token_id' => $token->id],
@@ -274,6 +310,22 @@ class PublicVisitorController extends Controller
 
     }
 
+    function generateUniqueCode($length = 8) {
+        // Ambil timestamp saat ini
+        $timestamp = microtime(true);
+
+        // Konversi timestamp ke format unik (heksadesimal)
+        $timestampHex = dechex($timestamp);
+
+        // Buat string acak
+        $randomString = bin2hex(random_bytes($length / 2));
+
+        // Gabungkan timestamp dan string acak
+        $uniqueCode = strtoupper($timestampHex . $randomString);
+
+        return substr($uniqueCode, 0, $length);
+    }
+
     function base64_encrypt(string $text, int $times = 1): string
     {
         $encoded = $text;
@@ -293,22 +345,6 @@ class PublicVisitorController extends Controller
             }
         }
         return $decoded;
-    }
-
-    function generateUniqueCode($length = 8) {
-        // Ambil timestamp saat ini
-        $timestamp = microtime(true);
-
-        // Konversi timestamp ke format unik (heksadesimal)
-        $timestampHex = dechex($timestamp);
-
-        // Buat string acak
-        $randomString = bin2hex(random_bytes($length / 2));
-
-        // Gabungkan timestamp dan string acak
-        $uniqueCode = strtoupper($timestampHex . $randomString);
-
-        return substr($uniqueCode, 0, $length);
     }
 
 }

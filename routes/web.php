@@ -31,7 +31,7 @@ use App\Http\Controllers\public\PublicWorkerController;
 use App\Http\Controllers\public\PublicExtendedController;
 use App\Http\Controllers\public\PublicHistoryController;
 
-Route::view('/', 'welcome');
+// Route::view('/', 'welcome');
 
 Route::get('login', [AuthController::class, 'showLoginForm'])
 ->middleware(\App\Http\Middleware\RedirectIfAuthenticated::class)
@@ -41,6 +41,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('direct/i/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
 
+Route::get('/', [PublicVisitorController::class, 'landing'])->name('visitor-public-landing');
 Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('visitor-public');
 Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
 Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-public-store');
@@ -123,7 +124,7 @@ Route::group([
     'middleware' => 'auth'
 ], function ($router) {
 
-    $router->get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+    $router->get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     $router->get('profile', [ProfileController::class, 'index'])->name('profile');
     $router->post('profile/store', [ProfileController::class, 'store'])->name('profile.store');
 

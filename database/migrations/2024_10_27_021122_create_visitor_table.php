@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('fullname', 160)->nullable();
             $table->string('email', 160)->nullable();
             $table->string('citizenship_id', 20)->nullable();
+            $table->string('foreign', 1)->default(1);
             $table->string('citizenship_doc', 255)->nullable();
 
             $table->string('description', 160)->nullable();
@@ -40,6 +41,7 @@ return new class extends Migration
             $table->integer('approve_1')->default(0);
             $table->integer('approve_2')->default(0);
             $table->integer('approve_3')->default(0);
+            $table->integer('approve_4')->default(0);
             $table->boolean('status')->default(false);
 
             $table->timestamps();
