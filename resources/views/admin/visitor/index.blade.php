@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="col-12 col-sm-12">
                                             <a href="/visitor/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New</a>
-                                            <a href="/visitor/token" class="btn btn-md btn-secondary btn-float" style="margin-top:;">Manage Token</a>
+                                            {{-- <a href="/visitor/token" class="btn btn-md btn-secondary btn-float" style="margin-top:;">Manage Token</a> --}}
                                             <button id="delete-selected" class="btn btn-danger">Delete</button>
                                         </div>
                                         <div class="col-12 col-sm-12">

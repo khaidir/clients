@@ -14,9 +14,11 @@ class VisitorPerson extends Model
 
     protected $fillable = [
         'visitor_id',
+        'citizenship_number',
+        'citizenship_docs',
+        'foreign',
         'name',
-        'citizenship',
-        'docs_citizenship',
+        'ocuppational',
         'notes',
         'status',
     ];

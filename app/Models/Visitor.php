@@ -19,8 +19,10 @@ class Visitor extends Model
         'request_code',
         'fullname',
         'email',
-        'citizenship_id',
+        'citizenship_number',
         'citizenship_doc',
+        'citizenship',
+        'foreign',
         'description',
         'destination',
         'duration',
@@ -35,6 +37,8 @@ class Visitor extends Model
         'approve_1',
         'approve_2',
         'approve_3',
+        'approve_4',
         'status',
+        'ocuppational'
     ];
 }
