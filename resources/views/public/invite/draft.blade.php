@@ -43,17 +43,19 @@
                                 <div class="d-flex flex-column gap-4 gap-lg-6">
                                     <div class="card card-flush">
                                         <div class="row card-body">
-                                            <h3 class="mb-4">Destination</h3>
-                                            <div class="col-md-12 mb-4">
+                                            <h3 class="">Request Form</h3>
+                                            <span class="text-dark mb-10">This form should be field out 1 or 3 days before this valid.</span>
+
+                                            {{-- <div class="col-md-12 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Description</label>
                                                     <input type="text" name="description" class="form-control @error('description') is-invalid @enderror mb-2" placeholder="Description" value="{{ old('description', @$data->description) }}">
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-5">
                                                 <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Destination</label>
-                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Destination" value="{{ old('destination', @$data->destination) }}">
+                                                    <label class="required form-label">Purpose</label>
+                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Purpose" value="{{ old('destination', @$data->destination) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -78,23 +80,24 @@
 
                                     <div class="card card-flush">
                                         <div class="row card-body">
-                                            <h3 class="mb-4">Biodata</h3>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Card ID</label>
                                                     <input type="text" name="citizenship_id" class="form-control @error('citizenship_id') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_id', @$data->citizenship_id) }}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2">
+                                                <label class="required form-label">Foreign</label>
+                                                <select name="citizenship" class="form-control">
+                                                    <option value="">Choose</option>
+                                                    <option value="1">KTP</option>
+                                                    <option value="2">Passport/Kitas</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Fullname</label>
                                                     <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname', @$data->fullname) }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Ocuppational</label>
-                                                    <input type="text" name="ocuppational" class="form-control @error('ocuppational') is-invalid @enderror mb-2" placeholder="Ocuppational" value="{{ old('ocuppational', @$data->ocuppational) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -103,6 +106,13 @@
                                                     <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email', @$data->email) }}">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="fv-row fv-plugins-icon-container">
+                                                    <label class="required form-label">Ocuppational</label>
+                                                    <input type="text" name="ocuppational" class="form-control @error('ocuppational') is-invalid @enderror mb-2" placeholder="Ocuppational" value="{{ old('ocuppational', @$data->ocuppational) }}">
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -170,84 +180,115 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-5">
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 36-37</label>
-                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 38-39</label>
-                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 40</label>
-                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 41</label>
-                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 42</label>
-                                                                    <input type="number" name="ppe_shoes_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[1] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 43</label>
-                                                                    <input type="number" name="ppe_shoes_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[2] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 44</label>
-                                                                    <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 45</label>
-                                                                    <input type="number" name="ppe_shoes_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[1] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size 46</label>
-                                                                    <input type="number" name="ppe_shoes_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[2] }}">
+                                                            <div class="col-md-12 mb-3">
+                                                                <div class="row fv-row fv-plugins-icon-container">
+                                                                    <label class="form-label">Shoeses</label>
+                                                                    <div class="row mb-5">
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 36-37</label>
+                                                                                <input type="number" name="ppe_shoes_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[0] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 38-39</label>
+                                                                                <input type="number" name="ppe_shoes_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[1] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 40</label>
+                                                                                <input type="number" name="ppe_shoes_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[2] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 41</label>
+                                                                                <input type="number" name="ppe_shoes_size_4" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[3] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 42</label>
+                                                                                <input type="number" name="ppe_shoes_size_5" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[4] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 43</label>
+                                                                                <input type="number" name="ppe_shoes_size_6" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[5] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 44</label>
+                                                                                <input type="number" name="ppe_shoes_size_7" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[6] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 45</label>
+                                                                                <input type="number" name="ppe_shoes_size_8" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[7] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-1">
+                                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                                <label class="form-label">Size 46</label>
+                                                                                <input type="number" name="ppe_shoes_size_9" max="100" class="form-control" placeholder="Size" value="{{ @$size_shoes[8] }}">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="row mb-5">
-                                                            <div class="col-md-3">
-                                                                <div class="fv-row fv-plugins-icon-container">
+                                                            <div class="col-md-12">
+                                                                <div class="row fv-row fv-plugins-icon-container">
                                                                     <label class="form-label">Vest</label>
-                                                                    <input type="number" name="ppe_vest" max="100" class="form-control" placeholder="Shoes" value="{{ @$data->ppe_vest }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size L</label>
-                                                                    <input type="number" name="ppe_vest_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[0] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Size XL</label>
-                                                                    <input type="number" name="ppe_vest_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[1] }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="fv-row fv-plugins-icon-container">
-                                                                    <label class="form-label">Card XXL</label>
-                                                                    <input type="number" name="ppe_vest_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[2] }}">
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Size S</label>
+                                                                            <input type="number" name="ppe_vest_size_1" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[0] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Size M</label>
+                                                                            <input type="number" name="ppe_vest_size_2" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[1] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Size L</label>
+                                                                            <input type="number" name="ppe_vest_size_3" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[2] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Size XL</label>
+                                                                            <input type="number" name="ppe_vest_size_4" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[3] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Card 2XL</label>
+                                                                            <input type="number" name="ppe_vest_size_5" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[4] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Card 3XL</label>
+                                                                            <input type="number" name="ppe_vest_size_6" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[5] }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1">
+                                                                        <div class="fv-row fv-plugins-icon-container">
+                                                                            <label class="form-label">Card 4XL</label>
+                                                                            <input type="number" name="ppe_vest_size_7" max="100" class="form-control" placeholder="Size" value="{{ @$size_vest[6] }}">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -264,11 +305,10 @@
                                             <div class="mb-6" id="personilContainer">
                                                 @foreach($personils as $personil)
                                                     <div class="row mb-6 personil-row">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-2">
                                                             <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="required form-label">Fullname</label>
-                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
-                                                                <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
+                                                                <label class="form-label">Card ID</label>
+                                                                <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
@@ -281,13 +321,20 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-2">
+                                                        <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="form-label">Card ID</label>
-                                                                <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
+                                                                <label class="required form-label">Fullname</label>
+                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
+                                                                <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">Ocuppational</label>
+                                                                <input type="text" name="work[]" class="form-control" placeholder="Ocuppational" value="{{ $personil->work }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Attachment</label>
                                                                 <input type="file" name="attachment[]" class="form-control">
@@ -306,20 +353,20 @@
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
-                                                                <a href="/invite/delete/{{ $personil->id }}" class="btn btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">Delete</a>
+                                                                <a href="/invite/delete/{{ $personil->id }}" class="btn btn-sm btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">X</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
 
                                                 <div class="row mb-6 personil-row personil-template">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="required form-label">Fullname</label>
-                                                            <input type="text" name="name[]" class="form-control" placeholder="Fullname">
+                                                            <label class="form-label">Card ID</label>
+                                                            <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                     <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="form-label">Foreign</label>
                                                             <select name="foreign[]" class="form-control">
@@ -329,13 +376,19 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-3">
                                                         <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="form-label">Card ID</label>
-                                                            <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
+                                                            <label class="required form-label">Fullname</label>
+                                                            <input type="text" name="name[]" class="form-control" placeholder="Fullname">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="required form-label">Ocuppational</label>
+                                                            <input type="text" name="work[]" class="form-control" placeholder="Ocuppational">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Attachment</label>
                                                             <input type="file" name="attachment[]" class="form-control">

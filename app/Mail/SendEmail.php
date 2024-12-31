@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\SerializesModels;
 
 class SendEmail extends Mailable
@@ -13,13 +15,15 @@ class SendEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
+    public $filePath;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($data, $filePath)
     {
         $this->data = $data;
+        $this->filePath = $filePath;
     }
 
     /**
@@ -43,13 +47,18 @@ class SendEmail extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
+    public function build()
     {
-        return [];
+        // Menambahkan attachment PDF
+        $message = $this->subject($this->data['subject'])
+                        ->view('emails.send_email', ['content' => $this->data['content']]);
+
+        // Melampirkan PDF dari path yang disediakan
+        $message->attach(Storage::disk('public')->path($this->filePath), [
+            'as' => 'invitation_' . basename($this->filePath),
+            'mime' => 'application/pdf',
+        ]);
+
+        return $message;
     }
 }
