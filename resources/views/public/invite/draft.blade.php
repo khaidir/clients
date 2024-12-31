@@ -83,15 +83,15 @@
                                             <div class="col-md-3 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Card ID</label>
-                                                    <input type="text" name="citizenship_id" class="form-control @error('citizenship_id') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_id', @$data->citizenship_id) }}">
+                                                    <input type="text" name="citizenship_number" class="form-control @error('citizenship_number') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_number', @$data->citizenship_number) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="required form-label">Foreign</label>
                                                 <select name="citizenship" class="form-control">
                                                     <option value="">Choose</option>
-                                                    <option value="1">KTP</option>
-                                                    <option value="2">Passport/Kitas</option>
+                                                    <option value="1" {{ (old('citizenship') == 1 or @$data->foreign == 1) ? 'selected':'' }}>KTP</option>
+                                                    <option value="2" {{ (old('citizenship') == 2 or @$data->foreign == 2) ? 'selected':'' }}>Passport/Kitas</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-7">
@@ -308,6 +308,7 @@
                                                         <div class="col-md-2">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="form-label">Card ID</label>
+                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
                                                             </div>
                                                         </div>
@@ -324,14 +325,13 @@
                                                         <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Fullname</label>
-                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Ocuppational</label>
-                                                                <input type="text" name="work[]" class="form-control" placeholder="Ocuppational" value="{{ $personil->work }}">
+                                                                <input type="text" name="work[]" class="form-control" placeholder="Ocuppational" value="{{ $personil->ocuppational }}">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -388,6 +388,7 @@
                                                             <input type="text" name="work[]" class="form-control" placeholder="Ocuppational">
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-2">
                                                         <div class="fv-row fv-plugins-icon-container">
                                                             <label class="required form-label">Attachment</label>

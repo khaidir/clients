@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('visitor_person', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('visitor_id')->nullable();
-
+            $table->string('citizenship_number', 255)->nullable();
+            $table->string('citizenship_docs', 255)->nullable();
+            $table->integer('foreign')->default(1);
             $table->string('name', 160)->nullable();
             $table->string('ocuppational', 160)->nullable();
-            $table->string('foreign', 1)->default(1);
-            $table->string('citizenship', 40)->nullable();
-            $table->string('docs_citizenship', 255)->nullable();
             $table->string('notes', 255)->nullable();
-
             $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();

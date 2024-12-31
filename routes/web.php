@@ -41,7 +41,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('direct/i/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
 
-Route::get('/', [PublicVisitorController::class, 'landing'])->name('visitor-public-landing');
+Route::get('/vp', [PublicVisitorController::class, 'landing'])->name('visitor-public-landing');
 Route::get('invite/{token}', [PublicVisitorController::class, 'index'])->name('visitor-public');
 Route::get('invite/draft/{token}', [PublicVisitorController::class, 'draft'])->name('visitor-public-draft');
 Route::post('invite', [PublicVisitorController::class, 'store'])->name('visitor-public-store');
@@ -55,7 +55,7 @@ Route::group([
     'middleware' => 'auth'
 ], function ($router) {
 
-    Route::get('dashboard', [PublicDashboardController::class, 'index'])->name('public.dashboard');
+    Route::get('/', [PublicDashboardController::class, 'index'])->name('public.dashboard');
 
     Route::group([
         'prefix' => 'u',

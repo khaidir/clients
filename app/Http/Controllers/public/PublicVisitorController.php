@@ -51,6 +51,9 @@ class PublicVisitorController extends Controller
     {
         // cek token, ready standby at this page else redirect with sorry word
         $token = Token::where('token', $token)->first();
+        if (!$token) {
+            return redirect('/vp')->with(['danger' => 'Page not found, please submit your data.']);
+        }
 
         $pic = Pic::select('pic.*', 'users.name as fullname')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
@@ -69,6 +72,11 @@ class PublicVisitorController extends Controller
     public function draft($token = null)
     {
         $token = Token::where('token', $token)->first();
+
+        if (!$token) {
+            return redirect('/vp')->with(['danger' => 'Page not found, please submit your data.']);
+        }
+
 
         $pic = Pic::select('pic.*', 'users.name as fullname')
             ->leftJoin('users', 'pic.user_id', '=', 'users.id')
@@ -103,14 +111,14 @@ class PublicVisitorController extends Controller
             'fullname' => 'required|string',
             'ocuppational' => 'nullable|string',
             'email' => 'required|string',
-            'citizenship_id' => 'nullable|string',
-            'description' => 'required|string',
-            'destination' => 'required|string',
+            'citizenship_number' => 'nullable|string',
+            'description' => 'nullable|string',
+            'destination' => 'nullable|string',
             'duration' => 'nullable|string',
         ], [
             'fullname.required' => 'Full name is required',
             'email.required' => 'Email is required',
-            'citizenship_id.required' => 'Card ID is required',
+            'citizenship_number.required' => 'Card ID is required',
         ]);
 
         DB::beginTransaction();
@@ -148,18 +156,16 @@ class PublicVisitorController extends Controller
                     'fullname' => $request->fullname,
                     'ocuppational' => $request->ocuppational,
                     'email' => $request->email,
-                    'citizenship' => $request->citizenship,
-                    'citizenship_id' => $request->citizenship_id,
+                    'citizenship_number' => $request->citizenship_number,
+                    'foreign' => $request->citizenship,
                     'citizenship_doc' => $request->ktp,
-                    'description' => $request->description,
+                    'description' => @$request->description,
                     'destination' => $request->destination,
 
                     'ppe' => ($request->ppe == null) ? false : true,
                     'ppe_helmet' => $request->ppe_helmet,
                     'ppe_glasses' => $request->ppe_glasses,
-                    'ppe_shoes' => $request->ppe_shoes,
                     'ppe_shoes_size' => $ppe_shoes_size,
-                    'ppe_vest' => $request->ppe_shoes,
                     'ppe_vest_size' => $ppe_vest_size,
 
                     'pic_id' => $request->pic,
@@ -180,17 +186,17 @@ class PublicVisitorController extends Controller
                     $personil = [
                         'visitor_id' => $visitor->id,
                         'name' => $name,
-                        // 'work' => $request->work[$index],
+                        'ocuppational' => $request->work[$index],
                         'foreign' => $request->foreign[$index],
                         'citizenship' => $request->citi_id[$index],
                         'notes' => null,
-                        'status' => '1',
+                        'status' => true,
                     ];
 
                     if ($request->hasFile("attachment.$index")) {
-                        $personil['docs_citizenship'] = $request->file("attachment.$index")->store('attachments', 'public');
+                        $personil['citizenship_docs'] = $request->file("attachment.$index")->store('attachments', 'public');
                     } else {
-                        $personil['docs_citizenship'] = null;
+                        $personil['citizenship_docs'] = null;
                     }
 
                     if ($personilId) {
@@ -199,50 +205,50 @@ class PublicVisitorController extends Controller
                         if ($existingPersonil) {
                             $existingPersonil->update([
                                 'name' => $personil['name'],
-                                // 'work' => $personil['work'],
+                                'ocuppational' => $personil['ocuppational'],
                                 'foreign' => $personil['foreign'],
                                 'citizenship' => $personil['citizenship'],
-                                'docs_citizenship' => $personil['docs_citizenship'],
+                                'citizenship_docs' => $personil['citizenship_docs'],
                                 'notes' => $personil['notes'],
                                 'status' => $personil['status'],
                             ]);
                         }
                     } else {
-                        $personilData[] = $personil;
+                        $personilData[] = $personil; // Data baru hanya ditambahkan di sini
                     }
-                    $personilData[] = $personil;
                 }
 
                 if (count($personilData) > 0) {
                     VisitorPerson::upsert(
                         collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
                         ['id'],
-                        ['foreign', 'citizenship', 'docs_citizenship', 'notes', 'status']
+                        ['foreign', 'name', 'ocuppational', 'citizenship', 'citizenship_docs', 'notes', 'status']
                     );
                 }
             }
 
-            // Generate PDF
-            $pdf = Pdf::loadView('public.invite.invitation', [
-                'visitor' => $visitor,
-                'personil' => $personilData ?? [],
-            ]);
 
-            $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
-            Storage::disk('public')->put($filePath, $pdf->output());
+            // // Generate PDF
+            // $pdf = Pdf::loadView('public.invite.invitation', [
+            //     'visitor' => $visitor,
+            //     'personil' => $personilData ?? [],
+            // ]);
 
-            if (Storage::disk('public')->exists($filePath)) {
-                $pic = Pic::select('pic.id', 'pic.name', 'pic.email')
-                    ->where('pic.id', $request->pic)
-                    ->first();
+            // $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
+            // Storage::disk('public')->put($filePath, $pdf->output());
 
-                $data = [
-                    'subject' => 'Invitation Details',
-                    'content' => 'Please find the invitation attached.',
-                ];
+            // if (Storage::disk('public')->exists($filePath)) {
+            //     $pic = Pic::select('pic.id', 'pic.name', 'pic.email')
+            //         ->where('pic.id', $request->pic)
+            //         ->first();
 
-                Mail::to($pic->email)->send(new SendEmail($data, $filePath));
-            }
+            //     $data = [
+            //         'subject' => 'Invitation Details',
+            //         'content' => 'Please find the invitation attached.',
+            //     ];
+
+            //     Mail::to($pic->email)->send(new SendEmail($data, $filePath));
+            // }
 
             // $this->sendmailuser($request->fullname, $request->email);
 

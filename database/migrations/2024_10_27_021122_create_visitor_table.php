@@ -15,26 +15,26 @@ return new class extends Migration
             $table->increments('id');
 
             $table->integer('token_id')->default(0);
-            $table->integer('pic_id')->default(0);
             $table->integer('user_id')->nullable();
-
-            $table->string('request_code', 24)->nullable();
-            $table->string('fullname', 160)->nullable();
-            $table->string('email', 160)->nullable();
-            $table->string('citizenship_id', 20)->nullable();
-            $table->string('foreign', 1)->default(1);
-            $table->string('citizenship_doc', 255)->nullable();
 
             $table->string('description', 160)->nullable();
             $table->string('destination', 40)->nullable();
             $table->string('duration', 120)->nullable();
+            $table->integer('pic_id')->default(0);
+
+            $table->string('request_code', 24)->nullable();
+
+            $table->string('fullname', 160)->nullable();
+            $table->string('citizenship_number', 20)->nullable();
+            $table->string('citizenship_doc', 255)->nullable();
+            $table->string('foreign', 1)->default(1);
+            $table->string('ocuppational')->nullable();
+            $table->string('email', 160)->nullable();
 
             $table->tinyInteger('ppe')->default(1); // 2 = Yes, 1 = No
             $table->string('ppe_helmet', 120)->nullable();
             $table->tinyInteger('ppe_glasses')->nullable();
-            $table->tinyInteger('ppe_shoes')->nullable();
             $table->string('ppe_shoes_size', 120)->nullable();
-            $table->tinyInteger('ppe_vest')->nullable();
             $table->string('ppe_vest_size', 120)->nullable();
 
             $table->dateTime('date_request');

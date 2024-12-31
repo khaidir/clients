@@ -43,7 +43,8 @@
                                 <div class="d-flex flex-column gap-4 gap-lg-6">
                                     <div class="card card-flush">
                                         <div class="row card-body">
-                                            <h3 class="mb-4">Destination</h3>
+                                            <h3 class="">Request Form</h3>
+                                            <span class="text-dark mb-10">This form should be field out 1 or 3 days before this valid.</span>
                                             {{-- <div class="col-md-12 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Description</label>
@@ -52,8 +53,8 @@
                                             </div> --}}
                                             <div class="col-md-5">
                                                 <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Destination</label>
-                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Destination" value="{{ old('destination', @$data->destination) }}">
+                                                    <label class="required form-label">Purpose</label>
+                                                    <input type="text" name="destination" class="form-control @error('destination') is-invalid @enderror mb-2" placeholder="Purpose" value="{{ old('destination', @$data->destination) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -78,20 +79,13 @@
 
                                     <div class="card card-flush">
                                         <div class="row card-body">
-                                            <h3 class="mb-4">Biodata</h3>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Card ID</label>
-                                                    <input type="text" name="citizenship_id" class="form-control @error('citizenship_id') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_id', @$data->citizenship_id) }}">
+                                                    <input type="text" name="citizenship_number" class="form-control @error('citizenship_number') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_number', @$data->citizenship_number) }}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Fullname</label>
-                                                    <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname', @$data->fullname) }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-2">
                                                 <label class="required form-label">Foreign</label>
                                                 <select name="citizenship" class="form-control">
                                                     <option value="">Choose</option>
@@ -99,18 +93,25 @@
                                                     <option value="2">Passport/Kitas</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-7">
                                                 <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="required form-label">Ocuppational</label>
-                                                    <input type="text" name="ocuppational" class="form-control @error('ocuppational') is-invalid @enderror mb-2" placeholder="Ocuppational" value="{{ old('ocuppational', @$data->ocuppational) }}">
+                                                    <label class="required form-label">Fullname</label>
+                                                    <input type="text" name="fullname" class="form-control @error('fullname') is-invalid @enderror mb-2" placeholder="Fullname" value="{{ old('fullname', @$data->fullname) }}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="required form-label">Email</label>
                                                     <input type="text" name="email" class="form-control @error('email') is-invalid @enderror mb-2" placeholder="Email" value="{{ old('email', @$data->email) }}">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="fv-row fv-plugins-icon-container">
+                                                    <label class="required form-label">Ocuppational</label>
+                                                    <input type="text" name="ocuppational" class="form-control @error('ocuppational') is-invalid @enderror mb-2" placeholder="Ocuppational" value="{{ old('ocuppational', @$data->ocuppational) }}">
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 
