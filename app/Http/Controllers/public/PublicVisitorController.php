@@ -97,57 +97,42 @@ class PublicVisitorController extends Controller
         return view('public.invite.draft', compact('data', 'personils', 'pic', 'token', 'size_shoes', 'size_vest'));
     }
 
-    // public function direct_token($token = null)
-    // {
-    //     $token = $this->base64_decrypt($token, 7);
-    //     $token = Token::where('token', $token)->first();
-    //     return redirect('/invite/'. $token->token)->with(['success' => 'Selamat, silahkan masukkan data anda dengan lengkap.']);
-    // }
-
     public function store(Request $request)
     {
-
         $request->validate([
             'fullname' => 'required|string',
-            'ocuppational' => 'nullable|string',
             'email' => 'required|string',
-            'citizenship_number' => 'nullable|string',
-            'description' => 'nullable|string',
-            'destination' => 'nullable|string',
-            'duration' => 'nullable|string',
         ], [
             'fullname.required' => 'Full name is required',
             'email.required' => 'Email is required',
-            'citizenship_number.required' => 'Card ID is required',
         ]);
 
         DB::beginTransaction();
         try {
-
             $dateRequest = now();
-            $token = $request->token;
-            $token = Token::where('token', $token)->first();
+            $token = Token::where('token', $request->token)->first();
 
-            $ss_1 = ($request->ppe_shoes_size_1 == null) ? '' : $request->ppe_shoes_size_1;
-            $ss_2 = ($request->ppe_shoes_size_2 == null) ? '' : $request->ppe_shoes_size_2;
-            $ss_3 = ($request->ppe_shoes_size_3 == null) ? '' : $request->ppe_shoes_size_3;
-            $ss_4 = ($request->ppe_shoes_size_4 == null) ? '' : $request->ppe_shoes_size_4;
-            $ss_5 = ($request->ppe_shoes_size_5 == null) ? '' : $request->ppe_shoes_size_5;
-            $ss_6 = ($request->ppe_shoes_size_6 == null) ? '' : $request->ppe_shoes_size_6;
-            $ss_7 = ($request->ppe_shoes_size_7 == null) ? '' : $request->ppe_shoes_size_7;
-            $ss_8 = ($request->ppe_shoes_size_8 == null) ? '' : $request->ppe_shoes_size_8;
-            $ss_9 = ($request->ppe_shoes_size_9 == null) ? '' : $request->ppe_shoes_size_9;
+            $ppe_shoes_size = implode(';', array_filter([
+                $request->ppe_shoes_size_1 ?? '',
+                $request->ppe_shoes_size_2 ?? '',
+                $request->ppe_shoes_size_3 ?? '',
+                $request->ppe_shoes_size_4 ?? '',
+                $request->ppe_shoes_size_5 ?? '',
+                $request->ppe_shoes_size_6 ?? '',
+                $request->ppe_shoes_size_7 ?? '',
+                $request->ppe_shoes_size_8 ?? '',
+                $request->ppe_shoes_size_9 ?? '',
+            ]));
 
-            $vs_1 = ($request->ppe_vest_size_1 == null) ? '' : $request->ppe_vest_size_1;
-            $vs_2 = ($request->ppe_vest_size_2 == null) ? '' : $request->ppe_vest_size_2;
-            $vs_3 = ($request->ppe_vest_size_3 == null) ? '' : $request->ppe_vest_size_3;
-            $vs_4 = ($request->ppe_vest_size_4 == null) ? '' : $request->ppe_vest_size_4;
-            $vs_5 = ($request->ppe_vest_size_5 == null) ? '' : $request->ppe_vest_size_5;
-            $vs_6 = ($request->ppe_vest_size_6 == null) ? '' : $request->ppe_vest_size_6;
-            $vs_7 = ($request->ppe_vest_size_7 == null) ? '' : $request->ppe_vest_size_7;
-
-            $ppe_shoes_size = $ss_1 .';'. $ss_2 .';'. $ss_3 .';'. $ss_4 .';'. $ss_5 .';'. $ss_6 .';'. $ss_7 .';'. $ss_8 .';'. $ss_9;
-            $ppe_vest_size = $vs_1 .';'. $vs_2 .';'. $vs_3 .';'. $vs_4 .';'. $vs_5 .';'. $vs_6 . ';'.$vs_7;
+            $ppe_vest_size = implode(';', array_filter([
+                $request->ppe_vest_size_1 ?? '',
+                $request->ppe_vest_size_2 ?? '',
+                $request->ppe_vest_size_3 ?? '',
+                $request->ppe_vest_size_4 ?? '',
+                $request->ppe_vest_size_5 ?? '',
+                $request->ppe_vest_size_6 ?? '',
+                $request->ppe_vest_size_7 ?? '',
+            ]));
 
             $visitor = Visitor::updateOrCreate(
                 ['token_id' => $token->id],
@@ -159,110 +144,106 @@ class PublicVisitorController extends Controller
                     'citizenship_number' => $request->citizenship_number,
                     'foreign' => $request->citizenship,
                     'citizenship_doc' => $request->ktp,
-                    'description' => @$request->description,
+                    'description' => $request->description,
                     'destination' => $request->destination,
-
-                    'ppe' => ($request->ppe == null) ? false : true,
+                    'ppe' => $request->ppe ?? false,
                     'ppe_helmet' => $request->ppe_helmet,
                     'ppe_glasses' => $request->ppe_glasses,
                     'ppe_shoes_size' => $ppe_shoes_size,
                     'ppe_vest_size' => $ppe_vest_size,
-
                     'pic_id' => $request->pic,
                     'duration' => $request->duration,
                     'date_request' => $dateRequest,
                 ]
             );
 
-            $personilData = [];
-            if (!empty($request->name) && !empty($request->citi_id)) {
-                foreach ($request->name as $index => $name) {
-                    if (empty($name) || empty($request->citi_id[$index])) {
-                        continue;
-                    }
+            // Simpan data PDF dan kirim email
+            $pdf = Pdf::loadView('public.invite.invitation', [
+                'visitor' => $visitor,
+                'personil' => [],
+            ]);
+            $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
+            Storage::disk('public')->put($filePath, $pdf->output());
 
-                    $personilId = $request->vid[$index] ?? null;
-
-                    $personil = [
-                        'visitor_id' => $visitor->id,
-                        'name' => $name,
-                        'ocuppational' => $request->work[$index],
-                        'foreign' => $request->foreign[$index],
-                        'citizenship' => $request->citi_id[$index],
-                        'notes' => null,
-                        'status' => true,
-                    ];
-
-                    if ($request->hasFile("attachment.$index")) {
-                        $personil['citizenship_docs'] = $request->file("attachment.$index")->store('attachments', 'public');
-                    } else {
-                        $personil['citizenship_docs'] = null;
-                    }
-
-                    if ($personilId) {
-                        $existingPersonil = VisitorPerson::find($personilId);
-
-                        if ($existingPersonil) {
-                            $existingPersonil->update([
-                                'name' => $personil['name'],
-                                'ocuppational' => $personil['ocuppational'],
-                                'foreign' => $personil['foreign'],
-                                'citizenship' => $personil['citizenship'],
-                                'citizenship_docs' => $personil['citizenship_docs'],
-                                'notes' => $personil['notes'],
-                                'status' => $personil['status'],
-                            ]);
-                        }
-                    } else {
-                        $personilData[] = $personil; // Data baru hanya ditambahkan di sini
-                    }
-                }
-
-                if (count($personilData) > 0) {
-                    VisitorPerson::upsert(
-                        collect($personilData)->map(fn ($personil) => Arr::except($personil, ['unique_key']))->toArray(),
-                        ['id'],
-                        ['foreign', 'name', 'ocuppational', 'citizenship', 'citizenship_docs', 'notes', 'status']
-                    );
+            if (Storage::disk('public')->exists($filePath)) {
+                $pic = Pic::find($request->pic);
+                if ($pic) {
+                    Mail::to($pic->email)->send(new SendEmail([
+                        'subject' => 'Invitation Details',
+                        'content' => 'Please find the invitation attached.',
+                    ], $filePath));
                 }
             }
 
-
-            // // Generate PDF
-            // $pdf = Pdf::loadView('public.invite.invitation', [
-            //     'visitor' => $visitor,
-            //     'personil' => $personilData ?? [],
-            // ]);
-
-            // $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
-            // Storage::disk('public')->put($filePath, $pdf->output());
-
-            // if (Storage::disk('public')->exists($filePath)) {
-            //     $pic = Pic::select('pic.id', 'pic.name', 'pic.email')
-            //         ->where('pic.id', $request->pic)
-            //         ->first();
-
-            //     $data = [
-            //         'subject' => 'Invitation Details',
-            //         'content' => 'Please find the invitation attached.',
-            //     ];
-
-            //     Mail::to($pic->email)->send(new SendEmail($data, $filePath));
-            // }
-
-            // $this->sendmailuser($request->fullname, $request->email);
-
-
             DB::commit();
-            return redirect('invite/draft/'. $token->token)->with(['success' => 'Data has been saved']);
-        } catch (ValidationException $e) {
-            DB::rollback();
-            return redirect('invite/draft/'. $token->token)->with(['warning' => $e->errors()]);
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('invite/draft/'. $token->token)->with(['error' => $e->getMessage()]);
+            return redirect('invite/draft/' . $request->token)->with(['error' => $e->getMessage()]);
         }
+
+        // Handle looping data setelah commit transaksi utama
+        try {
+            foreach ($request->name as $index => $name) {
+                if (empty($name) || empty($request->citi_id[$index])) {
+                    continue;
+                }
+
+                $personilId = $request->vid[$index] ?? null;
+
+                $personil = [
+                    'visitor_id' => $visitor->id,
+                    'name' => $name,
+                    'ocuppational' => $request->work[$index] ?? null,
+                    'foreign' => $request->foreign[$index] ?? null,
+                    'citizenship' => $request->citi_id[$index],
+                    'notes' => null,
+                    'status' => true,
+                    'citizenship_docs' => null, // Set default null
+                ];
+
+                if ($request->hasFile("attachment.$index")) {
+                    $personil['citizenship_docs'] = $request->file("attachment.$index")->store('attachments', 'public');
+                }
+
+                if ($personilId) {
+                    $existingPersonil = VisitorPerson::find($personilId);
+
+                    if ($existingPersonil) {
+                        $existingPersonil->update([
+                            'name' => $personil['name'],
+                            'ocuppational' => $personil['ocuppational'],
+                            'foreign' => $personil['foreign'],
+                            'citizenship' => $personil['citizenship'],
+                            'citizenship_docs' => $personil['citizenship_docs'],
+                            'notes' => $personil['notes'],
+                            'status' => $personil['status'],
+                        ]);
+                    }
+                } else {
+                    $personilData[] = $personil;
+                }
+            }
+
+            if (count($personilData) > 0) {
+                VisitorPerson::upsert(
+                    collect($personilData)
+                        ->map(function ($personil) {
+                            return array_merge([
+                                'citizenship_docs' => null,
+                            ], $personil);
+                        })
+                        ->toArray(),
+                    ['id'],
+                    ['foreign', 'name', 'ocuppational', 'citizenship', 'citizenship_docs', 'notes', 'status']
+                );
+            }
+        } catch (\Exception $e) {
+            return redirect('invite/draft/' . $request->token)->with(['warning' => 'Some personnel data failed to save.']);
+        }
+
+        return redirect('invite/draft/' . $request->token)->with(['success' => 'Data has been saved']);
     }
+
 
     public function sendmailuser($name = null, $email = null)
     {
