@@ -31,7 +31,7 @@ class VisitorPersonController extends Controller
         });
 
         $visitor->transform(function ($row) {
-            $row->docs_citizenship = '/storage/'.$row->docs_citizenship;
+            $row->docs_citizenship = '/storage/'.$row->citizenship_docs;
             return $row;
         });
 

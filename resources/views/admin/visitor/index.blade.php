@@ -69,8 +69,8 @@
                                             <th width="40">ID</th>
                                             <th width="120">Code</th>
                                             <th width="150">PIC</th>
-                                            <th width="350">Description</th>
-                                            <th width="250">Destination</th>
+                                            {{-- <th width="350">Description</th> --}}
+                                            <th width="350">Purpose</th>
                                             <th width="150">Duration</th>
                                             <th width="150">Date Request</th>
                                             <th width="90">Approval</th>
@@ -121,7 +121,7 @@ $(document).ready(function() {
             },
             { data: 'request_code' },
             { data: 'pic' },
-            { data: 'description' },
+            // { data: 'description' },
             { data: 'destination' },
             { data: 'duration' },
             { data: 'date_request' },

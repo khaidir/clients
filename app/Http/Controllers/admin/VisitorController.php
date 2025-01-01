@@ -45,28 +45,48 @@ class VisitorController extends Controller
         $visitor->transform(function ($row) {
             $btn = '';
 
+            $person = DB::table('visitor_person')
+                ->where('foreign', 2)
+                ->where('visitor_id', $row->id)
+                ->exists();
+
             if ($row->approve_1 == 1 && $row->approve_2 == 1 && $row->approve_3 == 1) {
                 $btn .= "Approved";
             } else {
                 if (auth()->user()->hasRole('pic') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_1 == 0 && $row->approve_2 == 0 && $row->approve_2 == 0) {
-                        $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> '; // 1
+                    if ($row->approve_1 == 0 && $row->approve_2 == 0 && $row->approve_3 == 0) {
+                        $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> ';
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
                     }
                 }
                 if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_2 == 0 && $row->approve_1 == 1 && $row->approve_3 == 0) {
-                        $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> '; // 2
+                        $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> ';
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a> '; // 1
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
+                    }
+                }
+                if ( ($row->foreign == 2 or $person >= 1 ) && (auth()->user()->hasRole('legal') || auth()->user()->hasRole('administrator'))) {
+                    if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
+                        $btn .= '<a href="/visitor/approve/legal/' . $row->id . '" class="btn btn-sm btn-success mb-1">Legal</a> ';
+                    } else {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
                     }
                 }
                 if (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
-                        $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>'; // 3
+                    if ($row->foreign == 2) {
+                        if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
+                            $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
+                        } else {
+                            $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a>';
+                        }
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">Approved</a>'; // 1
+                        if ($row->approve_3 == 0 && $row->approve_2 == 0 && $row->approve_1 == 1) {
+                            $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
+                        } else {
+                            $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a>';
+                        }
                     }
                 }
             }
@@ -75,6 +95,7 @@ class VisitorController extends Controller
 
             return $row;
         });
+
 
         $visitor->transform(function ($row) {
             $row->date_request = date('d M, Y', strtotime($row->date_request));
@@ -121,7 +142,6 @@ class VisitorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'required|string|max:160',
             'destination' => 'required|string|max:40',
             'duration' => 'nullable|string|max:3',
             'status' => 'nullable|boolean',
@@ -302,7 +322,7 @@ class VisitorController extends Controller
         }
     }
 
-    public function safety($id = null)
+    public function legal($id = null)
     {
         DB::beginTransaction();
         try {
@@ -317,7 +337,41 @@ class VisitorController extends Controller
                 'approve_3' => 1,
             ]);
 
-            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('visitor.index')->with(['success' => 'Data has been approved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('visitor.index')->with(['error' => @$e->getMessage()]);
+        }
+    }
+
+    public function safety($id = null)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::find($id);
+
+            if (!$visitor) {
+                return redirect()->route('visitor.index')->with(['success' => 'Visitor not found']);
+            }
+
+            $visitor->update([
+                'approve_4' => 1,
+            ]);
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1) {
                 $visitor->update([
                     'status' => 1,
                 ]);

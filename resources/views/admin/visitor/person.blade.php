@@ -192,11 +192,10 @@ $(document).ready(function() {
             { data: 'name' },
             { data: 'foreign' },
             { data: 'citizenship' },
-            // { data: 'docs_citizenship' },
             {
                 data: 'docs_citizenship',
                 render: function(data) {
-                    return `<img src="${data}" alt="Doc Image" style="width: 50px; height: auto;" />`;
+                    return `<img src="${data}" alt="Doc Image" style="width: 50px; height: 35px;" />`;
                 }
             },
             { data: 'notes' },

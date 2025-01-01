@@ -44,7 +44,7 @@ class AuthController extends Controller
                 return redirect()->route('public.dashboard');
             } else {
                 // Arahkan pengguna lainnya ke dashboard
-                return redirect()->intended('/');
+                return redirect()->intended('/dashboard');
             }
 
         }
