@@ -50,43 +50,37 @@ class VisitorController extends Controller
                 ->where('visitor_id', $row->id)
                 ->exists();
 
-            if ($row->approve_1 == 1 && $row->approve_2 == 1 && $row->approve_3 == 1) {
+            if ($row->approve_1 == 1 && $row->approve_2 == 1 && $row->approve_4 == 1) {
                 $btn .= "Approved";
             } else {
                 if (auth()->user()->hasRole('pic') || auth()->user()->hasRole('administrator')) {
-                    if ($row->approve_1 == 0 && $row->approve_2 == 0 && $row->approve_3 == 0) {
+                    if ($row->approve_1 == 0) {
                         $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> ';
+                    } else if( $row->approve_1 == 2) {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected</a> ';
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
+                        $btn .= '-';
                     }
                 }
                 if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_2 == 0 && $row->approve_1 == 1 && $row->approve_3 == 0) {
                         $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> ';
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
+                        $btn .= '-';
                     }
                 }
                 if ( ($row->foreign == 2 or $person >= 1 ) && (auth()->user()->hasRole('legal') || auth()->user()->hasRole('administrator'))) {
                     if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/legal/' . $row->id . '" class="btn btn-sm btn-success mb-1">Legal</a> ';
                     } else {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a> ';
+                        $btn .= '-';
                     }
                 }
                 if (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
-                    if ($row->foreign == 2) {
-                        if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
-                            $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
-                        } else {
-                            $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a>';
-                        }
+                    if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
+                        $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
                     } else {
-                        if ($row->approve_3 == 0 && $row->approve_2 == 0 && $row->approve_1 == 1) {
-                            $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
-                        } else {
-                            $btn .= '<a href="javascript:;" class="btn btn-sm btn-secondary mb-1">-</a>';
-                        }
+                        $btn .= '-';
                     }
                 }
             }
