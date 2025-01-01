@@ -239,8 +239,10 @@ class PublicVisitorController extends Controller
                 $pic = Pic::find($request->pic);
                 if ($pic) {
                     Mail::to($pic->email)->send(new SendEmail([
-                        'subject' => 'Invitation Details',
-                        'content' => 'Please find the invitation attached.',
+                        'subject' => 'Visitor Notification',
+                        'content' => "Hi, ".$pic->name."<br><br>Anda memiliki visitor baru yang harus anda tindak lanjuti.<br>
+                        Klik <a href='".url('/setuju/'.@$visitor->id)."'>Approve</a> jika anda setuju dan <a href='".url('/reject/'.@$visitor->id)."'>Reject</a> jika tidak setuju.<br>
+                        <br>Terima Kasih.",
                     ], $filePath));
                 }
             }
@@ -349,5 +351,76 @@ class PublicVisitorController extends Controller
         }
         return $decoded;
     }
+
+    public function setuju($id = null)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::find($id);
+
+            $visitor->update([
+                'approve_1' => 1,
+            ]);
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return 'Data has been approved<br><a href="/">Kembali</a>';
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('/setuju/'. $id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('/setuju/'. $id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
+    public function reject($id = null)
+    {
+        return view('public.invite.reject', compact('id'));
+    }
+
+    public function rejected(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $visitor = Visitor::where('id', $request->id)->first();
+
+            if ($visitor) {
+                $visitor->update([
+                    'approve_1' => 2,
+                    'description' => $request->reason,
+                ]);
+            } else {
+                return response()->json(['error' => 'Visitor not found'], 404);
+            }
+
+            if ($visitor->approve_1 == 1 && $visitor->approve_2 == 1 && $visitor->approve_3 == 1) {
+                $visitor->update([
+                    'status' => 1,
+                ]);
+            }
+
+            DB::commit();
+            return 'Data has been rejected<br><a href="/">Kembali</a>';
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('/reject/'. $request->id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('/reject/'. $request->id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
 
 }

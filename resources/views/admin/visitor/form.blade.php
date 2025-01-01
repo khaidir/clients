@@ -28,7 +28,7 @@
                             <form action="/visitor/store" method="post" class="needs-validation">
                                 @csrf
                                 <input type="hidden" name="id" class="form-control" id="id" value="{{ @$data->id }}">
-
+{{--
                                 <div class="row mb-4">
                                     <label for="badge" class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-8">
@@ -37,7 +37,7 @@
                                             <span class="text-danger">{{ $errors->first('description') }}</span>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="row mb-4">
                                     <label for="badge" class="col-sm-3 col-form-label">Destination</label>
