@@ -157,24 +157,6 @@ class PublicVisitorController extends Controller
                 ]
             );
 
-            // Simpan data PDF dan kirim email
-            $pdf = Pdf::loadView('public.invite.invitation', [
-                'visitor' => $visitor,
-                'personil' => [],
-            ]);
-            $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
-            Storage::disk('public')->put($filePath, $pdf->output());
-
-            if (Storage::disk('public')->exists($filePath)) {
-                $pic = Pic::find($request->pic);
-                if ($pic) {
-                    Mail::to($pic->email)->send(new SendEmail([
-                        'subject' => 'Invitation Details',
-                        'content' => 'Please find the invitation attached.',
-                    ], $filePath));
-                }
-            }
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -183,6 +165,7 @@ class PublicVisitorController extends Controller
 
         // Handle looping data setelah commit transaksi utama
         try {
+            $personilData = [];
             foreach ($request->name as $index => $name) {
                 if (empty($name) || empty($request->citi_id[$index])) {
                     continue;
@@ -209,15 +192,21 @@ class PublicVisitorController extends Controller
                     $existingPersonil = VisitorPerson::find($personilId);
 
                     if ($existingPersonil) {
-                        $existingPersonil->update([
+                        $updateData = [
                             'name' => $personil['name'],
                             'ocuppational' => $personil['ocuppational'],
                             'foreign' => $personil['foreign'],
                             'citizenship' => $personil['citizenship'],
-                            'citizenship_docs' => $personil['citizenship_docs'],
                             'notes' => $personil['notes'],
                             'status' => $personil['status'],
-                        ]);
+                        ];
+
+                        // Tambahkan 'citizenship_docs' hanya jika ada file baru
+                        if (isset($personil['citizenship_docs'])) {
+                            $updateData['citizenship_docs'] = $personil['citizenship_docs'];
+                        }
+
+                        $existingPersonil->update($updateData);
                     }
                 } else {
                     $personilData[] = $personil;
@@ -237,6 +226,25 @@ class PublicVisitorController extends Controller
                     ['foreign', 'name', 'ocuppational', 'citizenship', 'citizenship_docs', 'notes', 'status']
                 );
             }
+
+            // Simpan data PDF dan kirim email
+            $pdf = Pdf::loadView('public.invite.invitation', [
+                'visitor' => $visitor,
+                'personil' => [],
+            ]);
+            $filePath = 'invitations/invitation_' . $visitor->id . '.pdf';
+            Storage::disk('public')->put($filePath, $pdf->output());
+
+            if (Storage::disk('public')->exists($filePath)) {
+                $pic = Pic::find($request->pic);
+                if ($pic) {
+                    Mail::to($pic->email)->send(new SendEmail([
+                        'subject' => 'Invitation Details',
+                        'content' => 'Please find the invitation attached.',
+                    ], $filePath));
+                }
+            }
+
         } catch (\Exception $e) {
             return redirect('invite/draft/' . $request->token)->with(['warning' => 'Some personnel data failed to save.']);
         }

@@ -2,7 +2,7 @@
 @include('layouts.public.sidebar-public')
 <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
     <div class="app-wrapper  flex-column flex-row-fluid " id="kt_app_wrapper">
-        <div id="kt_app_toolbar" class="app-toolbar  py-6 ">
+        <div id="kt_app_toolbar" class="app-toolbar py-6 ">
             <div id="kt_app_toolbar_container" class="app-container  container-xxl d-flex align-items-start ">
                 <div class="d-flex flex-column flex-row-fluid">
                     <div class="d-flex align-items-center pt-1">
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div class="app-container  container-xxl ">
+        <div class="app-container container-xxl">
             <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
                     <div id="kt_app_content" class="app-content ">
@@ -310,6 +310,7 @@
                                                                 <label class="form-label">Card ID</label>
                                                                 <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
                                                                 <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
+                                                                <a href="/invite/delete/{{ $personil->id }}" class="text-danger delete-personil" data-id="{{ $personil->id }}">X</a>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-2">
@@ -338,22 +339,17 @@
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">Attachment</label>
                                                                 <input type="file" name="attachment[]" class="form-control">
-                                                                @if($personil->docs_citizenship)
-                                                                    <a href="{{ asset('storage/uploads/' . $personil->docs_citizenship) }}" target="_blank">View Attachment</a>
+                                                                @if($personil->citizenship_docs)
+                                                                    {{-- <a href="{{ asset('storage/' . $personil->citizenship_docs) }}" target="_blank">View Attachment</a> --}}
                                                                 @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
                                                             <div class="fv-row fv-plugins-icon-container">
                                                                 <label class="required form-label">*</label>
-                                                                @if($personil->docs_citizenship)
-                                                                <img class="img-modal" src="/storage/{{ @$personil->docs_citizenship }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" alt="KTP {{ @$personil->name }}">
+                                                                @if($personil->citizenship_docs)
+                                                                <img class="img-modal" src="/storage/{{ @$personil->citizenship_docs }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" height="30px" alt="KTP {{ @$personil->name }}">
                                                                 @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <a href="/invite/delete/{{ $personil->id }}" class="btn btn-sm btn-danger btn-sm delete-personil" data-id="{{ $personil->id }}">X</a>
                                                             </div>
                                                         </div>
                                                     </div>
