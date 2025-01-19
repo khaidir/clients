@@ -81,12 +81,12 @@
                                         <div class="row card-body">
                                             <div class="col-md-3 mb-4">
                                                 <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="form-label">Card ID</label>
+                                                    <label class="required form-label">Card ID</label>
                                                     <input type="text" name="citizenship_number" class="form-control @error('citizenship_number') is-invalid @enderror mb-2" placeholder="Card ID" value="{{ old('citizenship_number', @$data->citizenship_number) }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="required form-label">Foreign</label>
+                                                <label class="form-label">Nationality</label>
                                                 <select name="citizenship" class="form-control">
                                                     <option value="">Choose</option>
                                                     <option value="1">KTP</option>
@@ -146,7 +146,7 @@
                                 <div class="d-flex justify-content-end">
                                     <a href="/u/contracts/workers" class="btn btn-light me-5"> Cancel </a>
                                     <button type="submit" class="btn btn-primary">
-                                        <span class="indicator-label"> Add Person </span>
+                                        <span class="indicator-label"> Save & Next </span>
                                         <span class="indicator-progress"> Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>

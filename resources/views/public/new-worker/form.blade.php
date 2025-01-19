@@ -45,7 +45,7 @@
                                     <div class="card card-flush py-4">
                                         <div class="card-header">
                                             <div class="card-title">
-                                                <h3>Biodata</h3>
+                                                <h3>Personel Data</h3>
                                             </div>
                                         </div>
                                         <div class="row card-body pt-0">

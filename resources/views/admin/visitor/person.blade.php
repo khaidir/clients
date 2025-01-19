@@ -99,10 +99,11 @@
                                                     <tr>
                                                         <th width="40">ID</th>
                                                         <th width="220">Fullname</th>
-                                                        <th width="140">Foreign</th>
-                                                        <th width="200">Citizenship</th>
-                                                        <th width="150">Docs Citizenship</th>
-                                                        <th width="280">Notes</th>
+                                                        <th width="140">Nationality</th>
+                                                        <th width="200">Card ID</th>
+                                                        <th width="150">Attachment</th>
+                                                        <th width="280">Ocuppational</th>
+                                                        <th width="280">Company/Gov Agency</th>
                                                         <th width="90">Status</th>
                                                         <th width="140">Action</th>
                                                     </tr>
@@ -193,12 +194,16 @@ $(document).ready(function() {
             { data: 'foreign' },
             { data: 'citizenship' },
             {
-                data: 'docs_citizenship',
+                data: 'citizenship_docs',
                 render: function(data) {
-                    return `<img src="${data}" alt="Doc Image" style="width: 50px; height: 35px;" />`;
+                    if (data && data !== "") {
+                        return '<img src="' + data + '" alt="Doc Image" style="width: 50px; height: 35px;" />';
+                    } else {
+                        return "-";
+                    }
                 }
             },
-            { data: 'notes' },
+            { data: 'ocuppational' },
             { data: 'status', render: function(data) {
                 return data ? 'Visited' : 'Visiting';
             }},
@@ -206,13 +211,8 @@ $(document).ready(function() {
         ],
         rowCallback: function(row, data) {
             $(row).on('click', function() {
-                // Ambil URL gambar dari kolom `docs_citizenship`
                 const imageUrl = data.docs_citizenship;
-
-                // Set gambar ke dalam modal
                 $('#modalImage').attr('src', imageUrl);
-
-                // Tampilkan modal
                 $('#imageModal').modal('show');
             });
         }
@@ -222,16 +222,12 @@ $(document).ready(function() {
     $("#dfilter").append($("#table_filter"));
     $("#dinfo").append($("#table_info"));
     $("#dpaging").append($("#table_paginate"));
-
     $('#dfilter input').removeClass('form-control-sm');
     $('.dataTables_paginate').parent().addClass('pagination-rounded justify-content-end mb-2');
     $('#dfilter input').parent().parent().addClass('col-xs-4');
     $('.select2-container').attr("width","70");
     $(".select2").select2({ width: 'resolve' });
-
-    $('select').select2({
-        placeholder: 'Choose'
-    });
+    $('select').select2({ placeholder: 'Choose' });
     $('#generate').addClass("mm-active");
 
     $(document).on('click', '.delete', function () {

@@ -20,7 +20,7 @@ class VisitorController extends Controller
 
     public function getData(Request $request)
     {
-        $query = Visitor::select('visitor.*', 'users.name as fullname', 'pic.name as pic_name')
+        $query = Visitor::select('visitor.*', 'pic.name as pic_name')
             ->leftJoin('users', 'visitor.user_id', '=', 'users.id')
             ->leftJoin('pic', 'visitor.pic_id', '=', 'pic.id')
             ->orderBy('created_at', 'desc');
@@ -32,13 +32,16 @@ class VisitorController extends Controller
         $visitor = $query->get();
 
         $visitor->transform(function ($row) {
-            $hour = ($row->duration > 1) ? ' Hours' : ' Hour';
-            $row->duration = $row->duration .$hour;
+            $row->foreign = ($row->foreign == 1) ? 'Indonesia':'Foreign';
             return $row;
         });
 
         $visitor->transform(function ($row) {
-            $row->pic = $row->pic_name;
+            if ($row->citizenship_doc) {
+                $row->citizenship_doc = '/storage/'.$row->citizenship_doc;
+            } else {
+                $row->citizenship_doc = '';
+            }
             return $row;
         });
 

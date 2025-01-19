@@ -30,7 +30,7 @@ class SiaExtendedController extends Controller
             ->get();
 
         $extend->transform(function ($row) {
-            $row->periode_start = Carbon::parse($row->periode_start)->format('d M, Y') .' - '. Carbon::parse($row->periode_end)->format('d M, Y');
+            $row->periode = Carbon::parse($row->periode_start)->format('d M, Y') .' - '. Carbon::parse($row->periode_end)->format('d M, Y');
             $row->requested_at = Carbon::parse($row->requested_at)->format('d M, Y');
             $row->type_contract = ($row->type_contract == 1) ? 'Lump Sum':'Volume Base';
             return $row;
@@ -43,7 +43,7 @@ class SiaExtendedController extends Controller
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'periode'])
             ->make(true);
     }
 

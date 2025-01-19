@@ -64,15 +64,26 @@
                             <div class="col-md-12 responsive mt--2">
                                 <table id="table" class="table table-hover data-table table-striped-columns dataTable" style="width:100%;">
                                     <thead class="table-light">
-                                        <tr>
+                                        {{-- <tr>
                                             <th width="30"><input type="checkbox" id="select-all"></th></th>
                                             <th width="40">ID</th>
                                             <th width="120">Code</th>
                                             <th width="150">PIC</th>
-                                            {{-- <th width="350">Description</th> --}}
                                             <th width="350">Purpose</th>
                                             <th width="150">Duration</th>
                                             <th width="150">Date Request</th>
+                                            <th width="90">Approval</th>
+                                            <th width="90">Status</th>
+                                            <th width="140">Action</th>
+                                        </tr> --}}
+                                        <tr>
+                                            <th width="30"><input type="checkbox" id="select-all"></th></th>
+                                            <th width="40">ID</th>
+                                            <th width="220">Fullname</th>
+                                            <th width="140">Nationality</th>
+                                            <th width="200">Card ID</th>
+                                            <th width="150">Attachment</th>
+                                            <th width="280">Ocuppational</th>
                                             <th width="90">Approval</th>
                                             <th width="90">Status</th>
                                             <th width="140">Action</th>
@@ -119,12 +130,25 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'request_code' },
-            { data: 'pic' },
-            // { data: 'description' },
-            { data: 'destination' },
-            { data: 'duration' },
-            { data: 'date_request' },
+            // { data: 'request_code' },
+            // { data: 'pic' },
+            // { data: 'destination' },
+            // { data: 'duration' },
+            // { data: 'date_request' },
+            { data: 'fullname' },
+            { data: 'foreign' },
+            { data: 'citizenship_number' },
+            {
+                data: 'citizenship_doc',
+                render: function(data) {
+                    if (data && data !== "") {
+                        return '<img src="' + data + '" alt="Doc Image" style="width: 50px; height: 35px;" />';
+                    } else {
+                        return "-";
+                    }
+                }
+            },
+            { data: 'ocuppational' },
             { data: 'approval' },
             { data: 'status', render: function(data) {
                 return data ? 'Active' : 'Inactive';

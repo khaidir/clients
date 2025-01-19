@@ -50,9 +50,11 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="40">ID</th>
-                                            <th width="150">User ID</th>
+                                            {{-- <th width="150">User ID</th> --}}
                                             <th width="200">Company</th>
-                                            <th width="350">Description</th>
+                                            <th width="350">General Description of Task</th>
+                                            <th width="150">Number Contract/PR/PO</th>
+                                            <th width="150">Working Period (N)</th>
                                             <th width="150">Date Request</th>
                                             <th width="90">Status</th>
                                             <th width="140">Action</th>
@@ -86,9 +88,11 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: 'fullname' },
+            // { data: 'fullname' },
             { data: 'company' },
-            { data: 'description' },
+            { data: 'description_of_task' },
+            { data: 'no_contract' },
+            { data: 'periode' },
             { data: 'date_request' },
             { data: 'status', render: function(data) {
                 return data ? 'Active' : 'Inactive';

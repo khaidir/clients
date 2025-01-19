@@ -26,12 +26,16 @@ class VisitorPersonController extends Controller
             ->get();
 
         $visitor->transform(function ($row) {
-            $row->foreign = ($row->foreign == 1) ? 'KTP':'Passport/Kitas';
+            $row->foreign = ($row->foreign == 1) ? 'Indonesia':'Foreign';
             return $row;
         });
 
         $visitor->transform(function ($row) {
-            $row->docs_citizenship = '/storage/'.$row->citizenship_docs;
+            if ($row->citizenship_docs) {
+                $row->citizenship_docs = '/storage/'.$row->citizenship_docs;
+            } else {
+                $row->citizenship_docs = '';
+            }
             return $row;
         });
 
@@ -42,7 +46,7 @@ class VisitorPersonController extends Controller
                     <a class="btn btn-sm btn-danger delete" data-id="'.$row->id.'" href="javascript:void(0);"><i class="bx bxs-trash"></i></a>
                 ';
             })
-            ->rawColumns(['action', 'foreign', 'docs_citizenship'])
+            ->rawColumns(['action', 'foreign', 'citizenship_docs'])
             ->make(true);
     }
 

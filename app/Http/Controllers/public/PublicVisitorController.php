@@ -100,11 +100,21 @@ class PublicVisitorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'destination' => 'required|string',
+            'duration' => 'required|string',
+            'pic' => 'required|string',
+            'citizenship_number' => 'required|string',
             'fullname' => 'required|string',
             'email' => 'required|string',
+            'ocuppational' => 'required|string',
         ], [
+            'destination.required' => 'Purpuse is required',
+            'duration.required' => 'Duration is required',
+            'pic.required' => 'PIC is required',
+            'citizenship_number.required' => 'ID Card is required',
             'fullname.required' => 'Full name is required',
             'email.required' => 'Email is required',
+            'ocuppational.required' => 'Ocuppational is required',
         ]);
 
         DB::beginTransaction();

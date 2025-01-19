@@ -15,6 +15,8 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('company_id')->default(0);
+            $table->string('no_contract')->nullable();
+            $table->string('description_of_task')->nullable();
             $table->string('type_contract', 60)->nullable();
             $table->string('periode_start', 15)->nullable();
             $table->string('periode_end', 15)->nullable();

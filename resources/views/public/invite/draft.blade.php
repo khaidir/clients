@@ -151,7 +151,106 @@
 
                                     <div class="card card-flush">
                                         <div class="row card-body">
-                                            <h3 class="mb-4">PPE</h3>
+                                            <h3 class="mb-4">Personil</h3>
+                                            <div class="mb-6" id="personilContainer">
+                                                @foreach($personils as $personil)
+                                                    <div class="row mb-6 personil-row">
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Card ID</label>
+                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
+                                                                <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
+                                                                <a href="/invite/delete/{{ $personil->id }}" class="text-danger delete-personil" data-id="{{ $personil->id }}">X</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="form-label">Foreign</label>
+                                                                <select name="foreign[]" class="form-control">
+                                                                    <option value="">Choose</option>
+                                                                    <option value="1" {{ ($personil->foreign == 1) ? 'selected':'' }}>KTP</option>
+                                                                    <option value="2"  {{ ($personil->foreign == 2) ? 'selected':'' }}>Passport/Kitas</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">Fullname</label>
+                                                                <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">Ocuppational</label>
+                                                                <input type="text" name="work[]" class="form-control" placeholder="Ocuppational" value="{{ $personil->ocuppational }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">Attachment</label>
+                                                                <input type="file" name="attachment[]" class="form-control">
+                                                                @if($personil->citizenship_docs)
+                                                                    {{-- <a href="{{ asset('storage/' . $personil->citizenship_docs) }}" target="_blank">View Attachment</a> --}}
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <div class="fv-row fv-plugins-icon-container">
+                                                                <label class="required form-label">*</label>
+                                                                @if($personil->citizenship_docs)
+                                                                <img class="img-modal" src="/storage/{{ @$personil->citizenship_docs }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" height="30px" alt="KTP {{ @$personil->name }}">
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+
+                                                <div class="row mb-6 personil-row personil-template">
+                                                    <div class="col-md-2">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="form-label">Card ID</label>
+                                                            <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-2">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="form-label">Foreign</label>
+                                                            <select name="foreign[]" class="form-control">
+                                                                <option value="">Choose</option>
+                                                                <option value="1">KTP</option>
+                                                                <option value="2">Passport/Kitas</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="required form-label">Fullname</label>
+                                                            <input type="text" name="name[]" class="form-control" placeholder="Fullname">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="required form-label">Ocuppational</label>
+                                                            <input type="text" name="work[]" class="form-control" placeholder="Ocuppational">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <div class="fv-row fv-plugins-icon-container">
+                                                            <label class="required form-label">Attachment</label>
+                                                            <input type="file" name="attachment[]" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary btn-md" id="addPersonil">Add Personil</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="card card-flush">
+                                        <div class="row card-body">
+                                            <h3 class="mb-4">Personal Protection Equipment</h3>
                                             <div class="mb-6" id="">
                                                 <div class="row mb-6">
                                                     <div class="col-md-12 mb-5 mt-3">
@@ -299,110 +398,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="card card-flush">
-                                        <div class="row card-body">
-                                            <h3 class="mb-4">Personil</h3>
-                                            <div class="mb-6" id="personilContainer">
-                                                @foreach($personils as $personil)
-                                                    <div class="row mb-6 personil-row">
-                                                        <div class="col-md-2">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="form-label">Card ID</label>
-                                                                <input type="hidden" name="vid[]" class="form-control" value="{{ $personil->id }}">
-                                                                <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID" value="{{ $personil->citizenship }}">
-                                                                <a href="/invite/delete/{{ $personil->id }}" class="text-danger delete-personil" data-id="{{ $personil->id }}">X</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="form-label">Foreign</label>
-                                                                <select name="foreign[]" class="form-control">
-                                                                    <option value="">Choose</option>
-                                                                    <option value="1" {{ ($personil->foreign == 1) ? 'selected':'' }}>KTP</option>
-                                                                    <option value="2"  {{ ($personil->foreign == 2) ? 'selected':'' }}>Passport/Kitas</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="required form-label">Fullname</label>
-                                                                <input type="text" name="name[]" class="form-control" placeholder="Fullname" value="{{ $personil->name }}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="required form-label">Ocuppational</label>
-                                                                <input type="text" name="work[]" class="form-control" placeholder="Ocuppational" value="{{ $personil->ocuppational }}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="required form-label">Attachment</label>
-                                                                <input type="file" name="attachment[]" class="form-control">
-                                                                @if($personil->citizenship_docs)
-                                                                    {{-- <a href="{{ asset('storage/' . $personil->citizenship_docs) }}" target="_blank">View Attachment</a> --}}
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <div class="fv-row fv-plugins-icon-container">
-                                                                <label class="required form-label">*</label>
-                                                                @if($personil->citizenship_docs)
-                                                                <img class="img-modal" src="/storage/{{ @$personil->citizenship_docs }}" class="img-fluid img-thumbnail rounded mx-auto" width="70px" height="30px" alt="KTP {{ @$personil->name }}">
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-
-                                                <div class="row mb-6 personil-row personil-template">
-                                                    <div class="col-md-2">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="form-label">Card ID</label>
-                                                            <input type="text" name="citi_id[]" class="form-control" placeholder="Card ID">
-                                                        </div>
-                                                    </div>
-                                                     <div class="col-md-2">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="form-label">Foreign</label>
-                                                            <select name="foreign[]" class="form-control">
-                                                                <option value="">Choose</option>
-                                                                <option value="1">KTP</option>
-                                                                <option value="2">Passport/Kitas</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="required form-label">Fullname</label>
-                                                            <input type="text" name="name[]" class="form-control" placeholder="Fullname">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="required form-label">Ocuppational</label>
-                                                            <input type="text" name="work[]" class="form-control" placeholder="Ocuppational">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <div class="fv-row fv-plugins-icon-container">
-                                                            <label class="required form-label">Attachment</label>
-                                                            <input type="file" name="attachment[]" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <button type="button" class="btn btn-primary btn-md" id="addPersonil">Add Personil</button>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">
-                                        <span class="indicator-label"> Publish </span>
+                                        <span class="indicator-label"> Submit </span>
                                         <span class="indicator-progress"> Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
