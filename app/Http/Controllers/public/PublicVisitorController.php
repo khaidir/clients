@@ -257,7 +257,7 @@ class PublicVisitorController extends Controller
                 }
             }
 
-            sendmailuser($request->fullname, $request->email);
+            $this->sendmailuser($request->fullname, $request->email);
 
         } catch (\Exception $e) {
             return redirect('invite/draft/' . $request->token)->with(['warning' => 'Some personnel data failed to save.']);
