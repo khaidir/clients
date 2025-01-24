@@ -16,7 +16,8 @@ class DashboardController extends Controller
     public function index()
     {
         $data = DB::table('sia')
-            ->selectRaw("TO_CHAR(dete_request AT TIME ZONE 'Asia/Jakarta', 'Mon YYYY') as month, COUNT(*) as total")
+            ->selectRaw("DATE_FORMAT(CONVERT_TZ(dete_request, '+00:00', '+07:00'), '%b %Y') AS month, COUNT(*) as total")
+            // ->selectRaw("TO_CHAR(dete_request AT TIME ZONE 'Asia/Jakarta', 'Mon YYYY') as month, COUNT(*) as total")
             ->groupBy('month')
             ->orderBy('month', 'asc')
             ->get();
