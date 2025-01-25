@@ -73,21 +73,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12 mb-6">
-                                                <div class="fv-row fv-plugins-icon-container">
-                                                    <label class="form-label">Industry</label>
-                                                    <select name="industry" class="form-control">
-                                                        <option value="">Choose</option>
-                                                        @foreach($industries as $industry)
-                                                        <option value="{{ $industry }}" {{ $industry == $data->industry ? 'selected' : '' }}>
-                                                            {{ $industry }}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                    {{-- <input type="text" name="position" class="form-control @error('position') is-invalid @enderror mb-2" placeholder="Position" value="{{ old('position', @$data->position) }}"> --}}
-                                                </div>
-                                            </div>
-
                                             <div class="col-md-12">
                                                 <div class="fv-row fv-plugins-icon-container">
                                                     <label class="form-label">Address</label>
