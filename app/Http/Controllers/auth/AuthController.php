@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
+use Hash;
+use DB;
 
 class AuthController extends Controller
 {
@@ -43,7 +46,6 @@ class AuthController extends Controller
             if ($user->hasRole('company')) {
                 return redirect()->route('public.dashboard');
             } else {
-                // Arahkan pengguna lainnya ke dashboard
                 return redirect()->intended('/dashboard');
             }
 
@@ -58,5 +60,49 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('login'); // Redirect ke halaman login
+    }
+
+    public function register_form()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'name' => 'required',
+            'position' => 'required',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $input = $request->all();
+            $input['company_id'] = 0;
+
+            if (isset($input['password']) && !empty($input['password'] AND ($input['password'] && $input['password_confirm']))) {
+                $input['password'] = Hash::make($input['password']);
+            } else {
+                unset($input['password']);
+            }
+
+            $user = User::create($input);
+
+            $validRoles = Role::where('id', 10)->pluck('id')->toArray();
+            $user->syncRoles($validRoles);
+
+            DB::commit();
+            return redirect()->route('login')->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect()->route('public.dashboard')->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect()->route('public.dashboard')->with(['error' => @$e->getMessage()]);
+        }
+
     }
 }

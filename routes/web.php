@@ -39,6 +39,9 @@ Route::get('login', [AuthController::class, 'showLoginForm'])
 Route::post('login', [AuthController::class, 'login']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('register', [AuthController::class, 'register_form']);
+Route::post('register', [AuthController::class, 'register']);
+
 Route::get('direct/i/{token}', [PublicVisitorController::class, 'direct_token'])->name('visitor-directtoken');
 
 Route::get('/vp', [PublicVisitorController::class, 'landing'])->name('visitor-public-landing');
@@ -121,12 +124,12 @@ Route::group([
 
     });
 
-});
+// });
 
-// admin access
-Route::group([
-    'middleware' => 'auth'
-], function ($router) {
+// // admin access
+// Route::group([
+//     'middleware' => 'auth'
+// ], function ($router) {
 
     $router->get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     $router->get('profile', [ProfileController::class, 'index'])->name('profile');
