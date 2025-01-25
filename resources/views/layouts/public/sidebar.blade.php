@@ -16,7 +16,7 @@
                 <div class="menu menu-rounded menu-active-bg menu-state-primary menu-column menu-lg-row menu-title-gray-700 menu-icon-gray-500 menu-arrow-gray-500 menu-bullet-gray-500 my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
                     <div class="menu-item {{ @request()->is('user') ? 'here show' : '' }} menu-lg-down-accordion me-0 me-lg-2">
                         <span class="menu-link">
-                        <a href="/dashboard"><span class="menu-title">Home</span></a>
+                        <a href="/"><span class="menu-title">Home</span></a>
                         </span>
                     </div>
                     <div class="menu-item {{ request()->is('company') ? 'here show' : '' }} menu-here-bg menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
