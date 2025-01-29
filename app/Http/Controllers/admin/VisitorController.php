@@ -61,25 +61,31 @@ class VisitorController extends Controller
                     if ($row->approve_1 == 0) {
                         $btn .= '<a href="/visitor/approve/pic/' . $row->id . '" class="btn btn-sm btn-success mb-1 mr-1">PIC</a> ';
                     } else if( $row->approve_1 == 2) {
-                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected</a> ';
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected by PIC</a> ';
                     } else {
                         $btn .= 'Waiting Approval By Security';
                     }
                 } else if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_2 == 0 && $row->approve_1 == 1 && $row->approve_3 == 0) {
                         $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> ';
+                    } else if( $row->approve_2 == 2) {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected by Security</a> ';
                     } else {
                         $btn .= 'Waiting Approval By Legal';
                     }
                 } else if ( ($row->foreign == 2 or $person >= 1 ) && (auth()->user()->hasRole('legal') || auth()->user()->hasRole('administrator'))) {
                     if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/legal/' . $row->id . '" class="btn btn-sm btn-success mb-1">Legal</a> ';
+                    } else if( $row->approve_2 == 2) {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected by Legal</a> ';
                     } else {
                         $btn .= 'Waiting Approval By Safety';
                     }
                 } elseif (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
+                    } else if( $row->approve_2 == 2) {
+                        $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected by Safety</a> ';
                     } else {
                         $btn .= 'Approved';
                     }
