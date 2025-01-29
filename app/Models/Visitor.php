@@ -39,6 +39,7 @@ class Visitor extends Model
         'approve_3',
         'approve_4',
         'status',
-        'ocuppational'
+        'ocuppational',
+        'ecard'
     ];
 }

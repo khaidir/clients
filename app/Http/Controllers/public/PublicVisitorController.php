@@ -164,6 +164,7 @@ class PublicVisitorController extends Controller
                     'pic_id' => $request->pic,
                     'duration' => $request->duration,
                     'date_request' => $dateRequest,
+                    'ecard' => $request->ecard,
                 ]
             );
 

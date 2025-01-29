@@ -397,6 +397,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    Bersama dengan Surat Permohonan ini, kami telah melampirkan dengan benar segala dokumen
+                                    persyaratan yang telah ditetapkan oleh PT. Solusi Bangun Andalas.
+
+                                    Selanjutnya kami membutuhkan kartu elektronik sebanyak : <input type="number" name="ecard" class="col-md-1 form-control" style="width:120px;"> lembar kartu elektronik untuk pekerja kami.
+                                    Kartu tersebut akan kami jaga dan akan dikembalikan ketika tenggat waktu dan/atau pekerjaan telah selesai.
+                                    kami bersedia membayar sebesar Rp. 100.000,- (Seratus Ribu Rupiah) untuk setiap kartu yang hilang atau rusak.
+                                    Biaya penggantian tersebut bisa ditransfer ke Bank Mandiri An. PT. SBA : 1580009898982
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="agreeCheckbox" required>
+                                        <label class="form-check-label text-dark fw-14" for="agreeCheckbox">
+                                            Saya menyetujui semua syarat dan ketentuan.
+                                        </label>
+                                    </div>
 
                                 </div>
 
@@ -481,6 +495,13 @@
         }
     });
 
+    document.getElementById('approvalForm').addEventListener('submit', function(event) {
+        var checkbox = document.getElementById('agree');
+        if (!checkbox.checked) {
+            alert('Anda belum menyetujui kesepakatan.');
+            event.preventDefault();
+        }
+    });
 
 
     document.addEventListener('DOMContentLoaded', function () {

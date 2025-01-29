@@ -43,6 +43,7 @@ return new class extends Migration
             $table->integer('approve_3')->default(0);
             $table->integer('approve_4')->default(0);
             $table->boolean('status')->default(false);
+            $table->integer('ecard')->default(0);
 
             $table->timestamps();
             $table->softDeletes();
