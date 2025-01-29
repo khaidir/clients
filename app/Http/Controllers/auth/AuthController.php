@@ -26,10 +26,8 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Key unik untuk rate limiting berdasarkan IP dan email
         $rateLimiterKey = $request->ip() . '|' . $request->email;
 
-        // Cek apakah pengguna telah melebihi batas percobaan
         if (RateLimiter::tooManyAttempts($rateLimiterKey, 10)) {
             $seconds = RateLimiter::availableIn($rateLimiterKey);
             return response()->json([
@@ -43,7 +41,7 @@ class AuthController extends Controller
             RateLimiter::clear($rateLimiterKey);
             $user = Auth::user();
 
-            if ($user->hasRole('company')) {
+            if ($user->hasRole('company') == true) {
                 return redirect()->route('public.dashboard');
             } else {
                 return redirect()->intended('/dashboard');

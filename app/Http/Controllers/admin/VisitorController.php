@@ -21,15 +21,16 @@ class VisitorController extends Controller
     public function getData(Request $request)
     {
         $query = Visitor::select('visitor.*', 'pic.name as pic_name')
-            ->leftJoin('users', 'visitor.user_id', '=', 'users.id')
             ->leftJoin('pic', 'visitor.pic_id', '=', 'pic.id')
             ->orderBy('created_at', 'desc');
+
 
         if ($request->has('status') && $request->status !== 'all') {
             $query->where('visitor.status', $request->status);
         }
 
         $visitor = $query->get();
+        // dd($visitor->approve_1);
 
         $visitor->transform(function ($row) {
             $row->foreign = ($row->foreign == 1) ? 'Indonesia':'Foreign';
@@ -62,24 +63,21 @@ class VisitorController extends Controller
                     } else if( $row->approve_1 == 2) {
                         $btn .= '<a href="javascript:;" class="btn btn-sm btn-warning mb-1">Rejected</a> ';
                     } else {
-                        $btn .= 'Approved';
+                        $btn .= 'Waiting Approval By Security';
                     }
-                }
-                if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
+                } else if (auth()->user()->hasRole('security') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_2 == 0 && $row->approve_1 == 1 && $row->approve_3 == 0) {
                         $btn .= '<a href="/visitor/approve/security/' . $row->id . '" class="btn btn-sm btn-success mb-1">Security</a> ';
                     } else {
-                        $btn .= 'Approved';
+                        $btn .= 'Waiting Approval By Legal';
                     }
-                }
-                if ( ($row->foreign == 2 or $person >= 1 ) && (auth()->user()->hasRole('legal') || auth()->user()->hasRole('administrator'))) {
+                } else if ( ($row->foreign == 2 or $person >= 1 ) && (auth()->user()->hasRole('legal') || auth()->user()->hasRole('administrator'))) {
                     if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/legal/' . $row->id . '" class="btn btn-sm btn-success mb-1">Legal</a> ';
                     } else {
-                        $btn .= 'Approved';
+                        $btn .= 'Waiting Approval By Safety';
                     }
-                }
-                if (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
+                } elseif (auth()->user()->hasRole('safety') || auth()->user()->hasRole('administrator')) {
                     if ($row->approve_3 == 0 && $row->approve_2 == 1 && $row->approve_1 == 1) {
                         $btn .= '<a href="/visitor/approve/safety/' . $row->id . '" class="btn btn-sm btn-success">Safety</a>';
                     } else {
