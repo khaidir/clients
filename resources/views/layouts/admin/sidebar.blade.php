@@ -4,7 +4,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">Summary</li>
                 <li>
-                    <a href="/" class="waves-effect">
+                    <a href="/dashboard" class="waves-effect">
                         <i class='bx bx-home-alt'></i>
                         <span key="t-dashboards">Dashboard</span>
                     </a>
