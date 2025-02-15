@@ -36,6 +36,18 @@
                                         <td>Description</td>
                                         <td>{{ @$data->description}}</td>
                                     </tr>
+                                    <tr>
+                                        <td>No Contract</td>
+                                        <td>{{ @$data->no_contract}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Type Contract</td>
+                                        <td>{{ ($type[$data->type_contract] ?? '-') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Periode</td>
+                                        <td>{{ \Illuminate\Support\Carbon::parse(@$data->periode_start)->format('d M, Y') .' - '. \Illuminate\Support\Carbon::parse(@$data->periode_end)->format('d M, Y')}}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

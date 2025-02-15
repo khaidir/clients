@@ -50,7 +50,7 @@
                                             @if(!empty($data->ktp))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="ktp_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ktp_checked == true)?'checked':'' }}>
+                                                        <input name="ktp_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="ktp_checked" data-id="{{ $data->id }}" {{ (@$data->ktp_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#ktpModal">
                                                             View KTP
                                                         </a>
@@ -80,7 +80,7 @@
                                             @if(!empty($data->passport))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="passport_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->passport_checked == true)?'checked':'' }}>
+                                                        <input name="pp_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="pp_checked" data-id="{{ $data->id }}" {{ (@$data->pp_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#passportModal">
                                                             View Passport
                                                         </a>
@@ -110,7 +110,7 @@
                                             @if(!empty($data->card_id))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="card_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->card_checked == true)?'checked':'' }}>
+                                                        <input name="card_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="card_checked" data-id="{{ $data->id }}" {{ (@$data->card_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#cardidModal">
                                                             View Card ID
                                                         </a>
@@ -140,7 +140,7 @@
                                             @if(!empty($data->bpjs))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="bpjs_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->bpjs_checked == true)?'checked':'' }}>
+                                                        <input name="bpjs_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="bpjs_checked" data-id="{{ $data->id }}" {{ (@$data->bpjs_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#bpjsModal">
                                                             View BPJS
                                                         </a>
@@ -170,7 +170,7 @@
                                             @if(!empty($data->contract))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="contract_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->contract_checked == true)?'checked':'' }}>
+                                                        <input name="ct_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="ct_checked" data-id="{{ $data->id }}" {{ (@$data->ct_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#contractModal">
                                                             View Contract
                                                         </a>
@@ -200,7 +200,7 @@
                                             @if(!empty($data->cert_competence))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="cc_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->cc_checked == true)?'checked':'' }}>
+                                                        <input name="cc_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="cc_checked" data-id="{{ $data->id }}" {{ (@$data->cc_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#cert_competenceModal">
                                                             View Certificate Competence
                                                         </a>
@@ -230,7 +230,7 @@
                                             @if(!empty($data->medical_checkup))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="mc_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->mc_checked == true)?'checked':'' }}>
+                                                        <input name="mc_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="mc_checked" data-id="{{ $data->id }}" {{ (@$data->mc_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#medical_checkupModal">
                                                             View Medical Checkup
                                                         </a>
@@ -255,7 +255,7 @@
                                                                     <div class="col-md-12 mb-3">
                                                                         <div class="mb-3">
                                                                             <div class="form-check">
-                                                                                <input name="mc_checked" class="form-check-input" type="checkbox" id="gridCheck" value="true" {{ (@$data->mc_checked == true)?'checked':'' }}>
+                                                                                <input name="mc_checked" class="form-check-input update-checkbox" type="checkbox" id="gridCheck" value="true" {{ (@$data->mc_checked == true)?'checked':'' }}>
                                                                                 <label class="form-check-label" for="gridCheck">
                                                                                     Check for approval
                                                                                 </label>
@@ -283,7 +283,7 @@
                                             @if(!empty($data->license_driver))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="ld_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ld_checked == true)?'checked':'' }}>
+                                                        <input name="ld_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="ld_checked" data-id="{{ $data->id }}" {{ (@$data->ld_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#license_driverModal">
                                                             View License Driver
                                                         </a>
@@ -313,7 +313,7 @@
                                             @if(!empty($data->license_vaccinated))
                                                 <div class="col-1 mt-2">
                                                     <div class="form-check form-checkbox-outline form-check-success">
-                                                        <input name="ld_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ld_checked == true)?'checked':'' }}>
+                                                        <input name="lv_checked" class="form-check-input update-checkbox" type="checkbox" id="customCheckcolor2" data-field="lv_checked" data-id="{{ $data->id }}" {{ (@$data->ld_checked == true)?'checked':'' }}>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#license_vaccinatedModal">
                                                             View License Vaccinated
                                                         </a>
@@ -346,7 +346,7 @@
                                     <a href="http://localhost:8000/worker/person/approve/purchasing/1" class="btn btn-success btn-md">Purchasing</a>
                                     <a href="http://localhost:8000/worker/person/approve/legal/1" class="btn btn-success btn-md">Legal / Health & Safety</a>
                                     <a href="http://localhost:8000/worker/person/approve/hs/1" class="btn btn-success btn-md">End User / H&S</a>
-                                    {{-- <a href="http://localhost:8000/worker/person/approve/health/1" class="btn btn-success btn-md">Health & Safety</a> --}}
+                                    <a href="#" class="btn btn-success btn-md" data-bs-toggle="modal" data-bs-target="#medical_checkupModal">Health & Safety</a>
                                 </div>
                             </div>
                         </div>
@@ -392,6 +392,28 @@ $(document).ready(function() {
         placeholder: 'Choose'
     });
     $('#generate').addClass("mm-active");
+
+    $('.update-checkbox').change(function() {
+        var isChecked = $(this).is(':checked') ? 1 : 0;
+        var fieldName = $(this).data('field');
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: '/worker/person/checked/' + id,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                field: fieldName,
+                value: isChecked
+            },
+            success: function(response) {
+                // toastr.success('Document Approved');
+            },
+            error: function(xhr, status, error) {
+                alert('Terjadi kesalahan: ' + error);
+            }
+        });
+    });
 
     $(document).on('click', '.delete', function () {
 

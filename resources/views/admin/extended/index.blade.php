@@ -51,12 +51,12 @@
                                         <tr>
                                             <th width="40">ID</th>
                                             <th width="200">Company</th>
-                                            <th width="200">Type Contract</th>
+                                            <th width="200">Contract</th>
                                             <th width="220">Periode</th>
-                                            <th width="120">Requested At</th>
                                             <th width="150">Request By</th>
                                             <th width="150">Approved By</th>
                                             <th width="150">Verified By</th>
+                                            <th width="120">Requested At</th>
                                             <th width="90">Status</th>
                                             <th width="100">Action</th>
                                         </tr>
@@ -90,12 +90,12 @@ $(document).ready(function() {
                 }
             },
             { data: 'company' },
-            { data: 'type_contract' },
-            { data: 'periode_start' },
-            { data: 'requested_at' },
+            { data: 'contract' },
+            { data: 'periode' },
             { data: 'request_by_name' },
             { data: 'approved_by_name' },
             { data: 'verified_by_name' },
+            { data: 'requested_at' },
             { data: 'status', render: function(data) {
                 return data ? 'Active' : 'Inactive';
             }},

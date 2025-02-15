@@ -91,7 +91,14 @@ class SiaController extends Controller
         ->where('sia.id', $id)
         ->first();
 
-        return view('admin.new-worker.detail', compact('data', 'id'));
+        $type = [
+            ''  => 'Pilih Tipe Kontrak',
+            '1' => 'Contract',
+            '2' => 'Purchase Request',
+            '3' => 'Purchase Order'
+        ];
+
+        return view('admin.new-worker.detail', compact('data', 'id', 'type'));
     }
 
     public function create()

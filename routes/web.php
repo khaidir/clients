@@ -160,6 +160,7 @@ Route::group([
             $router->get('detail/{id}', [SiaPersonController::class, 'detail'])->name('sia-person.detail');
             $router->get('delete/{id}', [SiaPersonController::class, 'destroy'])->name('sia-person.delete');
             $router->post('reason/{id}', [SiaPersonController::class, 'reason'])->name('sia-person.reason');
+            $router->post('checked/{id}', [SiaPersonController::class, 'checked'])->name('sia-person.checked');
 
             Route::group([
                 'prefix' => 'approve',

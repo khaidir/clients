@@ -88,9 +88,8 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            // { data: 'fullname' },
             { data: 'company' },
-            { data: 'description_of_task' },
+            { data: 'description' },
             { data: 'no_contract' },
             { data: 'periode' },
             { data: 'date_request' },

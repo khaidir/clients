@@ -45,29 +45,36 @@
                                 </div>
 
                                 <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Contract</label>
-                                    <div class="col-sm-3">
-                                        <select name="type_contract" class="form-control">
-                                            <option value="">Choose</option>
-                                            <option value="1"{{ ( $company->id == 1) ? ' selected':'' }}>Lump Sum</option>
-                                            <option value="2"{{ ( $company->id == 2)? ' selected':'' }}>Volume Base</option>
-                                        </select>
-                                        @if ($errors->has('type_contract'))
-                                            <span class="text-danger">{{ $errors->first('type_contract') }}</span>
-                                        @endif
+                                    <label for="dete_request" class="col-sm-3 col-form-label">Contract Number</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group" id="no_contract">
+                                            <input type="text" name="no_contract"
+                                                class="form-control @error('no_contract') is-invalid @enderror"
+                                                value="{{ old('no_contract', ( @$data->id ) ? @$data->no_contract : "") }}" id="no_contract"
+                                                placeholder="Number Contract">
+                                            @if ($errors->has('no_contract'))
+                                                <span class="text-danger">{{ $errors->first('no_contract') }}</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 
-                                {{-- <div class="row mb-4">
-                                    <label for="badge" class="col-sm-3 col-form-label">Duration</label>
-                                    <div class="col-sm-4">
-                                        <input name="duration" class="form-control @error('duration') is-invalid @enderror" value="{{ old('duration', @$data->duration) }}" placeholder="Duration">
-                                        <span class="text-success">Default with days</span>
-                                        @if ($errors->has('duration'))
-                                            <span class="text-danger">{{ $errors->first('duration') }}</span>
-                                        @endif
+                                <div class="row mb-4">
+                                    <label for="dete_request" class="col-sm-3 col-form-label">Type Contract</label>
+                                    <div class="col-sm-3">
+                                        <div id="type_contract">
+                                            <select name="type_contract" class="form-control @error('type_contract') is-invalid @enderror">
+                                                <option value="">Choose</option>
+                                                <option value="1"{{ (@$data->type_contract == '1') ? ' selected':'' }}>Contract</option>
+                                                <option value="2"{{ (@$data->type_contract == '2') ? ' selected':'' }}>Purchase Request</option>
+                                                <option value="3"{{ (@$data->type_contract == '3') ? ' selected':'' }}>Purchase Order</option>
+                                            </select>
+                                            @if ($errors->has('type_contract'))
+                                                <span class="text-danger">{{ $errors->first('type_contract') }}</span>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div> --}}
+                                </div>
 
                                 <div class="row mb-4">
                                     <label for="date_request" class="col-sm-3 col-form-label">Periode</label>

@@ -113,6 +113,33 @@ class SiaPersonController extends Controller
         }
     }
 
+    public function checked($id, Request $request) {
+        DB::beginTransaction();
+        try {
+            $person = Sia_person::findOrFail($id);
+
+            $allowedFields = ['ktp_checked', 'card_checked', 'pp_checked', 'bpjs_checked', 'ct_checked', 'pp_checked', 'cc_checked',
+                'mc_checked', 'ld_checked', 'lv_checked', 'mc_checked', 'ld_checked'];
+            if (!in_array($request->field, $allowedFields)) {
+                return response()->json(['error' => 'Invalid field'], 400);
+            }
+
+            $person->{$request->field} = $request->value;
+            $person->save();
+
+            DB::commit();
+            return redirect('worker/person/detail/'. @$id)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
 
     public function approve($id)
     {
