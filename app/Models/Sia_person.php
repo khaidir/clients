@@ -37,6 +37,7 @@ class Sia_person extends Model
         'cc_checked',
         'medical_checkup',
         'mc_checked',
+        'medical_reason',
         'license_driver',
         'ld_checked',
         'license_vaccinated',

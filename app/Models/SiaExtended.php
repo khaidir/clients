@@ -16,7 +16,9 @@ class SiaExtended extends Model
     protected $fillable = [
         'user_id',
         'company_id',
-        'type_contract', // lump sum/volume base
+        'no_contract',
+        'type_contract',
+        'description_of_task',
         'periode_start',
         'periode_end',
         'requested_at',

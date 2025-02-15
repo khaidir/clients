@@ -42,17 +42,9 @@
 
                         <div class="card ">
                             <div class="card-body p-0">
-                                {{-- <div class="card-px text-center py-20 my-10">
-                                    <h2 class="fs-2x fw-bold mb-10">Welcome to Customers App</h2>
-                                    <p class="text-gray-500 fs-4 fw-semibold mb-10">
-                                        There are no customers added yet.<br>
-                                        Kickstart your CRM by adding a your first customer
-                                    </p>
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">Add Customer</a>
+                                <div class="px-4">
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">Add New Worker</a>
                                 </div>
-                                <div class="text-center px-4">
-                                    <img class="mw-100 mh-300px" alt="" src="/assets/media/illustrations/sketchy-1/2.png">
-                                </div> --}}
                                 <div class="app-container table-responsives">
                                     <div class="card-headers border-0">
                                         <div class="card-toolbar mt-4 mb-5">
@@ -71,15 +63,17 @@
                                     </div>
                                     <table id="table" class="table align-middle table-row-dashed fs-6 gy-5 dataTable" style="width:100%;">
                                         <thead class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <tr>
-                                                <th width="40">ID</th>
-                                                <th width="180">Card ID</th>
-                                                <th width="250">Fullname/Email</th>
-                                                <th width="250">Position</th>
-                                                <th width="180">Status</th>
-                                                <th width="190">Post</th>
-                                                <th width="200">Action</th>
-                                            </tr>
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th width="40">ID</th>
+                                                    <th width="120">Card ID</th>
+                                                    <th width="220">Fullname/Email</th>
+                                                    <th width="350">Position</th>
+                                                    <th width="90">Status</th>
+                                                    <th width="90">Post</th>
+                                                    <th width="140">Action</th>
+                                                </tr>
+                                            </thead>
                                         </thead>
                                     </table>
                                 </div>
@@ -98,7 +92,7 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('public.new-worker.data', @$id) }}",
+        ajax: "{{ route('public.new-worker.data') }}",
         columns: [
             {
                 data: null,

@@ -92,13 +92,34 @@ class SiaPersonController extends Controller
         }
     }
 
+    public function reason($id, Request $request) {
+        DB::beginTransaction();
+        try {
+            $person = Sia_person::findOrFail($id);
+            $person->mc_checked = $request->mc_checked;
+            $person->medical_reason = $request->medical_reason;
+            $person->save();
+
+            DB::commit();
+            return redirect('worker/person/detail/'. @$id)->with(['success' => 'Data has been saved']);
+        } catch (ValidationException $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['warning' => @$e->errors()]);
+        } catch (\Exception $e)
+        {
+            DB::rollback();
+            return redirect('worker/person/detail/'. @$id)->with(['error' => @$e->getMessage()]);
+        }
+    }
+
 
     public function approve($id)
     {
         DB::beginTransaction();
         try {
 
-            $person = Sias::findOrFail($id);
+            $person = Sia_person::findOrFail($id);
             if (@$slug == 'end-user') {
                 $person->request_by = Auth::user()->id;
             } elseif (@$slug == 'hod') {
@@ -110,6 +131,8 @@ class SiaPersonController extends Controller
             } elseif (@$slug == 'hs') {
                 $person->inducted_verified_by = Auth::user()->id;
             } elseif (@$slug == 'health') {
+                $person->reason = $request->reason;
+                // $person->reason = $request->health_rejected;
                 $person->evaluated_verified_by = Auth::user()->id;
             }
             $person->save();

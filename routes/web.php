@@ -82,13 +82,16 @@ Route::group([
             $router->post('store', [PublicCompanyController::class, 'store'])->name('public.company.store');
         });
 
-
         Route::group([
-            'prefix' => 'contracts',
+            'prefix' => 'contract',
         ], function ($router) {
 
             $router->get('/', [PublicContractsController::class, 'index'])->name('public.contracts');
             $router->get('/data', [PublicContractsController::class, 'getData'])->name('public.contracts.data');
+            $router->get('new', [PublicContractsController::class, 'create'])->name('public.contracts.create');
+            $router->get('edit/{id}', [PublicContractsController::class, 'edit'])->name('public.contracts.edit');
+            $router->get('detail/{id}', [PublicContractsController::class, 'detail'])->name('public.contracts.detail');
+            $router->get('delete/{id}', [PublicContractsController::class, 'delete'])->name('public.contracts.delete');
 
             Route::group([
                 'prefix' => 'workers',
@@ -156,6 +159,7 @@ Route::group([
             $router->get('edit/{id}', [SiaPersonController::class, 'edit'])->name('sia-person.edit');
             $router->get('detail/{id}', [SiaPersonController::class, 'detail'])->name('sia-person.detail');
             $router->get('delete/{id}', [SiaPersonController::class, 'destroy'])->name('sia-person.delete');
+            $router->post('reason/{id}', [SiaPersonController::class, 'reason'])->name('sia-person.reason');
 
             Route::group([
                 'prefix' => 'approve',

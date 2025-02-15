@@ -48,9 +48,14 @@
                                         <td>KTP</td>
                                         <td>
                                             @if(!empty($data->ktp))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#ktpModal">
-                                                    View KTP
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="ktp_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ktp_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#ktpModal">
+                                                            View KTP
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="ktpModal" tabindex="-1" aria-labelledby="ktpModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -73,9 +78,14 @@
                                         <td>Passport</td>
                                         <td>
                                             @if(!empty($data->passport))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#passportModal">
-                                                    View Passport
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="passport_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->passport_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#passportModal">
+                                                            View Passport
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="passportModal" tabindex="-1" aria-labelledby="ktpModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -98,9 +108,14 @@
                                         <td>Card ID</td>
                                         <td>
                                             @if(!empty($data->card_id))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#cardidModal">
-                                                    View Card ID
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="card_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->card_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#cardidModal">
+                                                            View Card ID
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="cardidModal" tabindex="-1" aria-labelledby="cardidModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -123,9 +138,14 @@
                                         <td>BPJS</td>
                                         <td>
                                             @if(!empty($data->bpjs))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#bpjsModal">
-                                                    View BPJS
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="bpjs_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->bpjs_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#bpjsModal">
+                                                            View BPJS
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="bpjsModal" tabindex="-1" aria-labelledby="bpjsModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -148,9 +168,14 @@
                                         <td>Contract</td>
                                         <td>
                                             @if(!empty($data->contract))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#contractModal">
-                                                    View Contract
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="contract_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->contract_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#contractModal">
+                                                            View Contract
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="contractModal" tabindex="-1" aria-labelledby="contractModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -173,9 +198,14 @@
                                         <td>Certificate Competence</td>
                                         <td>
                                             @if(!empty($data->cert_competence))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#cert_competenceModal">
-                                                    View Certificate Competence
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="cc_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->cc_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#cert_competenceModal">
+                                                            View Certificate Competence
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="cert_competenceModal" tabindex="-1" aria-labelledby="cert_competenceModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -198,9 +228,19 @@
                                         <td>Medical Checkup</td>
                                         <td>
                                             @if(!empty($data->medical_checkup))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#medical_checkupModal">
-                                                    View Medical Checkup
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="mc_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->mc_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#medical_checkupModal">
+                                                            View Medical Checkup
+                                                        </a>
+                                                    </div>
+                                                    @if ( $data->medical_reason )
+                                                    <span class="text-dark"> with reason "{{ $data->medical_reason }}" </span>
+                                                    @else
+                                                    <span class="text-dark"> Approved without any reason and stating you are healthy. </span>
+                                                    @endif
+                                                </div>
                                                 <div class="modal fade" id="medical_checkupModal" tabindex="-1" aria-labelledby="medical_checkupModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -208,8 +248,26 @@
                                                                 <h5 class="modal-title" id="medical_checkupModalLabel">Medical Checkup Image</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <div class="modal-body text-center">
+                                                            <div class="modal-body">
                                                                 <img src="/storage/uploads/{{ $data->medical_checkup }}" alt="Medical Checkup Image" class="img-fluid">
+                                                                <form method="post" action="/worker/person/reason/{{ @$data->id }}" class="mt-3 mb-3 text-left">
+                                                                    @csrf
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <div class="mb-3">
+                                                                            <div class="form-check">
+                                                                                <input name="mc_checked" class="form-check-input" type="checkbox" id="gridCheck" value="true" {{ (@$data->mc_checked == true)?'checked':'' }}>
+                                                                                <label class="form-check-label" for="gridCheck">
+                                                                                    Check for approval
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <input name="medical_reason" type="text" class="form-control mt-2" id="reason" value="{{ $data->medical_reason }}" placeholder="Reason">
+                                                                    </div>
+                                                                    <div>
+                                                                        <button type="submit" class="btn btn-success w-md">Health & Safety</button>
+                                                                    </div>
+                                                                </form>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -223,9 +281,14 @@
                                         <td>License Driver</td>
                                         <td>
                                             @if(!empty($data->license_driver))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#license_driverModal">
-                                                    View License Driver
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="ld_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ld_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#license_driverModal">
+                                                            View License Driver
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="license_driverModal" tabindex="-1" aria-labelledby="license_driverModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -248,9 +311,14 @@
                                         <td>License Vaccinated</td>
                                         <td>
                                             @if(!empty($data->license_vaccinated))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#license_vaccinatedModal">
-                                                    View License Vaccinated
-                                                </a>
+                                                <div class="col-1 mt-2">
+                                                    <div class="form-check form-checkbox-outline form-check-success">
+                                                        <input name="ld_checked" class="form-check-input" type="checkbox" id="customCheckcolor2"{{ (@$data->ld_checked == true)?'checked':'' }}>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#license_vaccinatedModal">
+                                                            View License Vaccinated
+                                                        </a>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="license_vaccinatedModal" tabindex="-1" aria-labelledby="license_vaccinatedModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
@@ -278,7 +346,7 @@
                                     <a href="http://localhost:8000/worker/person/approve/purchasing/1" class="btn btn-success btn-md">Purchasing</a>
                                     <a href="http://localhost:8000/worker/person/approve/legal/1" class="btn btn-success btn-md">Legal / Health & Safety</a>
                                     <a href="http://localhost:8000/worker/person/approve/hs/1" class="btn btn-success btn-md">End User / H&S</a>
-                                    <a href="http://localhost:8000/worker/person/approve/health/1" class="btn btn-success btn-md">Health & Safety</a>
+                                    {{-- <a href="http://localhost:8000/worker/person/approve/health/1" class="btn btn-success btn-md">Health & Safety</a> --}}
                                 </div>
                             </div>
                         </div>
