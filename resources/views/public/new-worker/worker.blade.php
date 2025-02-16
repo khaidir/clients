@@ -42,38 +42,21 @@
 
                         <div class="card ">
                             <div class="card-body p-0">
-                                <div class="px-4">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">Add New Worker</a>
+                                <div class="px-4 pt-3">
+                                    <a href="/u/contracts/workers/new/{{ @$id }}" class="btn btn-primary">Add Worker</a>
                                 </div>
                                 <div class="app-container table-responsives">
-                                    <div class="card-headers border-0">
-                                        <div class="card-toolbar mt-4 mb-5">
-                                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                                <a href="/u/contracts/workers/new/{{ @$id }}" class="btn btn-light-primary me-3">
-                                                    <i class="ki-outline ki-user fs-2"></i> New Worker
-                                                </a>
-                                            </div>
-                                            <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
-                                                <div class="fw-bold me-5">
-                                                    <span class="me-2" data-kt-customer-table-select="selected_count"></span> Selected
-                                                </div>
-                                                <button type="button" class="btn btn-danger" data-kt-customer-table-select="delete_selected">Delete Selected</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <table id="table" class="table align-middle table-row-dashed fs-6 gy-5 dataTable" style="width:100%;">
-                                        <thead class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th width="40">ID</th>
-                                                    <th width="120">Card ID</th>
-                                                    <th width="220">Fullname/Email</th>
-                                                    <th width="350">Position</th>
-                                                    <th width="90">Status</th>
-                                                    <th width="90">Post</th>
-                                                    <th width="140">Action</th>
-                                                </tr>
-                                            </thead>
+                                        <thead class="table-light text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                            <tr>
+                                                <th width="40">ID</th>
+                                                <th width="120">Card ID</th>
+                                                <th width="220">Fullname/Email</th>
+                                                <th width="350">Position</th>
+                                                <th width="90">Status</th>
+                                                <th width="90">Post</th>
+                                                <th width="140">Action</th>
+                                            </tr>
                                         </thead>
                                     </table>
                                 </div>
@@ -92,7 +75,8 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('public.new-worker.data') }}",
+
+        ajax: "/u/contracts/workers/data/{{ @$id }}",
         columns: [
             {
                 data: null,

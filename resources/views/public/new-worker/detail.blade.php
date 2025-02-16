@@ -20,13 +20,17 @@
                                 <i class="ki-outline ki-right fs-4 text-white mx-n1"></i>
                             </li>
                             <li class="breadcrumb-item text-white fw-bold lh-1"> Contracts </li>
+                            <li class="breadcrumb-item">
+                                <i class="ki-outline ki-right fs-4 text-white mx-n1"></i>
+                            </li>
+                            <li class="breadcrumb-item text-white fw-bold lh-1"> Worker </li>
                         </ul>
                     </div>
                     <div class="d-flex flex-stack flex-wrap flex-lg-nowrap gap-4 gap-lg-10 pt-6 pb-18 py-lg-13">
                         <div class="page-title d-flex align-items-center me-3">
                             <img alt="Logo" src="/assets/media/svg/misc/layer.svg" class="h-60px me-5">
                             <h1 class="page-heading d-flex text-white fw-bolder fs-2 flex-column justify-content-center my-0">
-                                Contracts
+                                Data Worker
                                 <span class="page-desc text-white opacity-50 fs-6 fw-bold pt-4"> Lists Contract Company </span>
                             </h1>
                         </div>
@@ -39,25 +43,8 @@
                 <div class="d-flex flex-column flex-column-fluid">
                     <div id="kt_app_content" class="app-content">
                         <div class="card ">
-                            <div class="card-body p-0">
-                                <div class="px-4 pt-3">
-                                    <a href="/u/contracts/new" class="btn btn-primary">Add Contract</a>
-                                </div>
-                                <div class="app-container table-responsives">
-                                    <table id="table" class="table align-middle table-row-dashed fs-6 gy-5 dataTable" style="width:100%;">
-                                        <thead class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <tr>
-                                                <th width="40">ID</th>
-                                                <th width="350">General Description of Task</th>
-                                                <th width="150">Number Contract/PR/PO</th>
-                                                <th width="150">Working Period (N)</th>
-                                                <th width="150">Date Request</th>
-                                                <th width="120">Status</th>
-                                                <th width="70">Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                            <div class="card-body">
+
                             </div>
                         </div>
                     </div>
@@ -70,42 +57,6 @@
 @include('layouts.public.footer')
 <script>
 $(document).ready(function() {
-    $('#table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('public.contracts.data') }}",
-        columns: [
-            {
-                data: null,
-                name: 'number',
-                orderable: false,
-                searchable: false,
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            { data: 'description_of_task' },
-            { data: 'no_contract' },
-            { data: 'periode' },
-            { data: 'date_request' },
-            { data: 'status', render: function(data) {
-                return data ? 'Active' : 'Inactive';
-            }},
-            { data: 'action', orderable: false, searchable: false }
-        ]
-    });
-
-    $("#dlength").append($("#table_length"));
-    $("#dfilter").append($("#table_filter"));
-    $("#dinfo").append($("#table_info"));
-    $("#dpaging").append($("#table_paginate"));
-
-    $('#dfilter input').removeClass('form-control-sm');
-    $('.dataTables_paginate').parent().addClass('pagination-rounded justify-content-end mb-2');
-    $('#dfilter input').parent().parent().addClass('col-xs-4');
-    $('.select2-container').attr("width","70");
-    $(".select2").select2({ width: 'resolve' });
-
     $('select').select2({
         placeholder: 'Choose'
     });

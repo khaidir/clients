@@ -20,6 +20,23 @@
         <link href="{{ asset('assets/landing/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="/libs/toastr/build/toastr.min.css?v=1.0" rel="stylesheet" type="text/css" />
         <style>
+            #label {
+                display: inline-block;
+                border: 2px dashed #007bff;
+                padding: 7px;
+                text-align: center;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+            #label:hover {
+                background-color: #f8f9fa;
+            }
+
+            #ktp-icon {
+                display: block;
+                margin: 0 auto 10px auto; /* Center image and add margin below */
+            }
             .image-input-placeholder {
                 background-image: url('/assets/media/svg/files/blank-image.svg');
             }
@@ -126,7 +143,10 @@
         </style>
         <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
     </head>
-    <body id="kt_app_body" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true" class="app-default">
+    <body id="kt_body" class="page-loading-enabled page-loading header-fixed header-mobile-fixed subheader-enabled page-loading" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true" class="app-default">
         <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: light)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+        <div class="page-loader">
+            <div class="spinner spinner-primary"></div>
+        </div>
         <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
-            <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+

@@ -83,7 +83,7 @@ Route::group([
         });
 
         Route::group([
-            'prefix' => 'contract',
+            'prefix' => 'contracts',
         ], function ($router) {
 
             $router->get('/', [PublicContractsController::class, 'index'])->name('public.contracts');
