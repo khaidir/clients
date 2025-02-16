@@ -32,6 +32,14 @@
                                         <div class="col-12 col-sm-12">
                                             <a href="/extend/new" class="btn btn-md btn-primary btn-float" style="margin-top:;">Add New</a>
                                         </div>
+                                        <div class="col-12 col-sm-12">
+                                            <select id="filter-company" class="form-select me-2" width="250px">
+                                                <option value="all">All Company</option>
+                                                @foreach ($company as $c)
+                                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="col-12 col-sm-12 mt-4">
                                             <span id="dfilter"></span>
                                         </div>
@@ -78,7 +86,12 @@ $(document).ready(function() {
     $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('extended.data') }}",
+        ajax: {
+            url: "{{ route('extended.data') }}",
+            data: function(d) {
+                d.company = $('#filter-company').val();
+            }
+        },
         columns: [
             {
                 data: null,
@@ -118,6 +131,10 @@ $(document).ready(function() {
         placeholder: 'Choose'
     });
     $('#generate').addClass("mm-active");
+
+    $('#filter-company').on('change', function() {
+        $('#table').DataTable().ajax.reload();
+    });
 
     $(document).on('click', '.delete', function () {
 

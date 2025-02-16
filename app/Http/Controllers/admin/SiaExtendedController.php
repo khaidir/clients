@@ -15,19 +15,25 @@ class SiaExtendedController extends Controller
 {
     public function index()
     {
-        return view('admin.extended.index');
+        $company = Companies::all();
+        return view('admin.extended.index', compact('company'));
     }
 
-    public function getData()
+    public function getData(Request $request)
     {
-        $extend = SiaExtended::select('sia_extended.*', 'companies.name as company', 'requester.name as request_by_name',
+        $query = SiaExtended::select('sia_extended.*', 'companies.name as company', 'requester.name as request_by_name',
             'approver.name as approved_by_name', 'verifier.name as verified_by_name')
             ->leftJoin('users as requester', 'sia_extended.user_id', '=', 'requester.id')
             ->leftJoin('users as approver', 'sia_extended.approved_by', '=', 'approver.id')
             ->leftJoin('users as verifier', 'sia_extended.verified_by', '=', 'verifier.id')
             ->leftJoin('companies', 'sia_extended.company_id', '=', 'companies.id')
-            ->orderBy('created_at','desc')
-            ->get();
+            ->orderBy('created_at','desc');
+
+        if ($request->has('company')  && $request->company !== 'all') {
+            $query->where('sia_extended.company_id', $request->company);
+        }
+
+        $extend = $query->get();
 
         $extend->transform(function ($row) {
             $type = [

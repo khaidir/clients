@@ -76,7 +76,7 @@
                                         <div class="row col-6">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="ktp_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="ktp_checked" data-id="{{ $data->id }}" {{ (@$data->ktp_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -91,7 +91,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="passport_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"   class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="pp_checked" data-id="{{ $data->id }}" {{ (@$data->pp_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -106,7 +106,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="card_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="card_checked" data-id="{{ $data->id }}" {{ (@$data->card_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -121,7 +121,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="bpjs_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="bpjs_checked" data-id="{{ $data->id }}" {{ (@$data->bpjs_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -136,7 +136,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="ct_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="ct_checked" data-id="{{ $data->id }}" {{ (@$data->ct_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -152,7 +152,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="cc_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="cc_checked" data-id="{{ $data->id }}" {{ (@$data->cc_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -168,7 +168,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="mc_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="mc_checked" data-id="{{ $data->id }}" {{ (@$data->mc_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -184,7 +184,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2" checked="">
+                                                    <input name="ld_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="ld_checked" data-id="{{ $data->id }}" {{ (@$data->ld_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -200,7 +200,7 @@
                                         <div class="row col-6 mt-3">
                                             <div class="col-1 mt-2">
                                                 <div class="form-check form-checkbox-outline form-check-success">
-                                                    <input class="form-check-input" type="checkbox" id="customCheckcolor2">
+                                                    <input name="lv_checked" name="ktp_checked" class="form-check-input {{ (@$data->id)? 'update-checkbox':'' }}"  class="form-check-input" type="checkbox" id="customCheckcolor2" data-field="lv_checked" data-id="{{ $data->id }}" {{ (@$data->ld_checked == true)?'checked':'' }}>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -210,7 +210,7 @@
                                                 </label>
                                                 <input type="hidden" id="license-vaccinated-filename" name="license_vaccinated" value="{{ old('license_vaccinated', @$data->license_vaccinated) }}">
                                             </div>
-                                            <code class="mb-lg-0" id="license-vaccinated-name"><a href="">filename-image-license-vaccinated.png</a></code>
+                                            <code class="mb-lg-0" id="license-vaccinated-name"></code>
                                         </div>
                                     </div>
                                 </div>
@@ -251,6 +251,28 @@
 $(document).ready(function() {
     $('select').select2({
         placeholder: 'Choose'
+    });
+
+    $('.update-checkbox').change(function() {
+        var isChecked = $(this).is(':checked') ? 1 : 0;
+        var fieldName = $(this).data('field');
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: '/worker/person/checked/' + id,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                field: fieldName,
+                value: isChecked
+            },
+            success: function(response) {
+                // toastr.success('Document Approved');
+            },
+            error: function(xhr, status, error) {
+                alert('Terjadi kesalahan: ' + error);
+            }
+        });
     });
 });
 
